@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teaching · Zachary Houghton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">ZH</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="teaching.html" class="active">Teaching</a></li>
+        <li><a href="cv.html">CV</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h1>Teaching</h1>
+        <p>Courses taught and assisted at the University of California, Davis and the University of Oregon.</p>
+      </div>
+
+      <section class="section" style="border-top: none; padding-top: 0;">
+        <h2 class="section-title">Instructor of Record</h2>
+        <p class="section-subtitle">Courses I have taught independently.</p>
+        <div class="teaching-grid">
+
+          <div class="course-item">
+            <div class="course-left">
+              <h4>Replace With Your Course Title</h4>
+              <p>University of California, Davis</p>
+              <span class="role-badge">Instructor</span>
+            </div>
+            <div class="course-right">Fall 2023</div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Teaching Assistant</h2>
+        <p class="section-subtitle">Courses I have assisted.</p>
+        <div class="teaching-grid">
+
+          <div class="course-item">
+            <div class="course-left">
+              <h4>Replace With Your Course Title</h4>
+              <p>University of California, Davis</p>
+              <span class="role-badge">Teaching Assistant</span>
+            </div>
+            <div class="course-right">Spring 2022</div>
+          </div>
+
+          <div class="course-item">
+            <div class="course-left">
+              <h4>Replace With Another Course</h4>
+              <p>University of Oregon</p>
+              <span class="role-badge">Teaching Assistant</span>
+            </div>
+            <div class="course-right">Winter 2019</div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="card" style="max-width: 500px;">
+          <div class="card-icon">&#128172;</div>
+          <h3>Statement of Teaching Philosophy</h3>
+          <p style="margin-bottom: 1rem;">Interested in my approach to teaching? Download my teaching statement.</p>
+          <a href="#" class="btn btn-ghost" style="font-size: 13px;">Download PDF</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2025 Zachary Houghton</span>
+      <span><a href="mailto:znhoughton@gmail.com">znhoughton@gmail.com</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+  </script>
+</body>
+</html>

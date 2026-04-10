@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publications · Zachary Houghton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">ZH</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="publications.html" class="active">Publications</a></li>
+        <li><a href="teaching.html">Teaching</a></li>
+        <li><a href="cv.html">CV</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h1>Publications</h1>
+        <p>See also: <a href="https://scholar.google.com/citations?user=39mxHGIAAAAJ&hl=en&oi=sra" target="_blank">Google Scholar profile</a></p>
+      </div>
+
+      <!-- Add your publications below. Copy a .pub-item block to add more. -->
+      <div class="pub-list">
+
+        <div class="pub-item">
+          <div class="pub-year">2024</div>
+          <div class="pub-body">
+            <h4>Sample Publication Title — Replace With Your Work</h4>
+            <p class="authors">Houghton, Z., &amp; Collaborator, A.</p>
+            <p class="venue">Journal of Psycholinguistic Research</p>
+            <div class="pub-links">
+              <a href="#" class="pub-link">PDF</a>
+              <a href="#" class="pub-link">DOI</a>
+              <a href="#" class="pub-link">Data</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-year">2023</div>
+          <div class="pub-body">
+            <h4>Another Sample Publication — Replace With Your Work</h4>
+            <p class="authors">Houghton, Z., Morgan, E., &amp; Ferreira, F.</p>
+            <p class="venue">Cognition</p>
+            <div class="pub-links">
+              <a href="#" class="pub-link">PDF</a>
+              <a href="#" class="pub-link">DOI</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <section class="section">
+        <h2 class="section-title">Conference Presentations</h2>
+        <div class="pub-list">
+
+          <div class="pub-item">
+            <div class="pub-year">2024</div>
+            <div class="pub-body">
+              <h4>Sample Conference Talk Title</h4>
+              <p class="authors">Houghton, Z.</p>
+              <p class="venue">Annual Conference on Human Sentence Processing (CUNY)</p>
+              <div class="pub-links">
+                <a href="#" class="pub-link">Slides</a>
+                <a href="#" class="pub-link">Poster</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2025 Zachary Houghton</span>
+      <span><a href="mailto:znhoughton@gmail.com">znhoughton@gmail.com</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+  </script>
+</body>
+</html>

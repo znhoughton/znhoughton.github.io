@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV · Zachary Houghton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">ZH</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="teaching.html">Teaching</a></li>
+        <li><a href="cv.html" class="active">CV</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h1>Curriculum Vitae</h1>
+          <p>Last updated 2025</p>
+        </div>
+        <a href="cv.pdf" class="btn btn-primary" download>Download PDF</a>
+      </div>
+
+      <div style="padding-bottom: 4rem;">
+
+        <div class="cv-section">
+          <h2>Education</h2>
+
+          <div class="cv-item">
+            <div class="cv-year">2019 – 2025</div>
+            <div class="cv-content">
+              <h4>Ph.D., Linguistics</h4>
+              <p>University of California, Davis</p>
+              <p>Dissertation advisor: Dr. Emily Morgan</p>
+            </div>
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-year">2019 – 2025</div>
+            <div class="cv-content">
+              <h4>M.A., Psychology</h4>
+              <p>University of California, Davis</p>
+              <p>Advisor: Dr. Fernanda Ferreira</p>
+            </div>
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-year">2015 – 2019</div>
+            <div class="cv-content">
+              <h4>B.A., Linguistics — Cum Laude, Departmental Honors</h4>
+              <p>University of Oregon</p>
+              <p>Minor in Korean · Advisor: Dr. Vsevolod Kapatsinski</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <h2>Professional Experience</h2>
+
+          <div class="cv-item">
+            <div class="cv-year">2025 – present</div>
+            <div class="cv-content">
+              <h4>Data Scientist</h4>
+              <p>Vail Systems · RAILS Team · Chicago, IL</p>
+            </div>
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-year">2025 – present</div>
+            <div class="cv-content">
+              <h4>Courtesy Research Associate</h4>
+              <p>University of Oregon · Usage-based Linguistics Lab</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cv-section">
+          <h2>Publications</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">See the <a href="publications.html">Publications page</a> for a full list, or visit my <a href="https://scholar.google.com/citations?user=39mxHGIAAAAJ&hl=en&oi=sra" target="_blank">Google Scholar profile</a>.</p>
+        </div>
+
+        <div class="cv-section">
+          <h2>Teaching</h2>
+          <p style="color: var(--text-secondary); font-size: 0.9rem;">See the <a href="teaching.html">Teaching page</a> for a full list of courses.</p>
+        </div>
+
+        <div class="cv-section">
+          <h2>Skills & Methods</h2>
+
+          <div class="cv-item">
+            <div class="cv-year">Languages</div>
+            <div class="cv-content">
+              <p>R, Python, Stan</p>
+            </div>
+          </div>
+
+          <div class="cv-item">
+            <div class="cv-year">Methods</div>
+            <div class="cv-content">
+              <p>Bayesian modeling, neural networks, psycholinguistic experiments, corpus analysis</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2025 Zachary Houghton</span>
+      <span><a href="mailto:znhoughton@gmail.com">znhoughton@gmail.com</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+  </script>
+</body>
+</html>
