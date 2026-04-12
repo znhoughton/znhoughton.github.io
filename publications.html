@@ -114,7 +114,7 @@
     toggle.addEventListener('click', () => links.classList.toggle('open'));
 
     // ── Load publications from auto-generated JSON ──
-    fetch('_data/publications.json')
+    fetch('/_data/publications.json')
       .then(res => {
         if (!res.ok) throw new Error('publications.json not found');
         return res.json();
