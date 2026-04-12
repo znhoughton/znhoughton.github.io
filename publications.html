@@ -123,7 +123,7 @@
         const container = document.getElementById('pub-list-container');
     
         // Filter out publications with no year
-        const filtered = pubs.filter(pub => pub.year && pub.year.trim() !== '');
+        const filtered = pubs.filter(pub => pub.year && String(pub.year).trim() !== '');
     
         if (!filtered.length) {
           container.innerHTML = '<p style="color: var(--text-muted);">No publications found.</p>';
@@ -133,8 +133,9 @@
         // Group by year
         const byYear = {};
         for (const pub of filtered) {
-          if (!byYear[pub.year]) byYear[pub.year] = [];
-          byYear[pub.year].push(pub);
+          const pubYear = String(pub.year);
+          if (!byYear[pubYear]) byYear[pubYear] = [];
+          byYear[pubYear].push(pub);
         }
     
         // Sort years descending
