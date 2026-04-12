@@ -33,11 +33,11 @@ def fetch_publications():
     # Sort by year descending, with missing years at the bottom
     pubs.sort(key=lambda x: str(x.get("year") or 0), reverse=True)
 
-    os.makedirs("_data", exist_ok=True)
-    with open("_data/publications.json", "w", encoding="utf-8") as f:
+    os.makedirs("data", exist_ok=True)
+    with open("data/publications.json", "w", encoding="utf-8") as f:
         json.dump(pubs, f, indent=2, ensure_ascii=False)
 
-    print(f"Done. Wrote {len(pubs)} publications to _data/publications.json")
+    print(f"Done. Wrote {len(pubs)} publications to data/publications.json")
 
 if __name__ == "__main__":
     fetch_publications()
