@@ -30,7 +30,7 @@
         <p>See also: <a href="https://scholar.google.com/citations?user=39mxHGIAAAAJ&hl=en&oi=sra" target="_blank">Google Scholar profile</a></p>
       </div>
 
-      <!-- Publications are loaded dynamically from _data/publications.json -->
+      <!-- Publications are loaded dynamically from data/publications.json -->
       <div id="pub-list-container">
         <p style="color: var(--text-muted); font-style: italic;">Loading publications…</p>
       </div>
@@ -114,7 +114,7 @@
     toggle.addEventListener('click', () => links.classList.toggle('open'));
 
     // ── Load publications from auto-generated JSON ──
-    fetch('/_data/publications.json')
+    fetch('/data/publications.json')
       .then(res => {
         if (!res.ok) throw new Error('publications.json not found');
         return res.json();
