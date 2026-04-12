@@ -121,65 +121,77 @@
       })
       .then(pubs => {
         const container = document.getElementById('pub-list-container');
-
-        if (!pubs || pubs.length === 0) {
+    
+        // Filter out publications with no year
+        const filtered = pubs.filter(pub => pub.year && pub.year.trim() !== '');
+    
+        if (!filtered.length) {
           container.innerHTML = '<p style="color: var(--text-muted);">No publications found.</p>';
           return;
         }
-
-        const items = pubs.map(pub => {
-          const year = pub.year || '—';
-          const title = pub.title || 'Untitled';
-          const authors = pub.authors
-            ? formatAuthors(pub.authors)
-            : '';
-          const venue = pub.venue || '';
-          const url = pub.url || '';
-          const citations = pub.citations || 0;
-
-          const linkHtml = url
-            ? `<a href="${escHtml(url)}" target="_blank" class="pub-link">Google Scholar</a>`
-            : `<a href="https://scholar.google.com/citations?user=39mxHGIAAAAJ&hl=en" target="_blank" class="pub-link">Google Scholar</a>`;
-
-          const citeBadge = citations > 0
-            ? `<span class="pub-link" title="Citation count">${citations} citation${citations !== 1 ? 's' : ''}</span>`
-            : '';
-
-          return `
-            <div class="pub-item">
-              <div class="pub-year">${escHtml(String(year))}</div>
-              <div class="pub-body">
-                <h4>${escHtml(title)}</h4>
-                ${authors ? `<p class="authors">${authors}</p>` : ''}
-                ${venue ? `<p class="venue">${escHtml(venue)}</p>` : ''}
-                <div class="pub-links">
-                  ${linkHtml}
-                  ${citeBadge}
+    
+        // Group by year
+        const byYear = {};
+        for (const pub of filtered) {
+          if (!byYear[pub.year]) byYear[pub.year] = [];
+          byYear[pub.year].push(pub);
+        }
+    
+        // Sort years descending
+        const years = Object.keys(byYear).sort((a, b) => b - a);
+    
+        const html = years.map(year => {
+          const items = byYear[year].map(pub => {
+            const authors = pub.authors ? formatAuthors(pub.authors) : '';
+            const venue = pub.venue || '';
+            const url = pub.url || '';
+    
+            const linkHtml = url
+              ? `<a href="${escHtml(url)}" target="_blank" class="pub-link">Link</a>`
+              : `<a href="https://scholar.google.com/citations?user=39mxHGIAAAAJ&hl=en" target="_blank" class="pub-link">Google Scholar</a>`;
+    
+            const citations = pub.citations || 0;
+            const citeBadge = citations > 0
+              ? `<span class="pub-link">${citations} citation${citations !== 1 ? 's' : ''}</span>`
+              : '';
+    
+            return `
+              <div class="pub-item">
+                <div class="pub-year">${escHtml(String(year))}</div>
+                <div class="pub-body">
+                  <h4>${escHtml(pub.title || 'Untitled')}</h4>
+                  ${authors ? `<p class="authors">${authors}</p>` : ''}
+                  ${venue ? `<p class="venue">${escHtml(venue)}</p>` : ''}
+                  <div class="pub-links">${linkHtml}${citeBadge}</div>
                 </div>
-              </div>
+              </div>`;
+          }).join('');
+    
+          return `
+            <div class="pub-year-group">
+              <h2 class="section-title" style="margin-top: 2rem; margin-bottom: 1rem;">${year}</h2>
+              <div class="pub-list">${items}</div>
             </div>`;
         }).join('');
-
-        container.innerHTML = `<div class="pub-list">${items}</div>`;
+    
+        container.innerHTML = html;
       })
       .catch(() => {
-        // Fallback: if JSON hasn't been generated yet, show a helpful message
         document.getElementById('pub-list-container').innerHTML = `
           <p style="color: var(--text-muted); font-style: italic;">
-            Publications will appear here automatically once the GitHub Action runs.
+            Publications will appear here automatically once the script runs.
             In the meantime, see the
             <a href="https://scholar.google.com/citations?user=39mxHGIAAAAJ&hl=en&oi=sra" target="_blank">Google Scholar profile</a>.
           </p>`;
       });
-
-    // Bold "Houghton, Z" wherever it appears in the author string
+    
     function formatAuthors(authorStr) {
       return escHtml(authorStr).replace(
         /(Houghton,?\s*Z\.?\s*N\.?)/gi,
         '<strong>$1</strong>'
       );
     }
-
+    
     function escHtml(str) {
       return str
         .replace(/&/g, '&amp;')
