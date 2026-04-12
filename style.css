@@ -487,6 +487,20 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
 }
 
 /* ─── About Page ─── */
+.about-intro {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-intro p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  max-width: 680px;
+}
+
+.about-intro p:last-child { margin-bottom: 0; }
 .about-section {
   margin-bottom: 3rem;
   padding-bottom: 3rem;
@@ -498,11 +512,12 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
 }
 
 .about-section h2 {
-  font-size: 0.75rem;
-  font-family: var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
+  font-size: 1.25rem;
+  font-family: var(--font);
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text-primary);
   margin-bottom: 1.25rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
