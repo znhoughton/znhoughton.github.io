@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About · Zachary Houghton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">ZNH</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="teaching.html">Teaching</a></li>
+        <li><a href="cv.html">CV</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h1>About Me</h1>
+      </div>
+
+      <div style="padding-bottom: 4rem;">
+
+        <div class="about-intro">
+          <p>
+            I'm drawn to hard problems, both physical and mental. There's something satisfying about a pursuit with no real ceiling, where effort and attention reliably translate into visible improvement. I find that feeling more motivating than any external benchmark, and it's a thread that runs through all of my interests.
+          </p>
+        </div>
+
+        <div class="about-section">
+          <h2>Data Science &amp; Industry</h2>
+          <p>
+            I currently work as a Principal Data Scientist II at <strong>Vail Systems</strong> in Chicago, on the Research in Artificial Intelligence in Linguistics and Systems (RAILS) team. My work there sits at the intersection of cutting-edge AI research and practical voice and language technology — specifically, exploring novel AI methods that can be applied to real-world telecommunication and speech problems.
+          </p>
+          <p>
+            Before moving into this role full-time, I interned at Vail as a Data Science / NLP intern, where I developed an anti-spoofing model to detect whether a voice is human or AI-generated.
+          </p>
+          <p>
+            Across all of these roles, my toolkit has centered on R, Python, and PyTorch, with a strong emphasis on Bayesian modeling, corpus analysis, and careful experimental design.
+          </p>
+        </div>
+
+        <div class="about-section">
+          <h2>Research: Linguistics &amp; Cognitive Science</h2>
+          <p>
+            My academic research lives at the boundary of psycholinguistics, cognitive science, and computational modeling. At its core, I'm interested in a deceptively simple question: <em>how does the way we learn language shape our cognitive representations of language?</em>
+          </p>
+          <p>
+            More specifically, my work focuses on <strong>error-driven learning</strong> and <strong>linguistic storage</strong> — how prediction error during language processing drives long-term changes in mental representations, and whether we store language as abstract rules, as specific memorized chunks, or as some blend of both. I approach these questions using a combination of computational modeling (e.g., neural networks), corpus methods, and experimental psycholinguistic techniques including eye-tracking.
+          </p>
+          <p>
+            Some of my recent work has examined how the frequency and predictability of multi-word phrases affects their cognitive representation; how frequency-dependent regularization can emerge from a noisy-channel processing model; and how large language models encode abstract vs. item-specific linguistic knowledge — and what that reveals about human language learning by comparison.
+          </p>
+          <p>
+            I completed my Ph.D. in Linguistics and M.A. in Psychology at UC Davis, advised by Dr. Emily Morgan and Dr. Fernanda Ferreira respectively, and I'm now a Courtesy Research Associate at the University of Oregon, where I continue to collaborate with Dr. Vsevolod Kapatsinski and the Usage-Based Linguistics Lab.
+          </p>
+        </div>
+
+        <div class="about-section">
+          <h2>Outside the Office</h2>
+          <p>
+            I'm proudly from Connecticut, and despite living in Oregon, California, and now Chicago, there's a particular culture and identity that comes with growing up in New England, one that stays with you wherever you end up. That includes a lifelong, often painful allegiance to the Boston Bruins.
+          </p>
+          <p>
+            I fenced competitively for most of my life — foil, if it matters, which it does — eventually captaining the UC Davis men's foil team and later coaching at Davis Fencing Academy, and still fence recreationally today.
+          </p>
+          <p>
+            I've also played piano for most of my life, and it remains one of the few pursuits that can humble me on any given day.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2025 Zachary Houghton</span>
+      <span><a href="mailto:znhoughton@gmail.com">znhoughton@gmail.com</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+  </script>
+</body>
+</html>

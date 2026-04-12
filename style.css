@@ -486,6 +486,37 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
   margin-top: 0.4rem;
 }
 
+/* ─── About Page ─── */
+.about-section {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-section:last-child {
+  border-bottom: none;
+}
+
+.about-section h2 {
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-section p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  max-width: 680px;
+}
+
+.about-section p:last-child { margin-bottom: 0; }
+
 /* ─── CV Page ─── */
 .cv-section { margin-bottom: 3rem; }
 
