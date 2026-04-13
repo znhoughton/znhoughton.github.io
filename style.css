@@ -512,12 +512,12 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
 }
 
 .about-section h2 {
-  font-size: 1.25rem;
-  font-family: var(--font);
+  font-size: 0.75rem;
+  font-family: var(--mono);
   font-weight: 500;
-  letter-spacing: normal;
-  text-transform: none;
-  color: var(--text-primary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
   margin-bottom: 1.25rem;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
