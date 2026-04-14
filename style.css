@@ -512,7 +512,7 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
 }
 
 .about-section h2 {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-family: var(--mono);
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -536,7 +536,7 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
 .cv-section { margin-bottom: 3rem; }
 
 .cv-section h2 {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-family: var(--mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
