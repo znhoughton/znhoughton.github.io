@@ -174,6 +174,10 @@ document.addEventListener('keypress', function (e) {
   var tag = document.activeElement && document.activeElement.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA') return;
   typedBuf = (typedBuf + e.key).slice(-7).toLowerCase();
+  if (typedBuf.endsWith('/secret')) {
+    window.location.href = '/secret.html';
+  }
+
   if (typedBuf === 'chomsky') {
     var item = CHOMSKY_QUOTES[chomskyIdx % CHOMSKY_QUOTES.length];
     chomskyIdx++;
