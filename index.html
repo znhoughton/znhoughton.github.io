@@ -29,7 +29,7 @@
       <div class="hero-content">
         <div class="hero-text">
           <p class="hero-tag">Linguist · Cognitive Scientist · Researcher · Data Scientist</p>
-          <h1>Zachary Houghton, <span class="muted">PhD</span></h1>
+          <h1>Zachary Houghton, <span class="muted" id="ee-phd">PhD</span></h1>
           <p class="hero-bio">
             I study the intersection of <em>error-driven learning</em> and <em>linguistic storage</em> — how the way we learn language shapes how we represent it cognitively. My work integrates computational modeling with experimental psycholinguistic methods.
           </p>
@@ -42,7 +42,7 @@
         </div>
         <div class="hero-photo">
           <div class="photo-frame">
-            <img src="headshot.jpg" alt="Zachary Houghton" onerror="this.style.display='none'; this.parentNode.classList.add('photo-placeholder')" />
+            <img id="ee-headshot" src="headshot.jpg" alt="Zachary Houghton" onerror="this.style.display='none'; this.parentNode.classList.add('photo-placeholder')" />
           </div>
         </div>
       </div>
@@ -124,5 +124,6 @@
     const links = document.querySelector('.nav-links');
     toggle.addEventListener('click', () => links.classList.toggle('open'));
   </script>
+  <script src="/scripts/easter-eggs.js"></script>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5
