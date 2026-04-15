@@ -167,7 +167,6 @@ var CHOMSKY_QUOTES = [
     paraphrase: false
   },
 ];
-var chomskyIdx = 0;
 var typedBuf = '';
 
 document.addEventListener('keypress', function (e) {
@@ -179,8 +178,7 @@ document.addEventListener('keypress', function (e) {
   }
 
   if (typedBuf === 'chomsky') {
-    var item = CHOMSKY_QUOTES[chomskyIdx % CHOMSKY_QUOTES.length];
-    chomskyIdx++;
+    var item = CHOMSKY_QUOTES[Math.floor(Math.random() * CHOMSKY_QUOTES.length)];
     var qHtml = item.paraphrase
       ? item.q
       : '<em>' + item.q + '</em>';
