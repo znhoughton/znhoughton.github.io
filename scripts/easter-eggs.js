@@ -198,7 +198,7 @@ var ZNH_MSGS = [
   '🎉 <strong>You found it.</strong><br>' +
     '<span style="color:#9490a8;font-size:12px">' +
     'ZNH = Zachary <em>Nicholas</em> Houghton.<br>' +
-    'Nelson is a family name. Now you know.<br><br>' +
+    'Now you know.<br><br>' +
     '<span style="color:#5c5870;font-size:11px">ps: have you tried /secret?</span>' +
     '</span>',
 ];
