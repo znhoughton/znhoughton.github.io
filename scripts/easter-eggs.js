@@ -11,7 +11,7 @@ console.log(
   '💡 Try typing "chomsky" anywhere on the page.\n' +
   '💡 Try the Konami code: ↑↑↓↓←→←→BA\n' +
   '💡 There may or may not be a /secret page.\n\n' +
-  '%c  ə  θ  ʃ  ŋ  ɪ  æ  ɔ  ʒ  — phonetics gang  %c',
+  '%c  ə  θ  ʃ  ŋ  ɪ  æ  ɔ  ʒ  %c',
   'background:#7c6ef7;color:#fff;font-family:monospace;font-size:13px;font-weight:700;padding:3px 10px;border-radius:3px;',
   'color:#9490a8;font-family:monospace;font-size:13px;',
   'background:#1a1a1f;color:#7c6ef7;font-family:monospace;font-size:12px;padding:3px 8px;border-radius:3px;',
