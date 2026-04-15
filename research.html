@@ -339,11 +339,9 @@
             <input type="range" id="glove-slider" min="0" max="1" step="0.01" value="0" />
             <label class="right">Holistic</label>
           </div>
-          <div class="glove-freq-legend">
-            <span>low frequency</span>
-            <div class="freq-gradient"></div>
-            <span>high frequency</span>
-          </div>
+          <p style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:0.75rem;">
+            Dot size = relative frequency. Frequency drives where a binomial falls on this axis: high-frequency binomials (larger dots) diverge more toward holistic storage, while low-frequency ones remain near the compositional baseline.
+          </p>
         </div>
 
         <!-- Noisy Channel -->
@@ -353,7 +351,7 @@
           infer the speaker's <em>intended</em> ordering via a
           <strong>noisy-channel model</strong> (Gibson et al., 2013; Levy, 2008):
           <span style="font-family:var(--mono);color:var(--accent);">P(Sᵢ | Sₚ) ∝ P(Sᵢ) · P(Sᵢ→Sₚ)</span>.
-          The prior P(Sᵢ) represents <strong>abstract generative preferences</strong> —
+          The prior P(Sᵢ) represents <strong>abstract preferences</strong> —
           frequency-independent knowledge about ordering constraints (e.g., shorter words first,
           animate before inanimate). Frequency does not strengthen the prior; it determines
           <strong>N</strong>: the number of tokens a learner hears.
@@ -420,9 +418,15 @@
         <div class="demo-card" style="margin-top:2rem;">
           <span class="demo-label">// interactive demo · Bayesian belief updating</span>
           <p class="demo-desc">
-            Prior: this player rarely shows tells · Beta(2, 8) · E[θ] = 0.20.<br>
-            Each round, observe whether they act suspicious or innocent. Watch the posterior narrow.
+            Choose a player type — this sets your prior belief about their baseline suspicion rate.
+            Then add observations and watch the posterior update. Notice how the <em>same evidence
+            carries different weight</em> depending on the prior.
           </p>
+          <div class="scenario-btns" id="bayes-player-btns" style="margin-bottom:1.25rem;">
+            <button class="scenario-btn active" data-a="2" data-b="8">Rarely suspicious · E[θ] = 0.20</button>
+            <button class="scenario-btn" data-a="5" data-b="5">Neutral · E[θ] = 0.50</button>
+            <button class="scenario-btn" data-a="8" data-b="2">Often suspicious · E[θ] = 0.80</button>
+          </div>
           <canvas id="bayes-canvas" height="220"></canvas>
           <div class="bayes-btns">
             <button class="bayes-btn primary" id="bayes-hit">+ Suspicious</button>
@@ -430,7 +434,7 @@
             <button class="bayes-btn" id="bayes-reset">Reset</button>
           </div>
           <div id="bayes-stats">
-            Prior: Beta(2, 8) &nbsp;|&nbsp; Observations: <span id="b-n">0</span> &nbsp;|&nbsp;
+            Prior: Beta(<span id="b-a0">2</span>, <span id="b-b0">8</span>) &nbsp;|&nbsp; Observations: <span id="b-n">0</span> &nbsp;|&nbsp;
             Suspicious: <span id="b-h">0</span> &nbsp;|&nbsp; Posterior mean: <span id="b-mean">0.200</span>
           </div>
         </div>
@@ -732,24 +736,26 @@
         vals.forEach(function(v,i){ var x=toX(i),y=toY(v); if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y); });
         ctx.stroke();
       });
+      // Cue labels — inside clip region, floating above each line near trial 80%
+      ctx.save(); ctx.beginPath(); ctx.rect(pad.left,pad.top,pw,ph); ctx.clip();
+      s.cues.forEach(function(cue){
+        var vals=hist[cue];
+        var ti=Math.round(N*0.82), lv=vals[ti];
+        ctx.fillStyle=CUE_COL[cue]; ctx.font='bold '+(11*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
+        ctx.fillText('V'+cue, toX(ti), toY(lv)-7*DPR);
+      });
+      // Phase labels — inside plot, near top
+      if(s.sep){
+        var sep=Math.round(N*s.sep);
+        ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.font=(9*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
+        ctx.fillText('Phase 1', (pad.left+toX(sep))/2, pad.top+14*DPR);
+        ctx.fillText('Phase 2', (toX(sep)+pad.left+pw)/2, pad.top+14*DPR);
+      }
       ctx.restore();
 
       // Y axis labels
       ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.font=(10*DPR)+'px "JetBrains Mono"'; ctx.textAlign='right';
       [0,0.5,1.0].forEach(function(v){ctx.fillText(v.toFixed(1),pad.left-6*DPR,toY(v)+4*DPR);});
-      // Cue labels
-      s.cues.forEach(function(cue){
-        var vals=hist[cue],lv=vals[vals.length-1];
-        ctx.fillStyle=CUE_COL[cue]; ctx.font='bold '+(11*DPR)+'px "JetBrains Mono"'; ctx.textAlign='left';
-        ctx.fillText('V'+cue,pad.left+pw+4*DPR,toY(lv)+4*DPR);
-      });
-      // Phase labels
-      if(s.sep){
-        var sep=Math.round(N*s.sep);
-        ctx.fillStyle='rgba(255,255,255,0.18)'; ctx.font=(9*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
-        ctx.fillText('Phase 1',pad.left+toX(sep)/2,pad.top-6*DPR);
-        ctx.fillText('Phase 2',toX(sep)+(pad.left+pw-toX(sep))/2,pad.top-6*DPR);
-      }
       ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font=(10*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
       ctx.fillText('Trial',pad.left+pw/2,h-8*DPR);
     }
@@ -980,7 +986,8 @@
       ctx.beginPath(); ctx.moveTo(pad.left,pad.top+ph); ctx.lineTo(pad.left+pw,pad.top); ctx.stroke();
       ctx.setLineDash([]);
 
-      // Curves
+      // Curves (clipped to plot area)
+      ctx.save(); ctx.beginPath(); ctx.rect(pad.left, pad.top, pw, ph); ctx.clip();
       curves.forEach(function(pts, li) {
         var lv = N_LEVELS[li];
         ctx.strokeStyle = lv.color;
@@ -993,20 +1000,28 @@
           if(mi===0) ctx.moveTo(x,yy); else ctx.lineTo(x,yy);
         });
         ctx.stroke();
+      });
+      ctx.restore();
 
-        // Label at right edge
-        var lastY = pts[pts.length-1];
-        var lx = pad.left + pw + 6*DPR;
-        var ly = pad.top + ph*(1-lastY);
+      // Legend: top-left inside plot area, N=2000 (high) first
+      var leg_x = pad.left + 10*DPR;
+      var leg_y = pad.top + 10*DPR;
+      var leg_order = [3, 2, 1, 0]; // high to low N
+      leg_order.forEach(function(li, row) {
+        var lv = N_LEVELS[li];
+        var y = leg_y + row * 16*DPR;
+        ctx.strokeStyle = lv.color; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(leg_x, y+3*DPR); ctx.lineTo(leg_x+16*DPR, y+3*DPR); ctx.stroke();
         ctx.fillStyle = lv.color;
         ctx.font = (10*DPR)+'px "JetBrains Mono"';
         ctx.textAlign = 'left';
-        ctx.fillText(lv.label, lx, ly+4*DPR);
+        var note = li===3 ? '  (high freq)' : (li===0 ? '  (low freq)' : '');
+        ctx.fillText(lv.label + note, leg_x + 20*DPR, y + 7*DPR);
       });
 
       // Axes labels
       ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.font=(10*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
-      ctx.fillText('Generative preference (proportion alphabetical)', pad.left+pw/2, h-6*DPR);
+      ctx.fillText('Abstract preference (proportion alphabetical)', pad.left+pw/2, h-6*DPR);
       // X ticks
       [0,0.25,0.5,0.75,1.0].forEach(function(v){
         var gx=pad.left+pw*v;
@@ -1046,8 +1061,20 @@
   (function(){
     var canvas=document.getElementById('bayes-canvas'),ctx=canvas.getContext('2d'),DPR=window.devicePixelRatio||1;
     var TRUE_RATE=0.72;
-    var alpha0=2, beta0=8;  // Prior: usually innocent-looking, E[θ]=0.2
+    var alpha0=2, beta0=8;
     var hits=0, misses=0;
+
+    document.querySelectorAll('#bayes-player-btns .scenario-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        document.querySelectorAll('#bayes-player-btns .scenario-btn').forEach(function(b){b.classList.remove('active');});
+        btn.classList.add('active');
+        alpha0=parseInt(btn.dataset.a); beta0=parseInt(btn.dataset.b);
+        hits=0; misses=0;
+        document.getElementById('b-a0').textContent=alpha0;
+        document.getElementById('b-b0').textContent=beta0;
+        draw();
+      });
+    });
 
     function lgamma(x){
       var g=7,c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,
@@ -1139,6 +1166,7 @@
     document.getElementById('bayes-hit').addEventListener('click',function(){hits++;draw();});
     document.getElementById('bayes-miss').addEventListener('click',function(){misses++;draw();});
     document.getElementById('bayes-reset').addEventListener('click',function(){hits=0;misses=0;draw();});
+    document.getElementById('b-mean').textContent=(alpha0/(alpha0+beta0)).toFixed(3);
     window.addEventListener('resize',draw);
     draw();
   })();
