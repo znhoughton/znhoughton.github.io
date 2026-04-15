@@ -929,18 +929,24 @@
       return { a1: alpha1, a2: alpha2 };
     }
 
-    // Simulate N_GENS generations starting from generative preference mu
+    // Iterated learning: each generation resets the prior to the generative
+    // preference and hears N tokens from the *previous* generation's speaker.
+    // speaker_theta starts at mu0 and updates each generation — higher N
+    // drifts farther per step, so curves diverge visibly across 50 generations.
     function simulateCurve(pnoise) {
       var curves = N_LEVELS.map(function(lv) {
         var pts = [];
         for (var mi=0; mi<=N_MU; mi++) {
-          var mu = mi / N_MU;
-          var a1 = mu * NU, a2 = (1-mu) * NU;
+          var mu0 = mi / N_MU;
+          var speaker_theta = mu0;  // first speaker produces at generative preference rate
           for (var g=0; g<N_GENS; g++) {
-            var res = simulateGen(mu, a1, a2, lv.n, pnoise);
-            a1 = res.a1; a2 = res.a2;
+            // New learner: fresh prior from generative preference each generation
+            var a1 = mu0 * NU, a2 = (1-mu0) * NU;
+            var res = simulateGen(speaker_theta, a1, a2, lv.n, pnoise);
+            // This generation's inferred belief becomes next speaker's rate
+            speaker_theta = res.a1 / (res.a1 + res.a2);
           }
-          pts.push(a1 / (a1 + a2));
+          pts.push(speaker_theta);
         }
         return pts;
       });
