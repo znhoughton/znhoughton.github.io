@@ -189,6 +189,35 @@ document.addEventListener('keypress', function (e) {
   }
 });
 
+// ── 3b. Long-press footer copyright → same quote cycle (mobile) ──
+document.addEventListener('DOMContentLoaded', function () {
+  var footerCredit = document.querySelector('.footer-inner span:first-child');
+  if (!footerCredit) return;
+  var pressTimer = null;
+  footerCredit.addEventListener('touchstart', function () {
+    pressTimer = setTimeout(function () {
+      pressTimer = null;
+      var item = CHOMSKY_QUOTES[chomskyIdx % CHOMSKY_QUOTES.length];
+      chomskyIdx++;
+      var qHtml = item.paraphrase
+        ? item.q
+        : '<em>' + item.q + '</em>';
+      showToast(
+        '<span style="color:#7c6ef7;font-size:11px">// chomsky detected — here\'s a better quote</span><br><br>' +
+        qHtml + '<br>' +
+        '<span style="color:#9490a8;font-size:11px">' + item.attr + '</span>',
+        7000
+      );
+    }, 600);
+  });
+  footerCredit.addEventListener('touchend', function () {
+    clearTimeout(pressTimer);
+  });
+  footerCredit.addEventListener('touchmove', function () {
+    clearTimeout(pressTimer);
+  });
+});
+
 // ── 4. ZNH Logo — click 5× ───────────────────────────────────
 var ZNH_MSGS = [
   '🔍 <strong>One.</strong> Curious.',
