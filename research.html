@@ -51,7 +51,40 @@
       line-height: 1.7;
       max-width: 700px;
     }
-    .research-connect em { color: var(--accent); font-style: normal; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; margin-right: 0.5rem; vertical-align: middle; }
+    .research-connect em {
+      color: var(--accent);
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+    }
+
+    .fun-fact {
+      background: rgba(124,110,247,0.06);
+      border: 1px solid rgba(124,110,247,0.2);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.5rem;
+      max-width: 700px;
+    }
+    .fun-fact .ff-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+    .fun-fact p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin: 0;
+    }
 
     /* Brain */
     #brain-wrap { position: relative; width: 100%; max-width: 560px; margin: 0 auto; }
@@ -60,54 +93,38 @@
     .group-row { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.25rem; }
     .group-set { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
     .group-set-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      width: 52px;
-      flex-shrink: 0;
+      font-family: var(--mono); font-size: 10px; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.1em; width: 52px; flex-shrink: 0;
     }
     .group-set-label.animal { color: #7c6ef7; }
     .group-set-label.plant  { color: #6fe695; }
 
     .word-pill {
-      font-family: var(--mono);
-      font-size: 12px;
-      padding: 0.3rem 0.75rem;
-      border-radius: 20px;
-      border: 1px solid var(--border-hover);
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.15s;
-      background: transparent;
-      user-select: none;
+      font-family: var(--mono); font-size: 12px; padding: 0.3rem 0.75rem;
+      border-radius: 20px; border: 1px solid var(--border-hover);
+      color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
+      background: transparent; user-select: none;
     }
     .word-pill:hover { color: var(--text-primary); }
     .word-pill.active-animal { background: rgba(124,110,247,0.15); border-color: #7c6ef7; color: #7c6ef7; }
     .word-pill.active-plant  { background: rgba(111,230,149,0.12); border-color: #6fe695; color: #6fe695; }
-
     .brain-caption { text-align: center; font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-top: 0.75rem; }
 
     /* RW */
     .scenario-btns { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
     .scenario-btn {
-      font-family: var(--mono); font-size: 12px;
-      padding: 0.3rem 0.75rem; border-radius: 20px;
-      border: 1px solid var(--border-hover);
-      color: var(--text-secondary); cursor: pointer; background: transparent; transition: all 0.15s;
+      font-family: var(--mono); font-size: 12px; padding: 0.3rem 0.75rem; border-radius: 20px;
+      border: 1px solid var(--border-hover); color: var(--text-secondary); cursor: pointer;
+      background: transparent; transition: all 0.15s;
     }
     .scenario-btn:hover { color: var(--text-primary); border-color: var(--accent); }
     .scenario-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-
     #scenario-desc { font-size: 0.85rem; color: var(--text-muted); font-family: var(--mono); margin-bottom: 1.25rem; line-height: 1.6; }
-
     .rw-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
     @media (max-width: 480px) { .rw-controls { grid-template-columns: 1fr; } }
     .rw-ctrl label { display: block; font-family: var(--mono); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem; }
     .rw-ctrl input[type=range] { width: 100%; accent-color: var(--accent); }
     .rw-ctrl .val { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); margin-top: 0.2rem; display: block; }
-
     #rw-canvas { width: 100%; border-radius: 6px; display: block; }
 
     /* GloVe */
@@ -117,37 +134,17 @@
     .slider-row label.right { text-align: right; min-width: 70px; }
     .slider-row input[type=range] { flex: 1; accent-color: var(--accent); }
     .glove-freq-legend {
-      display: flex; align-items: center; gap: 0.75rem; margin-top: 1rem; justify-content: center;
-      font-family: var(--mono); font-size: 11px; color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.75rem; margin-top: 1rem;
+      justify-content: center; font-family: var(--mono); font-size: 11px; color: var(--text-muted);
     }
     .freq-gradient { width: 80px; height: 8px; border-radius: 4px; background: linear-gradient(to right, rgba(148,144,168,0.3), #7c6ef7); }
 
     /* Noisy Channel */
-    .nc-binomials { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
-    .nc-bin-btn {
-      font-family: var(--mono); font-size: 12px;
-      padding: 0.3rem 0.75rem; border-radius: 20px;
-      border: 1px solid var(--border-hover);
-      color: var(--text-secondary); cursor: pointer; background: transparent; transition: all 0.15s;
-    }
-    .nc-bin-btn:hover { color: var(--text-primary); border-color: var(--accent); }
-    .nc-bin-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-
-    .nc-heard-toggle { display: flex; gap: 0; margin-bottom: 1.25rem; border: 1px solid var(--border-hover); border-radius: 8px; overflow: hidden; width: fit-content; }
-    .nc-heard-btn { font-family: var(--mono); font-size: 12px; padding: 0.4rem 1rem; background: transparent; border: none; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
-    .nc-heard-btn.active { background: var(--accent-soft); color: var(--accent); }
-
-    .nc-viz { display: grid; grid-template-columns: auto 1fr; gap: 0.6rem 1rem; align-items: center; margin: 1.25rem 0; }
-    .nc-row-label { font-family: var(--mono); font-size: 11px; color: var(--text-muted); text-align: right; white-space: nowrap; }
-    .nc-bar-wrap { position: relative; height: 28px; border-radius: 6px; background: rgba(255,255,255,0.04); overflow: hidden; }
-    .nc-bar { position: absolute; left: 0; top: 0; height: 100%; border-radius: 6px; transition: width 0.35s ease; }
-    .nc-bar-label { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-family: var(--mono); font-size: 11px; color: var(--text-primary); pointer-events: none; }
-
-    .nc-slider-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
-    .nc-slider-row label { font-family: var(--mono); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; min-width: 110px; }
-    .nc-slider-row input[type=range] { flex: 1; accent-color: var(--accent); }
-    .nc-slider-row .val { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); min-width: 36px; }
-    .nc-heard-label { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    #nc-canvas { width: 100%; border-radius: 6px; display: block; }
+    .nc-ctrl-row { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }
+    .nc-ctrl-row label { font-family: var(--mono); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; min-width: 160px; }
+    .nc-ctrl-row input[type=range] { flex: 1; accent-color: var(--accent); }
+    .nc-ctrl-row .val { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); min-width: 36px; }
 
     /* Bayesian */
     #bayes-canvas { width: 100%; border-radius: 6px; display: block; }
@@ -186,24 +183,24 @@
 
       <div class="research-blurb" style="padding-bottom: 3.5rem; border-bottom: 1px solid var(--border);">
         <p>
-          Language is not a fixed system that speakers look up and apply — it is a dynamic cognitive resource,
-          continuously reshaped by every encounter we have with it. At the heart of my work is a question
-          about the architecture of that resource: <strong>how do humans and machines trade off between
-          storage and computation?</strong>
+          Language is not a fixed system of rules — it is a dynamic cognitive process,
+          continuously reshaped by every encounter we have with it. At the heart of my work is a
+          question about the architecture of that resource: <strong>how do humans and machines
+          trade off between storage and computation?</strong>
         </p>
         <p>
           On the <strong>storage</strong> side, linguistic knowledge can be represented holistically —
-          whole phrases, collocations, and constructions stored as units in memory, their form and meaning
-          shaped directly by experience. Frequent patterns become entrenched. On the <strong>computation</strong>
-          side, we assemble meaning from parts: abstract rules and schemas that apply broadly, regardless
-          of specific experience. Most linguistic behavior doesn't fall cleanly into either camp.
+          whole phrases, collocations, and constructions stored as units in memory. On the
+          <strong>computation</strong> side, we assemble meaning from parts: abstract rules and schemas
+          that apply broadly. Most linguistic behavior doesn't fall cleanly into either camp.
         </p>
         <p>
-          What I study is the balance between them — how much exposure is needed to shift a pattern from
-          computed to stored, how that shift manifests cognitively and behaviorally, and whether the
-          computational systems we build for language mirror or diverge from the human solution.
-          I approach these questions using neural networks, Bayesian models, and error-driven learning
-          frameworks, alongside corpus analysis and experimental psycholinguistic methods including eye-tracking.
+          What I study is the balance between them — how much exposure is needed to shift a pattern
+          from computed to stored (which may be more of a continuum than a binary), how that shift
+          manifests cognitively and behaviorally, and whether the computational systems we build for
+          language mirror or diverge from humans. I approach these questions using neural networks,
+          Bayesian models, and error-driven learning frameworks, alongside corpus analyses and
+          experimental psycholinguistic methods.
         </p>
       </div>
 
@@ -214,10 +211,11 @@
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:2rem;line-height:1.8;">
           There is no single neuron or brain region that "holds" the word <em>dog</em>.
-          Meaning emerges from patterns of activation distributed across millions of interconnected neurons,
-          shaped by every context in which that word has appeared. Click words from the two groups below —
-          notice that words within the same category activate <strong>overlapping but distinct</strong>
-          patterns, while words from different categories share only a small core.
+          Meaning emerges from patterns of activation distributed across millions of interconnected
+          neurons, shaped by every context in which that word has appeared. Click words from the two
+          groups below — notice that words within the same category activate
+          <strong>overlapping but distinct</strong> patterns, while words from different categories
+          share only a small core of neurons encoding general biological knowledge.
         </p>
 
         <div class="demo-card">
@@ -228,12 +226,12 @@
           <div class="group-row">
             <div class="group-set">
               <span class="group-set-label animal">Animals</span>
-              <button class="word-pill" data-word="wolf" data-group="animal">wolf</button>
-              <button class="word-pill" data-word="dog"  data-group="animal">dog</button>
-              <button class="word-pill" data-word="cat"  data-group="animal">cat</button>
+              <button class="word-pill" data-word="wolf"   data-group="animal">wolf</button>
+              <button class="word-pill" data-word="dog"    data-group="animal">dog</button>
+              <button class="word-pill" data-word="cat"    data-group="animal">cat</button>
               <button class="word-pill" data-word="rabbit" data-group="animal">rabbit</button>
-              <button class="word-pill" data-word="fox"  data-group="animal">fox</button>
-              <button class="word-pill" data-word="bear" data-group="animal">bear</button>
+              <button class="word-pill" data-word="fox"    data-group="animal">fox</button>
+              <button class="word-pill" data-word="bear"   data-group="animal">bear</button>
             </div>
             <div class="group-set">
               <span class="group-set-label plant">Plants</span>
@@ -245,28 +243,33 @@
               <button class="word-pill" data-word="reed" data-group="plant">reed</button>
             </div>
           </div>
-          <p class="brain-caption">Within-category words share most of their representation. Cross-category words share only a small "living things" core.</p>
+          <p class="brain-caption">Within-category words share most of their pattern. Cross-category words share only a small "living things" core.</p>
         </div>
 
         <p class="research-connect">
           <em>// research</em>
-          Distributed representations are central to my view of linguistic knowledge — not a rule system applied to input, but a high-dimensional space of patterns learned from exposure. This framing motivates my interest in storage: a "holistically stored" phrase is one whose representational geometry has been shaped by its full usage history, not merely assembled from its parts.
+          Distributed representations are central to my view of linguistic knowledge — not a rule system applied to input, but a high-dimensional space of patterns learned from exposure. This framing motivates my interest in storage: a holistically stored phrase is one whose representational geometry has been shaped by its full usage history, not merely assembled from its parts.
         </p>
       </section>
 
       <!-- ══ 2. LEARNING ══ -->
       <section class="section">
         <h2 class="section-title">Learning</h2>
-        <p class="section-subtitle">Prediction error drives representational change.</p>
+        <p class="section-subtitle">Prediction error drives shifts in representations.</p>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:2rem;line-height:1.8;">
           A core claim of usage-based linguistics is that linguistic knowledge is learned — not innate —
           and that the mechanism is <strong>error-driven</strong>: representations are updated
           proportionally to how wrong a prediction was. The Rescorla-Wagner model formalizes this:
           <span style="font-family:var(--mono);color:var(--accent);">ΔV = αβ(λ − ΣV)</span>,
-          where α is cue salience, β is learning rate, λ is the maximum association, and ΣV is the
-          current total predictive strength. This simple rule captures counterintuitive effects
-          like blocking, extinction, and overexpectation.
+          where α is cue salience, β is learning rate, λ is the expected outcome value
+          (the associative strength the cue would carry once fully conditioned — analogous to a
+          training label), and ΣV is the total current prediction across all active cues.
+          The term (λ − ΣV) is the <em>prediction error</em>: how far the system's current
+          prediction falls from the expected outcome. The notation V for associative strength
+          follows the original Rescorla-Wagner convention.
+          This rule captures several counterintuitive effects — blocking, extinction, overexpectation —
+          purely from the logic of prediction error minimization.
         </p>
 
         <div class="demo-card">
@@ -311,19 +314,25 @@
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:0.75rem;line-height:1.8;">
           One test case for the storage-computation tradeoff is <strong>binomial expressions</strong> —
           phrases like <em>bread and butter</em> or <em>black and white</em>, where word order is
-          conventionalized. A purely compositional system treats both orderings as equivalent, since
-          averaging word vectors is commutative. A holistic system treats the canonical form as a
-          distinct stored unit, making the two orderings distinguishable.
+          conventionalized. A purely <strong>compositional</strong> system derives a phrase's meaning
+          by combining its parts — treating both orderings as equivalent (since the operation is
+          symmetric). A <strong>holistic</strong> system stores the canonical form as its own unit,
+          with a representation shaped by its specific usage history. Under holistic storage,
+          the two orderings are no longer equivalent — they occupy distinct positions in
+          representational space.
         </p>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:2rem;line-height:1.8;">
-          The visualization below uses GloVe word embeddings (reduced to 2D via PCA) to illustrate this.
-          Each binomial is shown as a pair of dots — the canonical form (●) and its reversal (○).
-          Drag the slider toward <strong>Holistic</strong>: the two orderings separate, with
-          high-frequency binomials (larger, brighter) diverging more than low-frequency ones.
+          <strong>Frequency</strong> is what predicts where a binomial falls on this continuum:
+          high-frequency binomials are more likely to have developed holistic representations;
+          low-frequency ones remain compositional. The visualization below uses GloVe word embeddings
+          (reduced to 2D) to illustrate this. At <em>Compositional</em>, both orderings of a phrase
+          map to the same point (their meaning is just the average of the two words, regardless of
+          order). Drag toward <em>Holistic</em>: the two orderings separate — high-frequency
+          binomials (larger, brighter) diverge more than low-frequency ones (smaller, dimmer).
         </p>
 
         <div class="demo-card">
-          <span class="demo-label">// demo · canonical vs reversed ordering in embedding space</span>
+          <span class="demo-label">// demo · canonical (●) vs reversed (○) ordering in embedding space</span>
           <canvas id="glove-canvas" height="380"></canvas>
           <div class="slider-row">
             <label>Compositional</label>
@@ -338,65 +347,44 @@
         </div>
 
         <!-- Noisy Channel -->
-        <h3 style="font-size:1rem;font-weight:500;color:var(--text-primary);margin-top:3rem;margin-bottom:0.5rem;">Noisy-Channel Comprehension</h3>
+        <h3 style="font-size:1rem;font-weight:500;color:var(--text-primary);margin-top:3rem;margin-bottom:0.5rem;">Noisy-Channel Comprehension &amp; Frequency-Dependent Preference Extremity</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:0.75rem;line-height:1.8;">
-          If high-frequency binomials are stored holistically, they should have a strong
-          <em>prior</em> over their canonical order. This interacts with comprehension through
-          a <strong>noisy-channel model</strong> (Levy 2008; Morgan &amp; Levy 2016): listeners
-          assume the input string may have been corrupted by noise (word transpositions, etc.),
-          and infer the most probable <em>intended</em> form via Bayesian inference.
+          When a listener hears a binomial, they don't simply record the observed form — they
+          infer the speaker's <em>intended</em> ordering via a
+          <strong>noisy-channel model</strong> (Gibson et al., 2013; Levy, 2008):
+          <span style="font-family:var(--mono);color:var(--accent);">P(Sᵢ | Sₚ) ∝ P(Sᵢ) · P(Sᵢ→Sₚ)</span>.
+          The prior P(Sᵢ) represents <strong>abstract generative preferences</strong> —
+          frequency-independent knowledge about ordering constraints (e.g., shorter words first,
+          animate before inanimate). Frequency does not strengthen the prior; it determines
+          <strong>N</strong>: the number of tokens a learner hears.
         </p>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:2rem;line-height:1.8;">
-          Formally: <span style="font-family:var(--mono);color:var(--accent);">P(intended | heard) ∝ P(heard | intended) × P(intended)</span>.
-          The prior P(intended) is shaped by frequency — high-frequency binomials have a strong prior
-          for their canonical order. The likelihood P(heard | intended) is the noise model.
-          Select a binomial, choose which form you "heard," and adjust the noise level.
+          In an <strong>iterated learning paradigm</strong>, each generation of learners hears
+          N tokens, updates beliefs via noisy-channel inference, and transmits the language to the
+          next generation. The result is <strong>frequency-dependent preference extremity</strong>
+          (Houghton &amp; Morgan, 2024): when listeners infer more noise than speakers actually
+          produce, preferences become increasingly polarized — but only for high-N binomials.
+          For low-N binomials, fewer exposures mean the inferential compounding has less
+          opportunity to take hold. Toggle noise below to see: <em>without noise, all N values
+          converge to the prior (the diagonal) and frequency has no effect.</em>
         </p>
 
         <div class="demo-card">
-          <span class="demo-label">// demo · noisy-channel binomial comprehension</span>
-
-          <div class="nc-binomials" id="nc-binomials">
-            <button class="nc-bin-btn active" data-phrase="bread and butter" data-rev="butter and bread" data-freq="10">bread and butter</button>
-            <button class="nc-bin-btn" data-phrase="law and order" data-rev="order and law" data-freq="8">law and order</button>
-            <button class="nc-bin-btn" data-phrase="trial and error" data-rev="error and trial" data-freq="7">trial and error</button>
-            <button class="nc-bin-btn" data-phrase="love and hate" data-rev="hate and love" data-freq="6">love and hate</button>
-            <button class="nc-bin-btn" data-phrase="needle and thread" data-rev="thread and needle" data-freq="3">needle and thread</button>
-            <button class="nc-bin-btn" data-phrase="cup and saucer" data-rev="saucer and cup" data-freq="2">cup and saucer</button>
+          <span class="demo-label">// demo · frequency-dependent preference extremity (Houghton &amp; Morgan, 2024)</span>
+          <canvas id="nc-canvas" height="320"></canvas>
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;flex-wrap:wrap;align-items:center;">
+            <button class="scenario-btn active" id="nc-noise-on">With listener noise</button>
+            <button class="scenario-btn" id="nc-noise-off">Without noise</button>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);">pnoise = <span id="nc-noise-label">0.04</span></span>
           </div>
-
-          <p class="nc-heard-label">You heard:</p>
-          <div class="nc-heard-toggle">
-            <button class="nc-heard-btn active" id="nc-heard-canon">canonical</button>
-            <button class="nc-heard-btn" id="nc-heard-rev">reversed</button>
-          </div>
-
-          <div class="nc-slider-row">
-            <label>Noise level (p_swap)</label>
-            <input type="range" id="nc-noise" min="0.01" max="0.45" step="0.01" value="0.10" />
-            <span class="val" id="nc-noise-val">0.10</span>
-          </div>
-
-          <div class="nc-viz" id="nc-viz">
-            <span class="nc-row-label">Prior<br><span style="font-size:10px;color:var(--text-muted)">freq only</span></span>
-            <div class="nc-bar-wrap">
-              <div class="nc-bar" id="nc-prior-bar" style="background: rgba(124,110,247,0.4);"></div>
-              <span class="nc-bar-label" id="nc-prior-label"></span>
-            </div>
-            <span class="nc-row-label">Posterior<br><span style="font-size:10px;color:var(--text-muted)">after noise</span></span>
-            <div class="nc-bar-wrap">
-              <div class="nc-bar" id="nc-post-bar" style="background: #7c6ef7;"></div>
-              <span class="nc-bar-label" id="nc-post-label"></span>
-            </div>
-          </div>
-          <p style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:0.25rem;">
-            Bars show P(canonical order was intended). High-frequency binomials maintain high posterior even when the reversed form is heard.
+          <p style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:0.75rem;">
+            Without noise: all four N-curves lie on the diagonal — no frequency effect. With listener noise &gt; speaker noise: higher N steepens the S-curve.
           </p>
         </div>
 
         <p class="research-connect">
           <em>// research</em>
-          My dissertation directly tests whether humans maintain holistic representations for high-frequency expressions — and whether the noisy-channel prior is strong enough to "correct" a reversed binomial back to its canonical interpretation, measurable via reading time and comprehension judgment tasks.
+          This model (Houghton &amp; Morgan, 2024) demonstrates that frequency-dependent preference extremity can arise purely from noisy-channel processing — and that it requires listeners to infer more noise than speakers actually produce. The model accounts for the corpus-wide distribution of binomial ordering preferences across 594 binomials from Morgan &amp; Levy (2015).
         </p>
       </section>
 
@@ -405,21 +393,35 @@
         <h2 class="section-title">Statistics</h2>
         <p class="section-subtitle">Quantifying uncertainty, updating beliefs from data.</p>
 
-        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:2rem;line-height:1.8;">
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1.25rem;line-height:1.8;">
           Most of my work uses <strong>Bayesian regression</strong> as its primary analysis tool —
           not just for flexibility, but because it makes assumptions explicit and quantifies
-          uncertainty rather than collapsing it to a p-value. The demo below shows the underlying
-          mechanics. Imagine you're playing <em>Werewolf</em>: 3 of 10 players are secretly
-          werewolves, so your prior probability that any given player is a werewolf is about 30%.
-          Each round you observe that player's behavior — suspicious or innocent — and update.
-          Watch the distribution narrow as evidence accumulates.
+          uncertainty rather than collapsing it to a p-value. The demo below shows the mechanics
+          directly. You're watching a player in a game of Werewolf — someone known for keeping a
+          straight face. Your prior belief is that they rarely act suspicious (Beta(2, 8) → E[θ] = 0.20).
+          But something about this round is off. Add observations and watch the posterior update.
         </p>
 
-        <div class="demo-card">
+        <div class="fun-fact">
+          <span class="ff-label">// fun fact · neural networks as Bayesian reasoners</span>
+          <p>
+            It turns out the Bayesian framework may be more than a metaphor for cognition.
+            Recent work by Kapatsinski (2026) demonstrates that GPT-2 performs
+            <em>adaptive partial pooling</em> — rare contexts borrow more information from
+            similar contexts, while frequent contexts rely on their own specific evidence. This is
+            mathematically equivalent to Bayesian hierarchical regression. A neural network
+            trained only on next-word prediction converges on the same inferential solution that a
+            Bayesian statistician derives analytically. If this holds broadly, it suggests that
+            human language processing and neural language models may share a common computational
+            principle — both approximate optimal Bayesian inference under uncertainty.
+          </p>
+        </div>
+
+        <div class="demo-card" style="margin-top:2rem;">
           <span class="demo-label">// interactive demo · Bayesian belief updating</span>
           <p class="demo-desc">
-            Prior: 3 of 10 players are werewolves · Beta(3, 7) · E[p] = 0.30.
-            Add observations to update your belief about this player's underlying suspicion rate.
+            Prior: this player rarely shows tells · Beta(2, 8) · E[θ] = 0.20.<br>
+            Each round, observe whether they act suspicious or innocent. Watch the posterior narrow.
           </p>
           <canvas id="bayes-canvas" height="220"></canvas>
           <div class="bayes-btns">
@@ -428,14 +430,14 @@
             <button class="bayes-btn" id="bayes-reset">Reset</button>
           </div>
           <div id="bayes-stats">
-            Prior: Beta(3, 7) &nbsp;|&nbsp; Observations: <span id="b-n">0</span> &nbsp;|&nbsp;
-            Suspicious: <span id="b-h">0</span> &nbsp;|&nbsp; Posterior mean: <span id="b-mean">0.300</span>
+            Prior: Beta(2, 8) &nbsp;|&nbsp; Observations: <span id="b-n">0</span> &nbsp;|&nbsp;
+            Suspicious: <span id="b-h">0</span> &nbsp;|&nbsp; Posterior mean: <span id="b-mean">0.200</span>
           </div>
         </div>
 
         <p class="research-connect">
           <em>// research</em>
-          The Bayesian framework isn't just a statistical convenience — it's a model of cognition. Comprehenders are probabilistic inference engines combining prior knowledge with incoming evidence. My experimental work tries to measure both of those quantities directly.
+          The Bayesian framework isn't just a statistical convenience — it's a model of cognition. Comprehenders are probabilistic inference engines combining prior knowledge with incoming evidence. My experimental work tries to measure both of those quantities directly, and the connection to neural network behavior (Kapatsinski, 2026) suggests these may not be two separate stories.
         </p>
       </section>
 
@@ -455,109 +457,94 @@
     toggle.addEventListener('click', () => links.classList.toggle('open'));
   </script>
 
-  <!-- ══════════════════════════════════════════════
-       1. BRAIN VIZ
-  ══════════════════════════════════════════════ -->
+  <!-- ══ 1. BRAIN VIZ ══ -->
   <script>
   (function () {
     var canvas = document.getElementById('brain-canvas');
     var wrap   = document.getElementById('brain-wrap');
     var DPR    = window.devicePixelRatio || 1;
     var W, H, ctx;
-
     var N_NEURONS = 120;
     var neurons   = [];
 
-    // Partition indices
-    var BIO_IDX    = makeRange(0,  10);   // 10 "living-things" neurons, shared across groups
-    var ANIMAL_IDX = makeRange(10, 65);   // 55 animal-specific neurons
-    var PLANT_IDX  = makeRange(65, 120);  // 55 plant-specific neurons
+    var BIO_IDX    = makeRange(0,  10);
+    var ANIMAL_IDX = makeRange(10, 65);
+    var PLANT_IDX  = makeRange(65, 120);
 
     function makeRange(a, b) { var r=[]; for(var i=a;i<b;i++) r.push(i); return r; }
 
     function seededSample(pool, n, seed) {
       var arr = pool.slice();
-      for (var i = arr.length-1; i > 0; i--) {
-        seed = (seed * 1664525 + 1013904223) >>> 0;
-        var j = seed % (i+1);
-        var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+      for (var i=arr.length-1; i>0; i--) {
+        seed = (seed*1664525+1013904223)>>>0;
+        var j = seed%(i+1);
+        var t=arr[i]; arr[i]=arr[j]; arr[j]=t;
       }
       return arr.slice(0, n);
     }
 
-    // Brain silhouette check (ellipse approx)
+    // Conservative ellipse — keeps neurons well inside the visual brain outline
     function insideBrain(nx, ny) {
-      var dx = (nx - 0.50) / 0.43;
-      var dy = (ny - 0.44) / 0.41;
+      var dx = (nx - 0.50) / 0.33;
+      var dy = (ny - 0.48) / 0.36;
       return (dx*dx + dy*dy) < 1.0;
     }
 
     function initNeurons() {
       neurons = [];
       var rng = 12345;
-      function rand() { rng = (rng * 1664525 + 1013904223) >>> 0; return rng / 4294967296; }
+      function rand() { rng=(rng*1664525+1013904223)>>>0; return rng/4294967296; }
       var attempts = 0;
-      while (neurons.length < N_NEURONS && attempts < 8000) {
+      while (neurons.length < N_NEURONS && attempts < 12000) {
         attempts++;
-        var nx = 0.07 + rand() * 0.86;
-        var ny = 0.05 + rand() * 0.84;
+        var nx = 0.17 + rand()*0.66;
+        var ny = 0.12 + rand()*0.72;
         if (insideBrain(nx, ny)) {
-          neurons.push({ x: nx, y: ny, r: 1.8 + rand() * 1.4 });
+          neurons.push({ x: nx, y: ny, r: 1.8 + rand()*1.4 });
         }
       }
     }
 
     var wordPatterns = {};
     var WORDS_META = [
-      {word:'wolf',  group:'animal'}, {word:'dog',    group:'animal'},
-      {word:'cat',   group:'animal'}, {word:'rabbit', group:'animal'},
-      {word:'fox',   group:'animal'}, {word:'bear',   group:'animal'},
-      {word:'oak',   group:'plant'},  {word:'rose',   group:'plant'},
-      {word:'fern',  group:'plant'},  {word:'moss',   group:'plant'},
-      {word:'ivy',   group:'plant'},  {word:'reed',   group:'plant'},
+      {word:'wolf',  group:'animal'},{word:'dog',    group:'animal'},
+      {word:'cat',   group:'animal'},{word:'rabbit', group:'animal'},
+      {word:'fox',   group:'animal'},{word:'bear',   group:'animal'},
+      {word:'oak',   group:'plant'}, {word:'rose',   group:'plant'},
+      {word:'fern',  group:'plant'}, {word:'moss',   group:'plant'},
+      {word:'ivy',   group:'plant'}, {word:'reed',   group:'plant'},
     ];
-    var GROUP_COLOR = { animal: '#7c6ef7', plant: '#6fe695' };
+    var GROUP_COLOR = { animal:'#7c6ef7', plant:'#6fe695' };
 
     function buildPatterns() {
       WORDS_META.forEach(function(m, i) {
-        var seed = (i+1) * 2311 + 7;
+        var seed = (i+1)*2311+7;
         var bioSet  = seededSample(BIO_IDX, 7, seed);
-        var coreSet = m.group === 'animal'
-          ? seededSample(ANIMAL_IDX, 33, seed + 100)
-          : seededSample(PLANT_IDX,  33, seed + 200);
+        var coreSet = m.group==='animal'
+          ? seededSample(ANIMAL_IDX, 33, seed+100)
+          : seededSample(PLANT_IDX,  33, seed+200);
         wordPatterns[m.word] = bioSet.concat(coreSet);
       });
     }
 
-    var activeWord  = null;
-    var activeGroup = null;
-    var animLevel   = {};   // current glow level per neuron [0..1]
-    var animTarget  = {};   // target level
-
-    neurons.forEach(function(_, i) { animLevel[i] = 0; animTarget[i] = 0; });
+    var activeWord=null, activeGroup=null;
+    var animLevel={}, animTarget={};
 
     function setWord(word, group) {
-      if (activeWord === word) {
-        activeWord = null; activeGroup = null;
-        document.querySelectorAll('.word-pill').forEach(function(p) {
-          p.classList.remove('active-animal','active-plant');
-        });
-      } else {
-        activeWord  = word;
-        activeGroup = group;
-        document.querySelectorAll('.word-pill').forEach(function(p) {
-          p.classList.remove('active-animal','active-plant');
-          if (p.dataset.word === word) p.classList.add('active-' + group);
-        });
-      }
-      for (var i = 0; i < N_NEURONS; i++) {
-        animTarget[i] = (activeWord && wordPatterns[activeWord].indexOf(i) >= 0) ? 1 : 0;
+      if (activeWord===word) { activeWord=null; activeGroup=null; }
+      else { activeWord=word; activeGroup=group; }
+      document.querySelectorAll('.word-pill').forEach(function(p) {
+        p.classList.remove('active-animal','active-plant');
+        if (p.dataset.word===activeWord) p.classList.add('active-'+activeGroup);
+      });
+      for (var i=0; i<N_NEURONS; i++) {
+        animTarget[i] = (activeWord && wordPatterns[activeWord] && wordPatterns[activeWord].indexOf(i)>=0) ? 1 : 0;
       }
     }
 
     function brainPath(ctx, w, h) {
       ctx.beginPath();
-      var pts = [
+      var pts=[
         [0.50,0.05],[0.62,0.05],[0.72,0.08],[0.80,0.15],
         [0.87,0.20],[0.90,0.28],[0.88,0.38],[0.91,0.46],
         [0.89,0.55],[0.84,0.60],[0.87,0.68],[0.85,0.76],
@@ -568,8 +555,8 @@
         [0.12,0.38],[0.10,0.28],[0.13,0.20],[0.20,0.15],
         [0.28,0.08],[0.38,0.05],[0.50,0.05],
       ];
-      ctx.moveTo(pts[0][0]*w, pts[0][1]*h);
-      for (var i=1; i<pts.length-2; i++) {
+      ctx.moveTo(pts[0][0]*w,pts[0][1]*h);
+      for(var i=1;i<pts.length-2;i++){
         var mx=(pts[i][0]+pts[i+1][0])/2*w, my=(pts[i][1]+pts[i+1][1])/2*h;
         ctx.quadraticCurveTo(pts[i][0]*w,pts[i][1]*h,mx,my);
       }
@@ -577,690 +564,521 @@
     }
 
     function drawFissures(ctx, w, h) {
-      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-      ctx.lineWidth   = 1.2;
-      var fiss = [
-        [[0.50,0.07],[0.50,0.45]],
-        [[0.30,0.22],[0.50,0.35],[0.70,0.22]],
-        [[0.22,0.38],[0.40,0.50],[0.60,0.50],[0.78,0.38]],
-        [[0.30,0.62],[0.50,0.70],[0.70,0.62]],
-        [[0.20,0.50],[0.35,0.42]],
-        [[0.80,0.50],[0.65,0.42]],
-        [[0.40,0.75],[0.50,0.80],[0.60,0.75]],
-      ];
-      fiss.forEach(function(pts) {
-        ctx.beginPath();
-        ctx.moveTo(pts[0][0]*w, pts[0][1]*h);
-        for (var i=1;i<pts.length;i++) ctx.lineTo(pts[i][0]*w, pts[i][1]*h);
+      ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=1.2;
+      [[[ 0.50,0.07],[0.50,0.45]],
+       [[0.30,0.22],[0.50,0.35],[0.70,0.22]],
+       [[0.22,0.38],[0.40,0.50],[0.60,0.50],[0.78,0.38]],
+       [[0.30,0.62],[0.50,0.70],[0.70,0.62]],
+       [[0.20,0.50],[0.35,0.42]],[[0.80,0.50],[0.65,0.42]],
+       [[0.40,0.75],[0.50,0.80],[0.60,0.75]],
+      ].forEach(function(pts){
+        ctx.beginPath(); ctx.moveTo(pts[0][0]*w,pts[0][1]*h);
+        for(var i=1;i<pts.length;i++) ctx.lineTo(pts[i][0]*w,pts[i][1]*h);
         ctx.stroke();
       });
     }
 
-    function hexToRGB(hex) {
-      return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
-    }
+    function hexRGB(hex){ return [parseInt(hex.slice(1,3),16),parseInt(hex.slice(3,5),16),parseInt(hex.slice(5,7),16)]; }
 
     function drawFrame() {
-      if (!ctx) return;
-      var w = W*DPR, h = H*DPR;
+      if(!ctx) return;
+      var w=W*DPR, h=H*DPR;
       ctx.clearRect(0,0,w,h);
+      ctx.save(); brainPath(ctx,w,h);
+      ctx.fillStyle='#1a1a24'; ctx.fill();
+      var g=ctx.createRadialGradient(w*.5,h*.35,0,w*.5,h*.5,w*.55);
+      g.addColorStop(0,'rgba(124,110,247,0.07)'); g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=g; ctx.fill(); ctx.restore();
+      ctx.save(); brainPath(ctx,w,h); ctx.clip(); drawFissures(ctx,w,h); ctx.restore();
+      ctx.save(); brainPath(ctx,w,h); ctx.strokeStyle='rgba(255,255,255,0.09)'; ctx.lineWidth=1.5; ctx.stroke(); ctx.restore();
 
-      // Brain fill
-      ctx.save();
-      brainPath(ctx, w, h);
-      ctx.fillStyle = '#1a1a24';
-      ctx.fill();
-      var g = ctx.createRadialGradient(w*0.5,h*0.35,0, w*0.5,h*0.5, w*0.55);
-      g.addColorStop(0,'rgba(124,110,247,0.07)');
-      g.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle = g;
-      ctx.fill();
-      ctx.restore();
+      for(var i=0;i<N_NEURONS;i++) animLevel[i]+=(animTarget[i]-animLevel[i])*0.11;
 
-      ctx.save();
-      brainPath(ctx, w, h);
-      ctx.clip();
-      drawFissures(ctx, w, h);
-      ctx.restore();
+      var col=activeGroup?GROUP_COLOR[activeGroup]:'#7c6ef7';
+      var rgb=hexRGB(col);
 
-      ctx.save();
-      brainPath(ctx, w, h);
-      ctx.strokeStyle = 'rgba(255,255,255,0.09)';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-      ctx.restore();
-
-      // Animate levels
-      for (var i=0; i<N_NEURONS; i++) {
-        animLevel[i] += (animTarget[i] - animLevel[i]) * 0.11;
-      }
-
-      var col = activeGroup ? GROUP_COLOR[activeGroup] : '#7c6ef7';
-      var rgb = hexToRGB(col);
-
-      // Connections between active neurons
-      if (activeWord) {
-        var pat = wordPatterns[activeWord];
-        for (var ai=0; ai<pat.length; ai++) {
-          for (var aj=ai+1; aj<pat.length; aj++) {
-            if ((ai+aj) % 4 !== 0) continue;
-            var na = neurons[pat[ai]], nb = neurons[pat[aj]];
-            if (!na || !nb) continue;
-            var dx = na.x-nb.x, dy = na.y-nb.y, d = Math.sqrt(dx*dx+dy*dy);
-            if (d > 0.22) continue;
-            var la = animLevel[pat[ai]], lb = animLevel[pat[aj]];
-            var alpha = (la+lb)/2 * (1-d/0.22) * 0.3;
-            ctx.beginPath();
-            ctx.moveTo(na.x*w, na.y*h);
-            ctx.lineTo(nb.x*w, nb.y*h);
-            ctx.strokeStyle = 'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+alpha+')';
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
+      if(activeWord){
+        var pat=wordPatterns[activeWord];
+        for(var ai=0;ai<pat.length;ai++){
+          for(var aj=ai+1;aj<pat.length;aj++){
+            if((ai+aj)%4!==0) continue;
+            var na=neurons[pat[ai]],nb=neurons[pat[aj]]; if(!na||!nb) continue;
+            var dx=na.x-nb.x,dy=na.y-nb.y,d=Math.sqrt(dx*dx+dy*dy);
+            if(d>0.22) continue;
+            var alpha=(animLevel[pat[ai]]+animLevel[pat[aj]])/2*(1-d/0.22)*0.3;
+            ctx.beginPath(); ctx.moveTo(na.x*w,na.y*h); ctx.lineTo(nb.x*w,nb.y*h);
+            ctx.strokeStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+alpha+')';
+            ctx.lineWidth=0.8; ctx.stroke();
           }
         }
       }
 
-      // Neurons
-      for (var i=0; i<N_NEURONS; i++) {
-        var n  = neurons[i];
-        var lv = animLevel[i];
-        var r  = n.r * DPR;
-
-        if (lv > 0.02) {
-          var glow = ctx.createRadialGradient(n.x*w,n.y*h,0, n.x*w,n.y*h, r*5*lv);
-          glow.addColorStop(0,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+(0.5*lv)+')');
-          glow.addColorStop(1,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0)');
-          ctx.beginPath();
-          ctx.arc(n.x*w,n.y*h, r*5*lv, 0, Math.PI*2);
-          ctx.fillStyle = glow;
-          ctx.fill();
-
-          ctx.beginPath();
-          ctx.arc(n.x*w,n.y*h, r+lv*2.5*DPR, 0, Math.PI*2);
-          ctx.fillStyle = 'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+(0.2+0.8*lv)+')';
-          ctx.fill();
+      for(var i=0;i<N_NEURONS;i++){
+        var n=neurons[i],lv=animLevel[i],r=n.r*DPR;
+        if(lv>0.02){
+          var gw=ctx.createRadialGradient(n.x*w,n.y*h,0,n.x*w,n.y*h,r*5*lv);
+          gw.addColorStop(0,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+(0.5*lv)+')');
+          gw.addColorStop(1,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0)');
+          ctx.beginPath(); ctx.arc(n.x*w,n.y*h,r*5*lv,0,Math.PI*2); ctx.fillStyle=gw; ctx.fill();
+          ctx.beginPath(); ctx.arc(n.x*w,n.y*h,r+lv*2.5*DPR,0,Math.PI*2);
+          ctx.fillStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+(0.2+0.8*lv)+')'; ctx.fill();
         } else {
-          ctx.beginPath();
-          ctx.arc(n.x*w,n.y*h, r, 0, Math.PI*2);
-          ctx.fillStyle = 'rgba(255,255,255,0.18)';
-          ctx.fill();
+          ctx.beginPath(); ctx.arc(n.x*w,n.y*h,r,0,Math.PI*2);
+          ctx.fillStyle='rgba(255,255,255,0.18)'; ctx.fill();
         }
       }
-
       requestAnimationFrame(drawFrame);
     }
 
-    function resize() {
-      W = wrap.clientWidth;
-      H = Math.round(W * 0.62);
-      canvas.style.height = H + 'px';
-      canvas.width  = W * DPR;
-      canvas.height = H * DPR;
-      ctx = canvas.getContext('2d');
+    function resize(){
+      W=wrap.clientWidth; H=Math.round(W*0.62);
+      canvas.style.height=H+'px'; canvas.width=W*DPR; canvas.height=H*DPR;
+      ctx=canvas.getContext('2d');
     }
 
-    document.querySelectorAll('.word-pill').forEach(function(p) {
-      p.addEventListener('click', function() { setWord(p.dataset.word, p.dataset.group); });
+    document.querySelectorAll('.word-pill').forEach(function(p){
+      p.addEventListener('click',function(){ setWord(p.dataset.word,p.dataset.group); });
     });
-
-    window.addEventListener('resize', resize);
-    resize();
-    initNeurons();
-    buildPatterns();
-    for (var i=0; i<N_NEURONS; i++) { animLevel[i]=0; animTarget[i]=0; }
+    window.addEventListener('resize',resize);
+    resize(); initNeurons(); buildPatterns();
+    for(var i=0;i<N_NEURONS;i++){animLevel[i]=0;animTarget[i]=0;}
     drawFrame();
   })();
   </script>
 
-  <!-- ══════════════════════════════════════════════
-       2. RESCORLA-WAGNER VIZ
-  ══════════════════════════════════════════════ -->
+  <!-- ══ 2. RESCORLA-WAGNER VIZ ══ -->
   <script>
-  (function () {
-    var canvas     = document.getElementById('rw-canvas');
-    var ctx        = canvas.getContext('2d');
-    var DPR        = window.devicePixelRatio || 1;
-    var alphaSlider = document.getElementById('rw-alpha');
-    var betaSlider  = document.getElementById('rw-beta');
-    var alphaVal    = document.getElementById('rw-alpha-val');
-    var betaVal     = document.getElementById('rw-beta-val');
+  (function(){
+    var canvas=document.getElementById('rw-canvas'),ctx=canvas.getContext('2d'),DPR=window.devicePixelRatio||1;
+    var aSlider=document.getElementById('rw-alpha'),bSlider=document.getElementById('rw-beta');
+    var aVal=document.getElementById('rw-alpha-val'),bVal=document.getElementById('rw-beta-val');
 
-    var SCENARIOS = {
-      simple: {
-        nTrials: 40,
-        desc: 'A single cue (A) predicts the outcome. Associative strength V_A grows toward λ = 1, slowing as the prediction error shrinks.',
-        cues: ['A'],
-        lambda: 1,
-        defaultAlpha: 0.2, defaultBeta: 0.2,
-        makeSeparator: null,
-        trials: function(n) {
-          return Array(n).fill(0).map(function(){ return {cues:['A'],outcome:1}; });
-        }
-      },
-      blocking: {
-        nTrials: 40,
-        desc: 'Phase 1: A alone predicts the outcome. Phase 2: the compound AB predicts the same outcome. Because A fully explains the outcome, B never acquires associative strength — it is "blocked."',
-        cues: ['A','B'],
-        lambda: 1,
-        defaultAlpha: 0.2, defaultBeta: 0.2,
-        makeSeparator: 0.5,
-        trials: function(n) {
-          var t=[], h=Math.floor(n/2);
-          for(var i=0;i<h;i++) t.push({cues:['A'],outcome:1});
-          for(var i=0;i<n-h;i++) t.push({cues:['A','B'],outcome:1});
-          return t;
-        }
-      },
-      extinction: {
-        nTrials: 40,
-        desc: 'A predicts the outcome for the first half of trials. The outcome is then removed (λ=0). The learned association decays toward zero.',
-        cues: ['A'],
-        lambda: null, // varies by trial
-        defaultAlpha: 0.2, defaultBeta: 0.2,
-        makeSeparator: 0.5,
-        trials: function(n) {
-          var t=[], h=Math.floor(n/2);
-          for(var i=0;i<h;i++) t.push({cues:['A'],outcome:1});
-          for(var i=0;i<n-h;i++) t.push({cues:['A'],outcome:0});
-          return t;
-        }
-      },
-      overexp: {
-        nTrials: 60,
-        desc: 'Phase 1: A and B are each trained separately to predict the outcome (alternating trials). Both reach strong V. Phase 2: A and B appear together. Now V_A + V_B > λ — the outcome is over-predicted — and both associations weaken.',
-        cues: ['A','B'],
-        lambda: 1,
-        defaultAlpha: 0.3, defaultBeta: 0.3,
-        makeSeparator: 0.5,
-        trials: function(n) {
-          var t=[], h=Math.floor(n/2);
-          for(var i=0;i<h;i++) t.push({cues:[i%2===0?'A':'B'],outcome:1});
-          for(var i=0;i<n-h;i++) t.push({cues:['A','B'],outcome:1});
-          return t;
-        }
-      }
+    var SCENARIOS={
+      simple:{nTrials:40,cues:['A'],defA:0.2,defB:0.2,sep:null,
+        desc:'A single cue (A) predicts the outcome. V_A grows toward λ = 1, slowing as prediction error (λ − ΣV) shrinks.',
+        trials:function(n){return Array(n).fill(0).map(function(){return{cues:['A'],outcome:1};});}},
+      blocking:{nTrials:40,cues:['A','B'],defA:0.2,defB:0.2,sep:0.5,
+        desc:'Phase 1: A alone fully predicts the outcome (V_A → 1). Phase 2: compound AB. Because A already explains the outcome, the error = λ − (V_A + V_B) ≈ 0 — B never learns.',
+        trials:function(n){var t=[],h=Math.floor(n/2);
+          for(var i=0;i<h;i++)t.push({cues:['A'],outcome:1});
+          for(var i=0;i<n-h;i++)t.push({cues:['A','B'],outcome:1}); return t;}},
+      extinction:{nTrials:40,cues:['A'],defA:0.2,defB:0.2,sep:0.5,
+        desc:'A predicts the outcome for the first half. The outcome is then removed (λ = 0). Prediction error is now negative — V_A decays toward zero.',
+        trials:function(n){var t=[],h=Math.floor(n/2);
+          for(var i=0;i<h;i++)t.push({cues:['A'],outcome:1});
+          for(var i=0;i<n-h;i++)t.push({cues:['A'],outcome:0}); return t;}},
+      overexp:{nTrials:60,cues:['A','B'],defA:0.3,defB:0.3,sep:0.5,
+        desc:'Phase 1: A and B each trained separately (alternating). Both approach V = 1. Phase 2: AB together — now V_A + V_B > λ = 1. The prediction error is negative; both associations weaken. This is overexpectation.',
+        trials:function(n){var t=[],h=Math.floor(n/2);
+          for(var i=0;i<h;i++)t.push({cues:[i%2===0?'A':'B'],outcome:1});
+          for(var i=0;i<n-h;i++)t.push({cues:['A','B'],outcome:1}); return t;}}
     };
 
-    var currentScenario = 'simple';
-    var CUE_COLORS = { A: '#7c6ef7', B: '#e67e52' };
-    var Y_MIN = -0.1, Y_MAX = 1.15;
+    var curScen='simple';
+    var CUE_COL={A:'#7c6ef7',B:'#e67e52'};
+    var Y_MIN=-0.1, Y_MAX=1.15;
 
-    function runRW(scen, alpha, beta) {
-      var s = SCENARIOS[scen];
-      var V = {}; s.cues.forEach(function(c){ V[c]=0; });
-      var hist = {}; s.cues.forEach(function(c){ hist[c]=[0]; });
-      var trials = s.trials(s.nTrials);
-      trials.forEach(function(tr) {
-        var sumV = tr.cues.reduce(function(x,c){ return x+(V[c]||0); }, 0);
-        var lam  = (s.lambda !== null) ? s.lambda : tr.outcome;
-        var err  = tr.outcome * lam - sumV;
-        tr.cues.forEach(function(c){
-          V[c] = (V[c]||0) + alpha * beta * err;
-        });
-        s.cues.forEach(function(c){ hist[c].push(V[c]); });
+    function runRW(scen,alpha,beta){
+      var s=SCENARIOS[scen],V={};
+      s.cues.forEach(function(c){V[c]=0;});
+      var hist={}; s.cues.forEach(function(c){hist[c]=[0];});
+      s.trials(s.nTrials).forEach(function(tr){
+        var sumV=tr.cues.reduce(function(x,c){return x+(V[c]||0);},0);
+        var lam=tr.outcome;
+        var err=tr.outcome*lam-sumV;
+        tr.cues.forEach(function(c){V[c]=(V[c]||0)+alpha*beta*err;});
+        s.cues.forEach(function(c){hist[c].push(V[c]);});
       });
       return hist;
     }
 
-    function drawRW() {
-      var W = canvas.parentElement.clientWidth;
-      canvas.width  = W*DPR; canvas.height = 260*DPR;
-      canvas.style.width = W+'px'; canvas.style.height = '260px';
-      var w=W*DPR, h=260*DPR;
+    function drawRW(){
+      var W2=canvas.parentElement.clientWidth;
+      canvas.width=W2*DPR; canvas.height=260*DPR;
+      canvas.style.width=W2+'px'; canvas.style.height='260px';
+      var w=W2*DPR,h=260*DPR;
       ctx.clearRect(0,0,w,h);
+      var pad={top:20*DPR,right:36*DPR,bot:40*DPR,left:48*DPR};
+      var pw=w-pad.left-pad.right,ph=h-pad.top-pad.bot;
+      var s=SCENARIOS[curScen],N=s.nTrials;
+      var alpha=parseFloat(aSlider.value),beta=parseFloat(bSlider.value);
+      var hist=runRW(curScen,alpha,beta);
 
-      var pad = {top:20*DPR,right:36*DPR,bottom:40*DPR,left:48*DPR};
-      var pw=w-pad.left-pad.right, ph=h-pad.top-pad.bottom;
+      function toY(v){return pad.top+ph*(1-(v-Y_MIN)/(Y_MAX-Y_MIN));}
+      function toX(i){return pad.left+pw*i/N;}
 
-      var alpha = parseFloat(alphaSlider.value);
-      var beta  = parseFloat(betaSlider.value);
-      var s     = SCENARIOS[currentScenario];
-      var hist  = runRW(currentScenario, alpha, beta);
-      var N     = s.nTrials;
+      ctx.save(); ctx.beginPath(); ctx.rect(pad.left,pad.top,pw,ph); ctx.clip();
 
-      function toY(v) { return pad.top + ph*(1-(v-Y_MIN)/(Y_MAX-Y_MIN)); }
-      function toX(i) { return pad.left + pw*i/N; }
-
-      // Clip to plot area
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(pad.left, pad.top, pw, ph);
-      ctx.clip();
-
-      // Grid lines
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-      ctx.lineWidth = 1;
-      [0, 0.25, 0.5, 0.75, 1.0].forEach(function(v) {
-        var gy = toY(v);
-        ctx.beginPath(); ctx.moveTo(pad.left, gy); ctx.lineTo(pad.left+pw, gy); ctx.stroke();
+      // Grid
+      ctx.strokeStyle='rgba(255,255,255,0.06)'; ctx.lineWidth=1;
+      [0,0.25,0.5,0.75,1.0].forEach(function(v){
+        var gy=toY(v); ctx.beginPath(); ctx.moveTo(pad.left,gy); ctx.lineTo(pad.left+pw,gy); ctx.stroke();
       });
-
-      // λ = 1 reference
-      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-      ctx.setLineDash([4*DPR,4*DPR]);
-      var ly = toY(1);
-      ctx.beginPath(); ctx.moveTo(pad.left,ly); ctx.lineTo(pad.left+pw,ly); ctx.stroke();
+      // λ = 1 line
+      ctx.strokeStyle='rgba(255,255,255,0.12)'; ctx.setLineDash([4*DPR,4*DPR]);
+      ctx.beginPath(); ctx.moveTo(pad.left,toY(1)); ctx.lineTo(pad.left+pw,toY(1)); ctx.stroke();
       ctx.setLineDash([]);
-
       // Phase separator
-      if (s.makeSeparator) {
-        var sx = toX(Math.round(N * s.makeSeparator));
-        ctx.strokeStyle = 'rgba(255,255,255,0.13)';
-        ctx.setLineDash([3*DPR,4*DPR]);
+      if(s.sep){
+        var sx=toX(Math.round(N*s.sep));
+        ctx.strokeStyle='rgba(255,255,255,0.13)'; ctx.setLineDash([3*DPR,4*DPR]);
         ctx.beginPath(); ctx.moveTo(sx,pad.top); ctx.lineTo(sx,pad.top+ph); ctx.stroke();
         ctx.setLineDash([]);
       }
-
       // Lines
-      s.cues.forEach(function(cue) {
-        var vals = hist[cue];
-        ctx.strokeStyle = CUE_COLORS[cue];
-        ctx.lineWidth   = 2.5;
-        ctx.lineJoin    = 'round';
+      s.cues.forEach(function(cue){
+        var vals=hist[cue]; ctx.strokeStyle=CUE_COL[cue]; ctx.lineWidth=2.5; ctx.lineJoin='round';
         ctx.beginPath();
-        vals.forEach(function(v,i) {
-          var x=toX(i), y=toY(v);
-          if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-        });
+        vals.forEach(function(v,i){ var x=toX(i),y=toY(v); if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y); });
         ctx.stroke();
       });
-
       ctx.restore();
 
-      // Y-axis labels
-      ctx.fillStyle = 'rgba(255,255,255,0.22)';
-      ctx.font = (10*DPR)+'px "JetBrains Mono"';
-      ctx.textAlign = 'right';
-      [0,0.5,1.0].forEach(function(v) {
-        ctx.fillText(v.toFixed(1), pad.left-6*DPR, toY(v)+4*DPR);
+      // Y axis labels
+      ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.font=(10*DPR)+'px "JetBrains Mono"'; ctx.textAlign='right';
+      [0,0.5,1.0].forEach(function(v){ctx.fillText(v.toFixed(1),pad.left-6*DPR,toY(v)+4*DPR);});
+      // Cue labels
+      s.cues.forEach(function(cue){
+        var vals=hist[cue],lv=vals[vals.length-1];
+        ctx.fillStyle=CUE_COL[cue]; ctx.font='bold '+(11*DPR)+'px "JetBrains Mono"'; ctx.textAlign='left';
+        ctx.fillText('V'+cue,pad.left+pw+4*DPR,toY(lv)+4*DPR);
       });
-
-      // Cue labels at right edge
-      s.cues.forEach(function(cue) {
-        var vals = hist[cue];
-        var lastV = vals[vals.length-1];
-        ctx.fillStyle = CUE_COLORS[cue];
-        ctx.font = 'bold '+(11*DPR)+'px "JetBrains Mono"';
-        ctx.textAlign = 'left';
-        ctx.fillText('V'+cue, pad.left+pw+4*DPR, toY(lastV)+4*DPR);
-      });
-
       // Phase labels
-      if (s.makeSeparator) {
-        var sep = Math.round(N * s.makeSeparator);
-        ctx.fillStyle = 'rgba(255,255,255,0.18)';
-        ctx.font = (9*DPR)+'px "JetBrains Mono"';
-        ctx.textAlign = 'center';
-        ctx.fillText('Phase 1', pad.left + toX(sep)/2, pad.top-6*DPR);
-        ctx.fillText('Phase 2', toX(sep)+(pad.left+pw-toX(sep))/2, pad.top-6*DPR);
+      if(s.sep){
+        var sep=Math.round(N*s.sep);
+        ctx.fillStyle='rgba(255,255,255,0.18)'; ctx.font=(9*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
+        ctx.fillText('Phase 1',pad.left+toX(sep)/2,pad.top-6*DPR);
+        ctx.fillText('Phase 2',toX(sep)+(pad.left+pw-toX(sep))/2,pad.top-6*DPR);
       }
-
-      // X label
-      ctx.fillStyle = 'rgba(255,255,255,0.2)';
-      ctx.font = (10*DPR)+'px "JetBrains Mono"';
-      ctx.textAlign = 'center';
-      ctx.fillText('Trial', pad.left+pw/2, h-8*DPR);
+      ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font=(10*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
+      ctx.fillText('Trial',pad.left+pw/2,h-8*DPR);
     }
 
-    document.querySelectorAll('.scenario-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.scenario-btn').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        currentScenario = btn.dataset.scenario;
-        var s = SCENARIOS[currentScenario];
-        document.getElementById('scenario-desc').textContent = s.desc;
-        // Suggest good α/β defaults
-        alphaSlider.value = s.defaultAlpha;
-        betaSlider.value  = s.defaultBeta;
-        alphaVal.textContent = s.defaultAlpha.toFixed(2);
-        betaVal.textContent  = s.defaultBeta.toFixed(2);
+    document.querySelectorAll('.scenario-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        document.querySelectorAll('.scenario-btn').forEach(function(b){b.classList.remove('active');});
+        btn.classList.add('active'); curScen=btn.dataset.scenario;
+        var s=SCENARIOS[curScen];
+        document.getElementById('scenario-desc').textContent=s.desc;
+        aSlider.value=s.defA; bSlider.value=s.defB;
+        aVal.textContent=s.defA.toFixed(2); bVal.textContent=s.defB.toFixed(2);
         drawRW();
       });
     });
-
-    alphaSlider.addEventListener('input', function() { alphaVal.textContent=parseFloat(alphaSlider.value).toFixed(2); drawRW(); });
-    betaSlider.addEventListener('input',  function() { betaVal.textContent=parseFloat(betaSlider.value).toFixed(2);   drawRW(); });
-    window.addEventListener('resize', drawRW);
-
-    document.getElementById('scenario-desc').textContent = SCENARIOS[currentScenario].desc;
+    aSlider.addEventListener('input',function(){aVal.textContent=parseFloat(aSlider.value).toFixed(2);drawRW();});
+    bSlider.addEventListener('input',function(){bVal.textContent=parseFloat(bSlider.value).toFixed(2);drawRW();});
+    window.addEventListener('resize',drawRW);
+    document.getElementById('scenario-desc').textContent=SCENARIOS[curScen].desc;
     drawRW();
   })();
   </script>
 
-  <!-- ══════════════════════════════════════════════
-       3. GLOVE VIZ — canonical vs reversed
-  ══════════════════════════════════════════════ -->
+  <!-- ══ 3a. GLOVE VIZ ══ -->
   <script>
-  (function () {
-    var BDATA = [
-      {p:"bread and butter",  r:"butter and bread",  freq:10, comp:[1.3401,-0.3290], coff:[-0.0126,0.0031],  roff:[0.0126,-0.0030]},
-      {p:"salt and pepper",   r:"pepper and salt",   freq:9,  comp:[1.1780,-0.6851], coff:[-0.0105,0.0060],  roff:[0.0105,-0.0059]},
-      {p:"fish and chips",    r:"chips and fish",    freq:8,  comp:[0.6740,-0.1829], coff:[-0.0027,0.0096],  roff:[0.0028,-0.0097]},
-      {p:"cup and saucer",    r:"saucer and cup",    freq:2,  comp:[0.5403,-0.6599], coff:[-0.0014,-0.0063], roff:[0.0013,0.0064]},
-      {p:"knife and fork",    r:"fork and knife",    freq:7,  comp:[0.9310,0.6847],  coff:[-0.0058,0.0103],  roff:[0.0059,-0.0104]},
-      {p:"needle and thread", r:"thread and needle", freq:3,  comp:[0.6685,1.2569],  coff:[0.0016,0.0028],   roff:[-0.0017,-0.0028]},
-      {p:"hammer and nails",  r:"nails and hammer",  freq:2,  comp:[0.4926,0.8193],  coff:[-0.0022,-0.0001], roff:[0.0022,0.0001]},
-      {p:"black and white",   r:"white and black",   freq:10, comp:[0.0165,-0.4631], coff:[0.0047,0.0069],   roff:[-0.0047,-0.0068]},
-      {p:"day and night",     r:"night and day",     freq:9,  comp:[-0.4550,-0.7359],coff:[-0.0006,-0.0044], roff:[0.0006,0.0043]},
-      {p:"hot and cold",      r:"cold and hot",      freq:7,  comp:[0.3816,-0.5995], coff:[0.0047,-0.0150],  roff:[-0.0047,0.0150]},
-      {p:"love and hate",     r:"hate and love",     freq:6,  comp:[-0.2722,0.1965], coff:[0.0003,-0.0150],  roff:[-0.0003,0.0151]},
-      {p:"good and evil",     r:"evil and good",     freq:5,  comp:[-0.2868,0.1792], coff:[-0.0017,-0.0128], roff:[0.0017,0.0129]},
-      {p:"rise and fall",     r:"fall and rise",     freq:5,  comp:[-0.3638,-0.1504],coff:[-0.0006,0.0032],  roff:[0.0006,-0.0031]},
-      {p:"push and pull",     r:"pull and push",     freq:3,  comp:[-0.1385,0.2436], coff:[-0.0018,0.0018],  roff:[0.0018,-0.0017]},
-      {p:"come and go",       r:"go and come",       freq:4,  comp:[-0.4910,-0.3067],coff:[0.0003,-0.0027],  roff:[-0.0003,0.0027]},
-      {p:"trial and error",   r:"error and trial",   freq:7,  comp:[-0.3475,0.6254], coff:[-0.0053,-0.0068], roff:[0.0053,0.0067]},
-      {p:"cause and effect",  r:"effect and cause",  freq:8,  comp:[-0.2902,0.5172], coff:[0.0013,0.0029],   roff:[-0.0012,-0.0029]},
-      {p:"hit and run",       r:"run and hit",       freq:5,  comp:[-0.3913,-0.3362],coff:[0.0015,0.0000],   roff:[-0.0015,0.0000]},
-      {p:"law and order",     r:"order and law",     freq:8,  comp:[-0.6405,0.5273], coff:[-0.0068,0.0145],  roff:[0.0068,-0.0145]},
+  (function(){
+    var BDATA=[
+      {p:"bread and butter", r:"butter and bread", freq:10,comp:[1.3401,-0.3290],coff:[-0.0126,0.0031],roff:[0.0126,-0.0030]},
+      {p:"salt and pepper",  r:"pepper and salt",  freq:9, comp:[1.1780,-0.6851],coff:[-0.0105,0.0060],roff:[0.0105,-0.0059]},
+      {p:"fish and chips",   r:"chips and fish",   freq:8, comp:[0.6740,-0.1829],coff:[-0.0027,0.0096],roff:[0.0028,-0.0097]},
+      {p:"cup and saucer",   r:"saucer and cup",   freq:2, comp:[0.5403,-0.6599],coff:[-0.0014,-0.0063],roff:[0.0013,0.0064]},
+      {p:"knife and fork",   r:"fork and knife",   freq:7, comp:[0.9310,0.6847], coff:[-0.0058,0.0103],roff:[0.0059,-0.0104]},
+      {p:"needle and thread",r:"thread and needle",freq:3, comp:[0.6685,1.2569], coff:[0.0016,0.0028],roff:[-0.0017,-0.0028]},
+      {p:"hammer and nails", r:"nails and hammer", freq:2, comp:[0.4926,0.8193], coff:[-0.0022,-0.0001],roff:[0.0022,0.0001]},
+      {p:"black and white",  r:"white and black",  freq:10,comp:[0.0165,-0.4631],coff:[0.0047,0.0069],roff:[-0.0047,-0.0068]},
+      {p:"day and night",    r:"night and day",    freq:9, comp:[-0.4550,-0.7359],coff:[-0.0006,-0.0044],roff:[0.0006,0.0043]},
+      {p:"hot and cold",     r:"cold and hot",     freq:7, comp:[0.3816,-0.5995],coff:[0.0047,-0.0150],roff:[-0.0047,0.0150]},
+      {p:"love and hate",    r:"hate and love",    freq:6, comp:[-0.2722,0.1965],coff:[0.0003,-0.0150],roff:[-0.0003,0.0151]},
+      {p:"good and evil",    r:"evil and good",    freq:5, comp:[-0.2868,0.1792],coff:[-0.0017,-0.0128],roff:[0.0017,0.0129]},
+      {p:"rise and fall",    r:"fall and rise",    freq:5, comp:[-0.3638,-0.1504],coff:[-0.0006,0.0032],roff:[0.0006,-0.0031]},
+      {p:"push and pull",    r:"pull and push",    freq:3, comp:[-0.1385,0.2436],coff:[-0.0018,0.0018],roff:[0.0018,-0.0017]},
+      {p:"come and go",      r:"go and come",      freq:4, comp:[-0.4910,-0.3067],coff:[0.0003,-0.0027],roff:[-0.0003,0.0027]},
+      {p:"trial and error",  r:"error and trial",  freq:7, comp:[-0.3475,0.6254],coff:[-0.0053,-0.0068],roff:[0.0053,0.0067]},
+      {p:"cause and effect", r:"effect and cause", freq:8, comp:[-0.2902,0.5172],coff:[0.0013,0.0029],roff:[-0.0012,-0.0029]},
+      {p:"hit and run",      r:"run and hit",      freq:5, comp:[-0.3913,-0.3362],coff:[0.0015,0.0000],roff:[-0.0015,0.0000]},
+      {p:"law and order",    r:"order and law",    freq:8, comp:[-0.6405,0.5273],coff:[-0.0068,0.0145],roff:[0.0068,-0.0145]},
       {p:"crime and punishment",r:"punishment and crime",freq:6,comp:[-0.4755,0.9669],coff:[-0.0065,-0.0011],roff:[0.0065,0.0010]},
-      {p:"back and forth",    r:"forth and back",    freq:7,  comp:[-0.2931,0.0543], coff:[-0.0090,-0.0207], roff:[0.0090,0.0208]},
-      {p:"here and there",    r:"there and here",    freq:5,  comp:[-0.5234,-0.4921],coff:[-0.0003,-0.0060], roff:[0.0002,0.0059]},
-      {p:"now and then",      r:"then and now",      freq:6,  comp:[-0.3627,-0.3311],coff:[-0.0072,-0.0036], roff:[0.0072,0.0036]},
-      {p:"up and down",       r:"down and up",       freq:7,  comp:[-0.4619,-0.2969],coff:[-0.0001,-0.0082], roff:[0.0001,0.0082]},
-      {p:"men and women",     r:"women and men",     freq:7,  comp:[-0.4290,-0.5025],coff:[0.0028,-0.0010],  roff:[-0.0028,0.0010]},
+      {p:"back and forth",   r:"forth and back",   freq:7, comp:[-0.2931,0.0543],coff:[-0.0090,-0.0207],roff:[0.0090,0.0208]},
+      {p:"here and there",   r:"there and here",   freq:5, comp:[-0.5234,-0.4921],coff:[-0.0003,-0.0060],roff:[0.0002,0.0059]},
+      {p:"now and then",     r:"then and now",     freq:6, comp:[-0.3627,-0.3311],coff:[-0.0072,-0.0036],roff:[0.0072,0.0036]},
+      {p:"up and down",      r:"down and up",      freq:7, comp:[-0.4619,-0.2969],coff:[-0.0001,-0.0082],roff:[0.0001,0.0082]},
+      {p:"men and women",    r:"women and men",    freq:7, comp:[-0.4290,-0.5025],coff:[0.0028,-0.0010],roff:[-0.0028,0.0010]},
     ];
+    var AMP=14;
+    var canvas=document.getElementById('glove-canvas'),ctx2=canvas.getContext('2d');
+    var slider=document.getElementById('glove-slider'),DPR=window.devicePixelRatio||1;
+    var W2,H2,hovIdx=-1,hovCanon=true,animT=0,targetT=0;
 
-    // Amplify offsets so they're visible; scale proportional to freq
-    var AMP = 14;
-
-    var canvas  = document.getElementById('glove-canvas');
-    var ctx2    = canvas.getContext('2d');
-    var slider  = document.getElementById('glove-slider');
-    var DPR     = window.devicePixelRatio || 1;
-    var W2, H2;
-    var hovIdx  = -1, hovCanon = true;
-    var animT   = 0, targetT = 0;
-
-    function freqColor(freq, alpha) {
-      // low freq: muted, high freq: bright purple
-      var t = (freq - 1) / 9;
-      var r = Math.round(80  + t * 44);
-      var g = Math.round(70  + t * 40);
-      var b = Math.round(150 + t * 97);
+    function freqColor(freq,alpha){
+      var t=(freq-1)/9;
+      var r=Math.round(80+t*44),g=Math.round(70+t*40),b=Math.round(150+t*97);
       return 'rgba('+r+','+g+','+b+','+(alpha||1)+')';
     }
-
-    function resize2() {
-      W2 = canvas.parentElement.clientWidth;
-      H2 = 380;
-      canvas.width  = W2*DPR; canvas.height = H2*DPR;
-      canvas.style.width = W2+'px'; canvas.style.height = H2+'px';
+    function resize2(){
+      W2=canvas.parentElement.clientWidth; H2=380;
+      canvas.width=W2*DPR; canvas.height=H2*DPR;
+      canvas.style.width=W2+'px'; canvas.style.height=H2+'px';
     }
-
-    function lerp(a,b,t){ return a+( b-a)*t; }
-
-    var PAD = 55;
-
-    function toScreen(x, y) {
-      var pad = PAD * DPR;
-      var pw = W2*DPR - pad*2, ph = H2*DPR - pad*2;
-      var sx = pad + (x + 1.6) / 3.2 * pw;
-      var sy = pad + (1 - (y + 1.6) / 3.2) * ph;
-      return [sx, sy];
+    function lerp(a,b,t){return a+(b-a)*t;}
+    var PAD=55;
+    function toScreen(x,y){
+      var pad=PAD*DPR,pw=W2*DPR-pad*2,ph=H2*DPR-pad*2;
+      return[pad+(x+1.6)/3.2*pw, pad+(1-(y+1.6)/3.2)*ph];
     }
-
-    function dotPos(d, t) {
-      var cx = d.comp[0] + d.coff[0] * AMP * t;
-      var cy = d.comp[1] + d.coff[1] * AMP * t;
-      var rx = d.comp[0] + d.roff[0] * AMP * t;
-      var ry = d.comp[1] + d.roff[1] * AMP * t;
-      return { c: toScreen(cx,cy), r: toScreen(rx,ry) };
+    function dotPos(d,t){
+      return{
+        c:toScreen(d.comp[0]+d.coff[0]*AMP*t, d.comp[1]+d.coff[1]*AMP*t),
+        r:toScreen(d.comp[0]+d.roff[0]*AMP*t, d.comp[1]+d.roff[1]*AMP*t)
+      };
     }
-
-    function draw2() {
-      var w=W2*DPR, h=H2*DPR;
+    function draw2(){
+      var w=W2*DPR,h=H2*DPR;
       ctx2.clearRect(0,0,w,h);
-
-      // Axes
-      var origin = toScreen(0, 0);
-      ctx2.strokeStyle = 'rgba(255,255,255,0.07)';
-      ctx2.lineWidth = 1;
+      var origin=toScreen(0,0);
+      ctx2.strokeStyle='rgba(255,255,255,0.07)'; ctx2.lineWidth=1;
       ctx2.beginPath(); ctx2.moveTo(origin[0],PAD*DPR); ctx2.lineTo(origin[0],h-PAD*DPR); ctx2.stroke();
       ctx2.beginPath(); ctx2.moveTo(PAD*DPR,origin[1]); ctx2.lineTo(w-PAD*DPR,origin[1]); ctx2.stroke();
 
-      BDATA.forEach(function(d, i) {
-        var pos  = dotPos(d, animT);
-        var col  = freqColor(d.freq, 1);
-        var colA = freqColor(d.freq, 0.5);
-        var dotR = (2.5 + d.freq * 0.6) * DPR;
-        var isHov = (i === hovIdx);
-
-        // Connecting line (only when holistic slider > 0)
-        if (animT > 0.01) {
-          ctx2.beginPath();
-          ctx2.moveTo(pos.c[0], pos.c[1]);
-          ctx2.lineTo(pos.r[0], pos.r[1]);
-          ctx2.strokeStyle = freqColor(d.freq, 0.25 * animT);
-          ctx2.lineWidth = 1.2;
-          ctx2.stroke();
+      BDATA.forEach(function(d,i){
+        var pos=dotPos(d,animT),col=freqColor(d.freq,1),dotR=(2.5+d.freq*0.6)*DPR,isHov=(i===hovIdx);
+        if(animT>0.01){
+          ctx2.beginPath(); ctx2.moveTo(pos.c[0],pos.c[1]); ctx2.lineTo(pos.r[0],pos.r[1]);
+          ctx2.strokeStyle=freqColor(d.freq,0.25*animT); ctx2.lineWidth=1.2; ctx2.stroke();
         }
-
-        // Reversed dot (hollow)
-        if (animT > 0.01) {
-          ctx2.beginPath();
-          ctx2.arc(pos.r[0], pos.r[1], isHov ? dotR*1.35 : dotR, 0, Math.PI*2);
-          ctx2.strokeStyle = col;
-          ctx2.lineWidth   = 1.5;
-          ctx2.stroke();
+        if(animT>0.01){
+          ctx2.beginPath(); ctx2.arc(pos.r[0],pos.r[1],isHov?dotR*1.35:dotR,0,Math.PI*2);
+          ctx2.strokeStyle=col; ctx2.lineWidth=1.5; ctx2.stroke();
         }
-
-        // Canonical dot (filled)
-        if (isHov) {
-          var glw = ctx2.createRadialGradient(pos.c[0],pos.c[1],0, pos.c[0],pos.c[1],dotR*3.5);
-          var r2=parseInt(col.match(/\d+/g)[0]), g2=parseInt(col.match(/\d+/g)[1]), b2=parseInt(col.match(/\d+/g)[2]);
-          glw.addColorStop(0,'rgba('+r2+','+g2+','+b2+',0.4)');
-          glw.addColorStop(1,'rgba('+r2+','+g2+','+b2+',0)');
-          ctx2.beginPath(); ctx2.arc(pos.c[0],pos.c[1],dotR*3.5,0,Math.PI*2);
-          ctx2.fillStyle = glw; ctx2.fill();
+        if(isHov){
+          var m=col.match(/\d+/g);
+          var gw=ctx2.createRadialGradient(pos.c[0],pos.c[1],0,pos.c[0],pos.c[1],dotR*3.5);
+          gw.addColorStop(0,'rgba('+m[0]+','+m[1]+','+m[2]+',0.4)');
+          gw.addColorStop(1,'rgba('+m[0]+','+m[1]+','+m[2]+',0)');
+          ctx2.beginPath(); ctx2.arc(pos.c[0],pos.c[1],dotR*3.5,0,Math.PI*2); ctx2.fillStyle=gw; ctx2.fill();
         }
-        ctx2.beginPath();
-        ctx2.arc(pos.c[0], pos.c[1], isHov ? dotR*1.35 : dotR, 0, Math.PI*2);
-        ctx2.fillStyle = col;
-        ctx2.fill();
+        ctx2.beginPath(); ctx2.arc(pos.c[0],pos.c[1],isHov?dotR*1.35:dotR,0,Math.PI*2);
+        ctx2.fillStyle=col; ctx2.fill();
       });
 
-      // Hover label
-      if (hovIdx >= 0) {
-        var d   = BDATA[hovIdx];
-        var pos = dotPos(d, animT);
-        var ref = hovCanon ? pos.c : pos.r;
-        var lbl = hovCanon ? d.p : d.r;
-        ctx2.font = 'bold '+(11*DPR)+'px "JetBrains Mono"';
-        ctx2.fillStyle = '#f0eff5';
-        ctx2.textAlign = 'left';
-        var tx = ref[0] + 10*DPR;
-        if (tx + 155*DPR > w) tx = ref[0] - 10*DPR - 140*DPR;
-        ctx2.fillText(lbl, tx, ref[1]-5*DPR);
-        ctx2.font = (10*DPR)+'px "JetBrains Mono"';
-        ctx2.fillStyle = freqColor(d.freq, 0.8);
-        ctx2.fillText('freq ' + d.freq + '/10', tx, ref[1]+10*DPR);
+      if(hovIdx>=0){
+        var d=BDATA[hovIdx],pos=dotPos(d,animT),ref=hovCanon?pos.c:pos.r,lbl=hovCanon?d.p:d.r;
+        ctx2.font='bold '+(11*DPR)+'px "JetBrains Mono"'; ctx2.fillStyle='#f0eff5'; ctx2.textAlign='left';
+        var tx=ref[0]+10*DPR; if(tx+155*DPR>w) tx=ref[0]-10*DPR-140*DPR;
+        ctx2.fillText(lbl,tx,ref[1]-5*DPR);
+        ctx2.font=(10*DPR)+'px "JetBrains Mono"'; ctx2.fillStyle=freqColor(d.freq,0.8);
+        ctx2.fillText('freq '+d.freq+'/10',tx,ref[1]+10*DPR);
       }
     }
-
-    function animate2() {
-      animT += (targetT - animT) * 0.08;
-      draw2();
-      requestAnimationFrame(animate2);
-    }
-
-    slider.addEventListener('input', function() { targetT = parseFloat(slider.value); });
-
-    canvas.addEventListener('mousemove', function(e) {
-      var rect = canvas.getBoundingClientRect();
-      var mx = (e.clientX-rect.left)*DPR, my = (e.clientY-rect.top)*DPR;
-      var best = -1, bestD = 18*DPR, bestC = true;
-      BDATA.forEach(function(d,i) {
-        var pos = dotPos(d, animT);
-        [[pos.c,true],[pos.r,false]].forEach(function(pair) {
-          var p = pair[0], isC = pair[1];
-          var dx=p[0]-mx, dy=p[1]-my, dd=Math.sqrt(dx*dx+dy*dy);
-          if (dd < bestD) { bestD=dd; best=i; bestC=isC; }
+    function animate2(){animT+=(targetT-animT)*0.08;draw2();requestAnimationFrame(animate2);}
+    slider.addEventListener('input',function(){targetT=parseFloat(slider.value);});
+    canvas.addEventListener('mousemove',function(e){
+      var rect=canvas.getBoundingClientRect(),mx=(e.clientX-rect.left)*DPR,my=(e.clientY-rect.top)*DPR;
+      var best=-1,bestD=18*DPR,bestC=true;
+      BDATA.forEach(function(d,i){
+        var pos=dotPos(d,animT);
+        [[pos.c,true],[pos.r,false]].forEach(function(pair){
+          var p=pair[0],dx=p[0]-mx,dy=p[1]-my,dd=Math.sqrt(dx*dx+dy*dy);
+          if(dd<bestD){bestD=dd;best=i;bestC=pair[1];}
         });
       });
-      hovIdx = best; hovCanon = bestC;
-      canvas.style.cursor = best>=0 ? 'crosshair' : 'default';
+      hovIdx=best;hovCanon=bestC;canvas.style.cursor=best>=0?'crosshair':'default';
     });
-    canvas.addEventListener('mouseleave', function(){ hovIdx=-1; });
-
-    resize2();
-    window.addEventListener('resize', function(){ resize2(); });
+    canvas.addEventListener('mouseleave',function(){hovIdx=-1;});
+    resize2(); window.addEventListener('resize',function(){resize2();});
     animate2();
   })();
   </script>
 
-  <!-- ══════════════════════════════════════════════
-       4. NOISY CHANNEL VIZ
-  ══════════════════════════════════════════════ -->
+  <!-- ══ 3b. NOISY CHANNEL VIZ — Houghton & Morgan (2024) ══ -->
   <script>
-  (function () {
-    var selectedPhrase = 'bread and butter';
-    var selectedRev    = 'butter and bread';
-    var selectedFreq   = 10;
-    var heardCanon     = true;
+  (function(){
+    var canvas=document.getElementById('nc-canvas'),ctx=canvas.getContext('2d');
+    var DPR=window.devicePixelRatio||1;
+    var noiseOnBtn=document.getElementById('nc-noise-on'),noiseOffBtn=document.getElementById('nc-noise-off');
+    var noiseLbl=document.getElementById('nc-noise-label');
 
-    var noiseSlider = document.getElementById('nc-noise');
-    var noiseVal    = document.getElementById('nc-noise-val');
-    var priorBar    = document.getElementById('nc-prior-bar');
-    var priorLabel  = document.getElementById('nc-prior-label');
-    var postBar     = document.getElementById('nc-post-bar');
-    var postLabel   = document.getElementById('nc-post-label');
+    var PNOISE_ON=0.04, PNOISE_OFF=0;
+    var noiseOn=true;
 
-    var heardCanonBtn = document.getElementById('nc-heard-canon');
-    var heardRevBtn   = document.getElementById('nc-heard-rev');
+    // N levels: N tokens per generation, 50 generations
+    var N_LEVELS=[
+      {n:10,   label:'N = 10',   color:'rgba(148,144,168,0.55)'},
+      {n:100,  label:'N = 100',  color:'rgba(124,110,247,0.65)'},
+      {n:500,  label:'N = 500',  color:'rgba(124,110,247,0.85)'},
+      {n:2000, label:'N = 2000', color:'rgba(124,110,247,1.0)'},
+    ];
+    var N_GENS=50, NU=10, N_MU=50;
 
-    function priorFromFreq(freq) {
-      // Maps freq 1-10 → prior probability of canonical order 0.50 → 0.95
-      return 0.50 + 0.45 * (freq - 1) / 9;
-    }
-
-    function compute() {
-      var noise   = parseFloat(noiseSlider.value);
-      var pCanon  = priorFromFreq(selectedFreq);
-      var pRev    = 1 - pCanon;
-
-      var likC, likR;
-      if (heardCanon) {
-        likC = 1 - noise;  // intended canonical, heard canonical
-        likR = noise;      // intended reversed, noise → canonical
-      } else {
-        likC = noise;      // intended canonical, noise → reversed
-        likR = 1 - noise;  // intended reversed, heard reversed
+    // Simulate one generation: learner hears N tokens, updates beliefs
+    // Returns final E[p_theta] = alpha1 / (alpha1 + alpha2)
+    function simulateGen(mu, alpha1, alpha2, N, pnoise) {
+      for (var i=0; i<N; i++) {
+        var p = alpha1 / (alpha1 + alpha2);
+        // Expected phat when token is alphabetical (prob mu from speaker)
+        var ra_a = p * (1-pnoise);
+        var rb_a = (1-p) * pnoise;
+        var ph_if_alpha = ra_a / (ra_a + rb_a);
+        // Expected phat when token is non-alphabetical (prob 1-mu from speaker)
+        var ra_b = p * pnoise;
+        var rb_b = (1-p) * (1-pnoise);
+        var ph_if_nonalpha = ra_b / (ra_b + rb_b);
+        // Expected update across both token types
+        var exp_ph = mu * ph_if_alpha + (1-mu) * ph_if_nonalpha;
+        alpha1 += exp_ph;
+        alpha2 += (1 - exp_ph);
       }
-
-      var uc = likC * pCanon;
-      var ur = likR * pRev;
-      var total = uc + ur;
-      var postC = uc / total;
-
-      // Update bars
-      priorBar.style.width   = (pCanon * 100).toFixed(1) + '%';
-      priorLabel.textContent = (pCanon * 100).toFixed(0) + '%';
-
-      postBar.style.width    = (postC * 100).toFixed(1) + '%';
-      postLabel.textContent  = (postC * 100).toFixed(0) + '%';
-
-      // Bar color: green if high confidence, amber if uncertain
-      var hue = postC > 0.5 ? '#7c6ef7' : '#e67e52';
-      postBar.style.background = hue;
-
-      // Update heard toggle labels
-      heardCanonBtn.textContent = selectedPhrase;
-      heardRevBtn.textContent   = selectedRev;
+      return { a1: alpha1, a2: alpha2 };
     }
 
-    document.querySelectorAll('.nc-bin-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.nc-bin-btn').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        selectedPhrase = btn.dataset.phrase;
-        selectedRev    = btn.dataset.rev;
-        selectedFreq   = parseInt(btn.dataset.freq);
-        compute();
+    // Simulate N_GENS generations starting from generative preference mu
+    function simulateCurve(pnoise) {
+      var curves = N_LEVELS.map(function(lv) {
+        var pts = [];
+        for (var mi=0; mi<=N_MU; mi++) {
+          var mu = mi / N_MU;
+          var a1 = mu * NU, a2 = (1-mu) * NU;
+          for (var g=0; g<N_GENS; g++) {
+            var res = simulateGen(mu, a1, a2, lv.n, pnoise);
+            a1 = res.a1; a2 = res.a2;
+          }
+          pts.push(a1 / (a1 + a2));
+        }
+        return pts;
       });
-    });
+      return curves;
+    }
 
-    noiseSlider.addEventListener('input', function() {
-      noiseVal.textContent = parseFloat(noiseSlider.value).toFixed(2);
-      compute();
-    });
+    function drawNC() {
+      var W2 = canvas.parentElement.clientWidth, H2 = 320;
+      canvas.width=W2*DPR; canvas.height=H2*DPR;
+      canvas.style.width=W2+'px'; canvas.style.height=H2+'px';
+      var w=W2*DPR, h=H2*DPR;
+      ctx.clearRect(0,0,w,h);
 
-    heardCanonBtn.addEventListener('click', function() {
-      heardCanon = true;
-      heardCanonBtn.classList.add('active');
-      heardRevBtn.classList.remove('active');
-      compute();
-    });
+      var pad={top:20*DPR,right:20*DPR,bot:44*DPR,left:52*DPR};
+      var pw=w-pad.left-pad.right, ph=h-pad.top-pad.bot;
 
-    heardRevBtn.addEventListener('click', function() {
-      heardCanon = false;
-      heardRevBtn.classList.add('active');
-      heardCanonBtn.classList.remove('active');
-      compute();
-    });
+      var pnoise = noiseOn ? PNOISE_ON : PNOISE_OFF;
+      var curves = simulateCurve(pnoise);
 
-    compute();
+      // Grid
+      ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+      [0,0.25,0.5,0.75,1.0].forEach(function(v){
+        var gy=pad.top+ph*(1-v);
+        ctx.beginPath(); ctx.moveTo(pad.left,gy); ctx.lineTo(pad.left+pw,gy); ctx.stroke();
+        ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font=(9*DPR)+'px "JetBrains Mono"';
+        ctx.textAlign='right'; ctx.fillText(v.toFixed(2),pad.left-4*DPR,gy+3*DPR);
+      });
+
+      // Diagonal reference (no frequency effect)
+      ctx.strokeStyle='rgba(255,255,255,0.12)'; ctx.setLineDash([4*DPR,4*DPR]); ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(pad.left,pad.top+ph); ctx.lineTo(pad.left+pw,pad.top); ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Curves
+      curves.forEach(function(pts, li) {
+        var lv = N_LEVELS[li];
+        ctx.strokeStyle = lv.color;
+        ctx.lineWidth = 1.8 + li * 0.3;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        pts.forEach(function(y, mi) {
+          var x = pad.left + pw * mi/N_MU;
+          var yy = pad.top + ph * (1-y);
+          if(mi===0) ctx.moveTo(x,yy); else ctx.lineTo(x,yy);
+        });
+        ctx.stroke();
+
+        // Label at right edge
+        var lastY = pts[pts.length-1];
+        var lx = pad.left + pw + 6*DPR;
+        var ly = pad.top + ph*(1-lastY);
+        ctx.fillStyle = lv.color;
+        ctx.font = (10*DPR)+'px "JetBrains Mono"';
+        ctx.textAlign = 'left';
+        ctx.fillText(lv.label, lx, ly+4*DPR);
+      });
+
+      // Axes labels
+      ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.font=(10*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
+      ctx.fillText('Generative preference (proportion alphabetical)', pad.left+pw/2, h-6*DPR);
+      // X ticks
+      [0,0.25,0.5,0.75,1.0].forEach(function(v){
+        var gx=pad.left+pw*v;
+        ctx.fillStyle='rgba(255,255,255,0.18)';
+        ctx.fillText(v.toFixed(2),gx,pad.top+ph+14*DPR);
+      });
+      // Y axis label (rotated)
+      ctx.save();
+      ctx.translate(12*DPR, pad.top+ph/2);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillStyle='rgba(255,255,255,0.2)';
+      ctx.font=(10*DPR)+'px "JetBrains Mono"';
+      ctx.textAlign='center';
+      ctx.fillText('Inferred preference after '+N_GENS+' generations', 0, 0);
+      ctx.restore();
+    }
+
+    noiseOnBtn.addEventListener('click', function(){
+      noiseOn=true;
+      noiseOnBtn.classList.add('active'); noiseOffBtn.classList.remove('active');
+      noiseLbl.textContent='0.04';
+      drawNC();
+    });
+    noiseOffBtn.addEventListener('click', function(){
+      noiseOn=false;
+      noiseOffBtn.classList.add('active'); noiseOnBtn.classList.remove('active');
+      noiseLbl.textContent='0';
+      drawNC();
+    });
+    window.addEventListener('resize', drawNC);
+    drawNC();
   })();
   </script>
 
-  <!-- ══════════════════════════════════════════════
-       5. BAYESIAN UPDATING (WEREWOLF)
-  ══════════════════════════════════════════════ -->
+  <!-- ══ 4. BAYESIAN UPDATING ══ -->
   <script>
-  (function () {
-    var canvas = document.getElementById('bayes-canvas');
-    var ctx    = canvas.getContext('2d');
-    var DPR    = window.devicePixelRatio || 1;
+  (function(){
+    var canvas=document.getElementById('bayes-canvas'),ctx=canvas.getContext('2d'),DPR=window.devicePixelRatio||1;
+    var TRUE_RATE=0.72;
+    var alpha0=2, beta0=8;  // Prior: usually innocent-looking, E[θ]=0.2
+    var hits=0, misses=0;
 
-    var TRUE_RATE  = 0.72;
-    var alpha0 = 3, beta0 = 7;  // Werewolf prior: 3/10 are werewolves
-    var hits = 0, misses = 0;
-
-    function lgamma(x) {
-      var g=7;
-      var c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,
+    function lgamma(x){
+      var g=7,c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,
         771.32342877765313,-176.61502916214059,12.507343278686905,
         -0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
       if(x<0.5) return Math.log(Math.PI/Math.sin(Math.PI*x))-lgamma(1-x);
-      x-=1; var ag=c[0];
-      for(var i=1;i<g+2;i++) ag+=c[i]/(x+i);
-      var t=x+g+0.5;
-      return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(ag);
+      x-=1; var ag=c[0]; for(var i=1;i<g+2;i++) ag+=c[i]/(x+i);
+      var t=x+g+0.5; return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(ag);
     }
-    function logBeta(a,b){ return lgamma(a)+lgamma(b)-lgamma(a+b); }
+    function logBeta(a,b){return lgamma(a)+lgamma(b)-lgamma(a+b);}
     function betaPDF(x,a,b){
       if(x<=0||x>=1) return 0;
       return Math.exp((a-1)*Math.log(x)+(b-1)*Math.log(1-x)-logBeta(a,b));
     }
 
-    function draw() {
-      var W = canvas.parentElement.clientWidth;
-      canvas.width  = W*DPR; canvas.height = 220*DPR;
-      canvas.style.width=W+'px'; canvas.style.height='220px';
-      var w=W*DPR, h=220*DPR;
+    function draw(){
+      var W2=canvas.parentElement.clientWidth;
+      canvas.width=W2*DPR; canvas.height=220*DPR;
+      canvas.style.width=W2+'px'; canvas.style.height='220px';
+      var w=W2*DPR,h=220*DPR;
       ctx.clearRect(0,0,w,h);
-
-      var pad={top:20*DPR,right:20*DPR,bottom:36*DPR,left:48*DPR};
-      var pw=w-pad.left-pad.right, ph=h-pad.top-pad.bottom;
-      var a=alpha0+hits, b=beta0+misses;
-      var N=200, ys=[];
-      for(var i=0;i<=N;i++) ys.push(betaPDF(i/N,a,b));
+      var pad={top:20*DPR,right:20*DPR,bot:36*DPR,left:48*DPR};
+      var pw=w-pad.left-pad.right,ph=h-pad.top-pad.bot;
+      var a=alpha0+hits,b=beta0+misses;
+      var N=200,ys=[]; for(var i=0;i<=N;i++) ys.push(betaPDF(i/N,a,b));
       var maxY=Math.max.apply(null,ys)||1;
 
-      // Prior PDF (faint)
-      if (hits+misses > 0) {
-        var pysPrior = [];
-        for(var i=0;i<=N;i++) pysPrior.push(betaPDF(i/N,alpha0,beta0));
-        var maxPrior=Math.max.apply(null,pysPrior)||1;
+      // Prior (faint dashed) when there are observations
+      if(hits+misses>0){
+        var py=[]; for(var i=0;i<=N;i++) py.push(betaPDF(i/N,alpha0,beta0));
         ctx.beginPath();
-        for(var i=0;i<=N;i++){
-          var x=pad.left+pw*i/N, y=pad.top+ph*(1-pysPrior[i]/maxY);
-          if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-        }
-        ctx.strokeStyle='rgba(124,110,247,0.18)';
-        ctx.lineWidth=1.5;
-        ctx.setLineDash([3*DPR,4*DPR]);
-        ctx.stroke();
-        ctx.setLineDash([]);
+        py.forEach(function(v,i){
+          var x=pad.left+pw*i/N, y=pad.top+ph*(1-v/maxY);
+          if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+        });
+        ctx.strokeStyle='rgba(124,110,247,0.18)'; ctx.lineWidth=1.5;
+        ctx.setLineDash([3*DPR,4*DPR]); ctx.stroke(); ctx.setLineDash([]);
       }
 
       // Grid
@@ -1271,75 +1089,51 @@
       }
 
       // True rate (revealed after 10 obs)
-      var n = hits+misses;
+      var n=hits+misses;
       if(n>=10){
-        var trueX=pad.left+pw*TRUE_RATE;
-        var fade=Math.min(0.3,(n-10)*0.03);
-        ctx.strokeStyle='rgba(230,199,82,'+fade+')';
-        ctx.setLineDash([3*DPR,4*DPR]); ctx.lineWidth=1;
+        var trueX=pad.left+pw*TRUE_RATE, fade=Math.min(0.3,(n-10)*0.03);
+        ctx.strokeStyle='rgba(230,199,82,'+fade+')'; ctx.setLineDash([3*DPR,4*DPR]); ctx.lineWidth=1;
         ctx.beginPath(); ctx.moveTo(trueX,pad.top); ctx.lineTo(trueX,pad.top+ph); ctx.stroke();
         ctx.setLineDash([]);
         if(n>=14){
-          ctx.fillStyle='rgba(230,199,82,'+(fade*0.9)+')';
-          ctx.font=(9*DPR)+'px "JetBrains Mono"';
-          ctx.textAlign='center';
-          ctx.fillText('true rate',trueX,pad.top-6*DPR);
+          ctx.fillStyle='rgba(230,199,82,'+(fade*0.9)+')'; ctx.font=(9*DPR)+'px "JetBrains Mono"';
+          ctx.textAlign='center'; ctx.fillText('true rate',trueX,pad.top-6*DPR);
         }
       }
 
       // Fill
-      ctx.beginPath();
-      ctx.moveTo(pad.left,pad.top+ph);
-      for(var i=0;i<=N;i++){
-        var x=pad.left+pw*i/N, y=pad.top+ph*(1-ys[i]/maxY);
-        ctx.lineTo(x,y);
-      }
+      ctx.beginPath(); ctx.moveTo(pad.left,pad.top+ph);
+      for(var i=0;i<=N;i++){ctx.lineTo(pad.left+pw*i/N, pad.top+ph*(1-ys[i]/maxY));}
       ctx.lineTo(pad.left+pw,pad.top+ph); ctx.closePath();
       var grad=ctx.createLinearGradient(0,pad.top,0,pad.top+ph);
-      grad.addColorStop(0,'rgba(124,110,247,0.5)');
-      grad.addColorStop(1,'rgba(124,110,247,0.06)');
+      grad.addColorStop(0,'rgba(124,110,247,0.5)'); grad.addColorStop(1,'rgba(124,110,247,0.06)');
       ctx.fillStyle=grad; ctx.fill();
 
       // Stroke
       ctx.beginPath();
-      for(var i=0;i<=N;i++){
-        var x=pad.left+pw*i/N, y=pad.top+ph*(1-ys[i]/maxY);
-        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-      }
+      ys.forEach(function(v,i){ var x=pad.left+pw*i/N,y=pad.top+ph*(1-v/maxY); if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y); });
       ctx.strokeStyle='#7c6ef7'; ctx.lineWidth=2; ctx.stroke();
 
       // Posterior mean
-      var mean=a/(a+b);
-      var meanX=pad.left+pw*mean;
-      ctx.strokeStyle='rgba(124,110,247,0.55)';
-      ctx.setLineDash([4*DPR,3*DPR]); ctx.lineWidth=1.5;
+      var mean=a/(a+b),meanX=pad.left+pw*mean;
+      ctx.strokeStyle='rgba(124,110,247,0.55)'; ctx.setLineDash([4*DPR,3*DPR]); ctx.lineWidth=1.5;
       ctx.beginPath(); ctx.moveTo(meanX,pad.top); ctx.lineTo(meanX,pad.top+ph); ctx.stroke();
       ctx.setLineDash([]);
 
       // X ticks
-      ctx.fillStyle='rgba(255,255,255,0.2)';
-      ctx.font=(10*DPR)+'px "JetBrains Mono"';
-      ctx.textAlign='center';
-      for(var t=0;t<=10;t+=2){
-        ctx.fillText((t/10).toFixed(1), pad.left+pw*t/10, pad.top+ph+16*DPR);
-      }
-      ctx.fillText('P(werewolf)', pad.left+pw/2, h-6*DPR);
+      ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font=(10*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
+      for(var t2=0;t2<=10;t2+=2) ctx.fillText((t2/10).toFixed(1),pad.left+pw*t2/10,pad.top+ph+16*DPR);
+      ctx.fillText('suspicion rate θ',pad.left+pw/2,h-6*DPR);
 
-      // Y ticks
-      ctx.textAlign='right'; ctx.fillStyle='rgba(255,255,255,0.18)';
-      ctx.fillText('0', pad.left-6*DPR, pad.top+ph+4*DPR);
-
-      // Stats
-      document.getElementById('b-n').textContent    = n;
-      document.getElementById('b-h').textContent    = hits;
-      document.getElementById('b-mean').textContent = mean.toFixed(3);
+      document.getElementById('b-n').textContent=n;
+      document.getElementById('b-h').textContent=hits;
+      document.getElementById('b-mean').textContent=mean.toFixed(3);
     }
 
-    document.getElementById('bayes-hit').addEventListener('click',   function(){ hits++;   draw(); });
-    document.getElementById('bayes-miss').addEventListener('click',  function(){ misses++; draw(); });
-    document.getElementById('bayes-reset').addEventListener('click', function(){ hits=0; misses=0; draw(); });
-
-    window.addEventListener('resize', draw);
+    document.getElementById('bayes-hit').addEventListener('click',function(){hits++;draw();});
+    document.getElementById('bayes-miss').addEventListener('click',function(){misses++;draw();});
+    document.getElementById('bayes-reset').addEventListener('click',function(){hits=0;misses=0;draw();});
+    window.addEventListener('resize',draw);
     draw();
   })();
   </script>
