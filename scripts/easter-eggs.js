@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var headshot = document.getElementById('ee-headshot');
   if (headshot) {
     var HEADSHOT_MSGS = [
-      '/ˈzæk.ər.i/',
+      '/ˈzækəɹi/ — though /ˈzæk/ is preferred.',
       'ə schwa a day keeps the prescriptivists away.',
       'frequency effects are real.',
       'please cite your sources.',
