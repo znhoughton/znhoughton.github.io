@@ -252,19 +252,19 @@
 
       <div class="research-blurb" style="padding-bottom: 3.5rem; border-bottom: 1px solid var(--border);">
         <p>
-          Language is not a fixed system of rules — it is a dynamic cognitive system,
+          Language is not a fixed system of rules; it is a dynamic cognitive system,
           continuously reshaped by every encounter we have with it. At the heart of my work is a
           question about the architecture of that resource: <strong>how do humans and machines
           trade off between storage and computation?</strong>
         </p>
         <p>
-          On the <strong>storage</strong> side, linguistic knowledge can be represented holistically —
+          On the <strong>storage</strong> side, linguistic knowledge can be represented holistically:
           whole phrases, collocations, and constructions stored as units in memory. On the
           <strong>computation</strong> side, we assemble meaning from parts: abstract rules and schemas
           that apply broadly. Most linguistic behavior doesn't fall cleanly into either camp.
         </p>
         <p>
-          What I study is the balance between them — how much exposure is needed to shift a pattern
+          What I study is the balance between them: how much exposure is needed to shift a pattern
           from computed to stored (which may be more of a continuum than a binary), how that shift
           manifests cognitively and behaviorally, and whether the computational systems we build for
           language mirror or diverge from humans. I approach these questions using neural networks,
@@ -276,13 +276,13 @@
       <!-- ══ 1. MENTAL REPRESENTATIONS ══ -->
       <section class="section">
         <h2 class="section-title">Mental Representations</h2>
-        <p class="section-subtitle">Meaning isn't stored in a single place — it's distributed.</p>
+        <p class="section-subtitle">Meaning isn't stored in a single place. It's distributed.</p>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:2rem;line-height:1.8;">
           There is no single neuron or brain region that "holds" the word <em>dog</em>.
           Meaning emerges from patterns of activation distributed across millions of interconnected
           neurons, shaped by every context in which that word has appeared. Click words from the two
-          groups below — notice that words within the same category activate
+          groups below. Notice that words within the same category activate
           <strong>overlapping but distinct</strong> patterns, while words from different categories
           share only a small core of neurons encoding general biological knowledge.
         </p>
@@ -317,7 +317,7 @@
 
         <p class="research-connect">
           <em>// research</em>
-          Distributed representations are central to my view of linguistic knowledge — not a rule system applied to input, but a high-dimensional space of patterns learned from exposure. This framing motivates my interest in storage: a holistically stored phrase is one whose representational geometry has been shaped by its full usage history, not merely assembled from its parts.
+          Distributed representations are central to my view of linguistic knowledge: not a rule system applied to input, but a high-dimensional space of patterns learned from exposure. This framing motivates my interest in storage: a holistically stored phrase is one whose representational geometry has been shaped by its full usage history, not merely assembled from its parts.
         </p>
       </section>
 
@@ -327,17 +327,17 @@
         <p class="section-subtitle">Prediction error drives shifts in representations.</p>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:2rem;line-height:1.8;">
-          A core claim of usage-based linguistics is that linguistic knowledge is learned — not innate —
+          A core claim of usage-based linguistics is that linguistic knowledge is learned, not innate,
           and that the mechanism is <strong>error-driven</strong>: representations are updated
           proportionally to how wrong a prediction was. The Rescorla-Wagner model formalizes this:
           <span style="font-family:var(--mono);color:var(--accent);">ΔV = αβ(λ − ΣV)</span>,
           where α is cue salience, β is learning rate, λ is the expected outcome value
-          (the associative strength the cue would carry once fully conditioned — analogous to a
+          (the associative strength the cue would carry once fully conditioned, analogous to a
           training label), and ΣV is the total current prediction across all active cues.
           The term (λ − ΣV) is the <em>prediction error</em>: how far the system's current
           prediction falls from the expected outcome. The notation V for associative strength
           follows the original Rescorla-Wagner convention.
-          This rule captures several counterintuitive effects — blocking, extinction, overexpectation —
+          This rule captures several counterintuitive effects (blocking, extinction, overexpectation)
           purely from the logic of prediction error minimization.
         </p>
 
@@ -371,7 +371,7 @@
 
         <p class="research-connect">
           <em>// research</em>
-          Error-driven learning is the primary mechanism in my models of how linguistic representations change with exposure — including how binomial order preferences become entrenched. The key prediction: as a phrase becomes more predictable, prediction error decreases, and the representation shifts from computed to stored.
+          Error-driven learning is the primary mechanism in my models of how linguistic representations change with exposure, including how binomial order preferences become entrenched. The key prediction: as a phrase becomes more predictable, prediction error decreases, and the representation shifts from computed to stored.
         </p>
       </section>
 
@@ -381,13 +381,13 @@
         <p class="section-subtitle">How much of language is memorized, and how much is assembled?</p>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:0.75rem;line-height:1.8;">
-          One test case for the storage-computation tradeoff is <strong>binomial expressions</strong> —
+          One test case for the storage-computation tradeoff is <strong>binomial expressions</strong>:
           phrases like <em>bread and butter</em> or <em>black and white</em>, where word order is
           conventionalized. A purely <strong>compositional</strong> system derives a phrase's meaning
-          by combining its parts — treating both orderings as equivalent (since the operation is
+          by combining its parts, treating both orderings as equivalent (since the operation is
           symmetric). A <strong>holistic</strong> system stores the canonical form as its own unit,
           with a representation shaped by its specific usage history. Under holistic storage,
-          the two orderings are no longer equivalent — they occupy distinct positions in
+          the two orderings are no longer equivalent; they occupy distinct positions in
           representational space.
         </p>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:2rem;line-height:1.8;">
@@ -396,7 +396,7 @@
           low-frequency ones remain compositional. The visualization below uses GloVe word embeddings
           (reduced to 2D) to illustrate this. At <em>Compositional</em>, both orderings of a phrase
           map to the same point (their meaning is just the average of the two words, regardless of
-          order). Drag toward <em>Holistic</em>: the two orderings separate — high-frequency
+          order). Drag toward <em>Holistic</em>: the two orderings separate, with high-frequency
           binomials (larger, brighter) diverge more than low-frequency ones (smaller, dimmer).
         </p>
 
@@ -416,11 +416,11 @@
         <!-- Noisy Channel -->
         <h3 style="font-size:1rem;font-weight:500;color:var(--text-primary);margin-top:3rem;margin-bottom:0.5rem;">Noisy-Channel Comprehension &amp; Frequency-Dependent Preference Extremity</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:0.75rem;line-height:1.8;">
-          When a listener hears a binomial, they don't simply record the observed form — they
+          When a listener hears a binomial, they don't simply record the observed form; they
           infer the speaker's <em>intended</em> ordering via a
           <strong>noisy-channel model</strong>:
           <span style="font-family:var(--mono);color:var(--accent);">P(Sᵢ | Sₚ) ∝ P(Sᵢ) · P(Sᵢ→Sₚ)</span>.
-          The prior P(Sᵢ) represents <strong>abstract preferences</strong> —
+          The prior P(Sᵢ) represents <strong>abstract preferences</strong>:
           frequency-independent knowledge about ordering constraints (e.g., shorter words first,
           animate before inanimate). Frequency does not strengthen the prior; it determines
           <strong>N</strong>: the number of tokens a learner hears.
@@ -430,7 +430,7 @@
           N tokens, updates beliefs via noisy-channel inference, and transmits the language to the
           next generation. The result is <strong>frequency-dependent preference extremity</strong>
           (Houghton &amp; Morgan, 2024): when listeners infer more noise than speakers actually
-          produce, preferences become increasingly polarized — but only for high-N binomials.
+          produce, preferences become increasingly polarized, but only for high-N binomials.
           For low-N binomials, fewer exposures mean the inferential compounding has less
           opportunity to take hold. Toggle noise below to see: <em>without noise, all N values
           converge to the prior (the diagonal) and frequency has no effect.</em>
@@ -451,7 +451,7 @@
 
         <p class="research-connect">
           <em>// research</em>
-          This model (Houghton &amp; Morgan, 2024) demonstrates that frequency-dependent preference extremity can arise purely from noisy-channel processing — and that it requires listeners to infer more noise than speakers actually produce. The model accounts for the corpus-wide distribution of binomial ordering preferences across 594 binomials from Morgan &amp; Levy (2015).
+          This model (Houghton &amp; Morgan, 2024) demonstrates that frequency-dependent preference extremity can arise purely from noisy-channel processing, and that it requires listeners to infer more noise than speakers actually produce. The model accounts for the corpus-wide distribution of binomial ordering preferences across 594 binomials from Morgan &amp; Levy (2015).
         </p>
       </section>
 
