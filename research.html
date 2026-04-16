@@ -410,7 +410,7 @@
             <label class="right">Holistic</label>
           </div>
           <p style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:0.75rem;">
-            Each binomial appears twice: a filled dot (●) for the canonical ordering and an outlined dot (○) for the reversed ordering, connected by a line. At <em>Compositional</em>, both dots sit at the same point — the average of their two words' GloVe vectors — because a fully compositional system treats both orderings as equivalent. Drag toward <em>Holistic</em> to reveal each ordering's actual position in GloVe space. Color encodes relative frequency (blue = low, orange = high). High-frequency binomials diverge more, reflecting that their canonical and reversed forms have developed more distinct distributional histories. Hover over a dot to see the label.
+            Each binomial appears twice: a filled dot (●) for the canonical ordering and an outlined dot (○) for the reversed ordering, connected by a line. At <em>Compositional</em>, both dots sit at the same point — the average of their two words' GloVe vectors — because a fully compositional system treats both orderings as equivalent. Drag toward <em>Holistic</em> to reveal each ordering's actual position in GloVe space. Color encodes relative frequency (dark = low, light = high). High-frequency binomials diverge more, reflecting that their canonical and reversed forms have developed more distinct distributional histories. Hover over a dot to see the label.
           </p>
         </div>
 
@@ -1217,7 +1217,7 @@
 
     function freqColor(freq,alpha){
       var t=(freq-1)/9;
-      var r=Math.round(80+t*155),g=Math.round(140-t*15),b=Math.round(220-t*175);
+      var r=Math.round(38+t*210),g=Math.round(35+t*210),b=Math.round(62+t*193);
       return 'rgba('+r+','+g+','+b+','+(alpha||1)+')';
     }
     function resize2(){
