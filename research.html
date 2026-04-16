@@ -540,10 +540,15 @@
 
         <h3 class="stat-h3">The Model</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          Now a new round begins. Each act is either suspicious (S) or not (¬S). You want
-          to update <span class="im">P(W)</span>, starting from
-          <span class="im">P₀ = 0.20</span> (one werewolf in five players). The likelihood
-          of S under each role is the expected value of the corresponding Beta prior:
+          Now a new round begins. Each act is either suspicious (S) or not (¬S). Two priors
+          are at work. The first is <span class="im">P(W)</span>: a prior on which process is
+          generating your observations — the werewolf process (rate <span class="im">θ_w</span>)
+          or the innocent process (rate <span class="im">θ_b</span>). It starts at
+          <span class="im">P₀ = 0.20</span> and updates after each observation within the
+          round. The second is the Beta distributions: player-level priors on the rates
+          <span class="im">θ_w</span> and <span class="im">θ_b</span> themselves, built from
+          what you've observed across previous rounds. These don't reset — they accumulate.
+          The likelihoods are their expected values:
         </p>
 
         <div class="math-block">
