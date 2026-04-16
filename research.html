@@ -211,6 +211,19 @@
       padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
     }
     .subsection-label:first-child { margin-top: 0; }
+
+    /* Inline math in prose */
+    .im {
+      font-family: var(--mono);
+      font-size: 0.84em;
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 0.06em 0.32em;
+      border-radius: 3px;
+      white-space: nowrap;
+      letter-spacing: 0;
+    }
   </style>
 </head>
 <body>
@@ -528,9 +541,9 @@
         <h3 class="stat-h3">The Model</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
           Now a new round begins. Each act is either suspicious (S) or not (¬S). You want
-          to update <strong>P(W)</strong>, starting from P₀&nbsp;=&nbsp;0.20 (one werewolf in
-          five players). The likelihood of S under each role is the expected value of the
-          corresponding Beta prior:
+          to update <span class="im">P(W)</span>, starting from
+          <span class="im">P₀ = 0.20</span> (one werewolf in five players). The likelihood
+          of S under each role is the expected value of the corresponding Beta prior:
         </p>
 
         <div class="math-block">
@@ -545,19 +558,20 @@
         <div class="fun-fact" style="margin:1.25rem 0;">
           <span class="ff-label">// deeper dive · where the likelihood comes from</span>
           <p>
-            P(S|W) isn't a known constant — θ_w, the player's true suspicious rate in role W,
-            is itself unknown. The Beta distribution is a prior over θ_w. To compute P(S|W),
-            we marginalize out the unknown θ_w by integrating the Bernoulli likelihood against
-            the Beta prior:
+            <span class="im">P(S|W)</span> isn't a known constant — <span class="im">θ_w</span>,
+            the player's true suspicious rate in role W, is itself unknown. The Beta distribution
+            is a prior over <span class="im">θ_w</span>. To compute <span class="im">P(S|W)</span>,
+            we marginalize out the unknown <span class="im">θ_w</span> by integrating the
+            Bernoulli likelihood against the Beta prior:
           </p>
           <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
             <span class="eq-label">// θ level · likelihood × prior on θ_w, integrated out</span>
             P(S|W) = ∫ P(S|θ_w) · p(θ_w) dθ_w = E[θ_w] = α_w / (α_w + β_w)
           </div>
           <p>
-            Since P(S|θ_w) = θ_w (a Bernoulli draw), the integral reduces to the mean of
-            the Beta. Substituting back, the full update is Bayes' rule operating at two
-            levels simultaneously:
+            Since <span class="im">P(S|θ_w) = θ_w</span> (a Bernoulli draw), the integral
+            reduces to the mean of the Beta. Substituting back, the full update is Bayes'
+            rule operating at two levels simultaneously:
           </p>
           <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
             <span class="eq-label">// role level · prior × likelihood, where likelihood is itself prior × likelihood</span>
@@ -593,21 +607,26 @@
         </div>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          The key is the <strong>likelihood ratio</strong> P(S|W)/P(S|I) — how much more
-          likely is S under role W than role I? For Charles, P(S|W)/P(S|I) = E[θ_w]/E[θ_b] =
-          0.80/0.80 = 1: S is equally likely under either role, so observing it moves P(W)
-          not at all. For Spencer, P(S|W)/P(S|I) = 0.80/0.20 = 4: each S quadruples the odds
-          he's the werewolf. The prior, built from past rounds, is what makes one player's
-          behavior informative and the other's irrelevant.
+          The key is the <strong>likelihood ratio</strong>
+          <span class="im">P(S|W) / P(S|I)</span>: how much more likely is S under role W
+          than role I? For Charles,
+          <span class="im">P(S|W) / P(S|I) = E[θ_w] / E[θ_b] = 0.80 / 0.80 = 1</span>:
+          S is equally likely under either role, so observing it leaves
+          <span class="im">P(W)</span> unchanged. For Spencer,
+          <span class="im">P(S|W) / P(S|I) = 0.80 / 0.20 = 4</span>: each S quadruples
+          the odds he's the werewolf. The prior, built from past rounds, is what makes one
+          player's behavior informative and the other's irrelevant.
         </p>
 
         <h3 class="stat-h3">Between Rounds: The Prior Updates</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
           After the round ends and the werewolf is revealed, you update the relevant tally.
-          If the player was in role W, each S adds 1 to α_w and each ¬S adds 1 to β_w. If
-          they were in role I, the counts go into α_b and β_b. Over many rounds the Beta
-          distributions narrow, the prior becomes more precise, and P(S|W)/P(S|I) becomes an
-          increasingly reliable signal.
+          If the player was in role W, each S adds 1 to <span class="im">α_w</span> and
+          each <span class="im">¬S</span> adds 1 to <span class="im">β_w</span>. If they
+          were in role I, the counts go into <span class="im">α_b</span> and
+          <span class="im">β_b</span>. Over many rounds the Beta distributions narrow, the
+          prior becomes more precise, and <span class="im">P(S|W) / P(S|I)</span> becomes
+          an increasingly reliable signal.
         </p>
 
         <div class="math-block">
@@ -638,10 +657,11 @@
           <p class="demo-desc">
             Select a player. The top chart shows their Beta priors built from past rounds: the
             <span style="color:#7c6ef7;font-family:var(--mono);font-size:0.82em;">purple</span> curve
-            is θ_w (suspicious rate as werewolf) and the
+            is <span class="im">θ_w</span> (suspicious rate in role W) and the
             <span style="color:rgba(148,144,168,0.9);font-family:var(--mono);font-size:0.82em;">gray</span>
-            curve is θ_b (suspicious rate in role I). Wide overlap (Charles) means no S
-            can move P(W); clear separation (Spencer) means each S carries real information.
+            curve is <span class="im">θ_b</span> (suspicious rate in role I). Wide overlap
+            (Charles) means no S can move <span class="im">P(W)</span>; clear separation
+            (Spencer) means each S carries real information.
             Add observations and watch P(W) update below.
           </p>
           <div class="scenario-btns" id="bayes-player-btns" style="margin-bottom:1.25rem;">
