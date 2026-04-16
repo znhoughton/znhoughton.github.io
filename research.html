@@ -574,55 +574,130 @@
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
           How much <span class="im">P(W)</span> moves is controlled by the likelihood ratio
+          <span class="im">[α_w/(α_w+β_w)] / [α_i/(α_i+β_i)]</span> — that is,
           <span class="im">P(S|W) / P(S|I)</span>. For Charles,
           <span class="im">0.80 / 0.80 = 1</span>: S is equally likely under either role,
           so it leaves <span class="im">P(W)</span> unchanged. For Spencer,
           <span class="im">0.80 / 0.20 = 4</span>: each S quadruples the odds he's the
           werewolf. Same observation, same rule — different behavioral history, different inference.
         </p>
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          Each observation within the current round produces a single updated number —
+          not a distribution, just one probability — and that number becomes the new
+          <span class="im">P(W)</span> going into the next observation:
+        </p>
+        <div class="math-block">
+          <span class="eq-label">// sequential updating within a round · Spencer as example</span>
+          prior = P(W) = 1/5 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ observe S₁ &nbsp;→ posterior = P(W | S₁)<br>
+          prior = P(W | S₁) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ observe S₂ &nbsp;→ posterior = P(W | S₁, S₂)<br>
+          prior = P(W | S₁, S₂) &nbsp;&nbsp;&nbsp;→ observe ¬S₃ → posterior = P(W | S₁, S₂, ¬S₃)<br><br>
+          <span class="math-comment">// each posterior is one number, not a distribution</span><br>
+          <span class="math-comment">// each posterior becomes the prior for the next observation</span>
+        </div>
 
         <div class="fun-fact" style="margin:1.25rem 0;">
           <span class="ff-label">// deeper dive · where the likelihoods come from</span>
           <p>
-            Why is <span class="im">P(S|W) = α_w / (α_w + β_w)</span>? The answer is
-            marginalization: <span class="im">P(S|W) = ∫ P(S|θ_w) · p(θ_w) dθ_w</span>,
-            where <span class="im">p(θ_w) = Beta(α_w, β_w)</span> is your accumulated belief
-            about the player's true suspicious rate after all past rounds as W. Each past round
-            contributed one Bayesian update — here's what a single update looks like, starting
-            from a current prior <span class="im">Beta(α_w, β_w)</span> and observing S:
+            Think of <span class="im">θ_w</span> as Charles's or Spencer's true werewolf
+            personality — a fixed number describing how suspicious they naturally behave
+            when playing as werewolf. Like the true probability of heads on a coin, it exists
+            independently of any particular observation. Charles might have
+            <span class="im">θ_w = 0.7</span>, meaning he acts suspicious 70% of the time
+            as werewolf, regardless of what you've observed so far. The problem is you can
+            never observe <span class="im">θ_w</span> directly — only outcomes (S or ¬S) in
+            each round. The more rounds you watch, the more precisely you can estimate
+            the true <span class="im">θ_w</span>. This is exactly the coin flip problem:
+            each flip is a noisy observation of the underlying probability, and more flips
+            narrow your uncertainty.
+          </p>
+          <p>
+            Why is <span class="im">P(S|W) = α_w / (α_w + β_w)</span>? Intuitively,
+            it is just counting: add up every suspicious behavior they showed while playing
+            as werewolf, then divide by the total number of behaviors they showed as werewolf.
+          </p>
+          <p>
+            Formally, because <span class="im">θ_w</span> is unknown we cannot plug it
+            in directly. Instead we build a distribution <span class="im">p(θ_w)</span>
+            over all plausible values of it and use <span class="im">E[θ_w]</span> — the
+            mean of that distribution — as our best estimate. As more rounds accumulate,
+            the distribution narrows and <span class="im">E[θ_w]</span> converges to the
+            true <span class="im">θ_w</span>.
+          </p>
+          <p>
+            To build <span class="im">p(θ_w)</span>, we apply Bayes' rule once per past
+            round, computing <span class="im">p(θ_w | S)</span> — our updated belief about
+            <span class="im">θ_w</span> after observing S. Each
+            <span class="im">p(θ_w | S)</span> becomes the prior going into the next round.
+            After all past rounds, the final <span class="im">p(θ_w | S)</span> is what we
+            call <span class="im">p(θ_w)</span> — shorthand for
+            <span class="im">p(θ_w | S₁, ¬S₂, S₃, ...)</span>, with
+            <span class="im">α_w</span> and <span class="im">β_w</span> encoding all
+            past observations. Here is what one update looks like:
           </p>
           <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
             <span class="eq-label">// one round's update to θ_w after observing S as W</span>
             p(θ_w | S) ∝ P(S | θ_w) · p(θ_w)<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= θ_w · Beta(α_w, β_w)<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= Beta(α_w + 1, β_w) &nbsp;&nbsp;<span class="math-comment">// by Beta-Bernoulli conjugacy</span><br><br>
-            <span class="math-comment">// symmetrically, after ¬S: p(θ_w | ¬S) = Beta(α_w, β_w + 1)</span><br>
-            <span class="math-comment">// each round's posterior becomes the prior for the next</span><br>
-            <span class="math-comment">// after all past rounds as W: p(θ_w) = Beta(α_w, β_w)</span><br>
-            <span class="math-comment">// same process builds p(θ_i) = Beta(α_i, β_i) from rounds as I</span>
+            <span class="math-comment">// symmetrically, after ¬S: p(θ_w | ¬S) = Beta(α_w, β_w + 1)</span>
           </div>
           <p>
-            That accumulated posterior — <span class="im">p(θ_w | all past rounds as W) = Beta(α_w, β_w)</span> —
-            is the <span class="im">p(θ_w)</span> term in the marginalization integral below.
-            We write it as <span class="im">p(θ_w)</span> for short because <span class="im">α_w</span>
-            and <span class="im">β_w</span> already encode all past observations.
-            Rather than using a single fixed value for <span class="im">θ_w</span>, we
-            integrate <span class="im">P(S|θ_w)</span> over all its plausible values, weighted
-            by <span class="im">Beta(α_w, β_w)</span>:
+            That posterior immediately becomes the prior for the next round — there is no
+            separate step, just a relabeling. Here is what three past rounds look like
+            concretely:
           </p>
           <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
-            <span class="eq-label">// substituting p(θ_w) = Beta(α_w, β_w) into the marginalization</span>
-            P(S|W) = ∫ P(S|θ_w) · p(θ_w) dθ_w<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ∫ θ_w · p(θ_w) dθ_w &nbsp;&nbsp;<span class="math-comment">// since P(S|θ_w) = θ_w</span><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= E[θ_w] = α_w / (α_w + β_w)
+            <span class="eq-label">// three past rounds as W · S, ¬S, S</span>
+            round 1: prior = Beta(0,0), observe S &nbsp;→ p(θ_w|S) &nbsp;&nbsp;= Beta(1,0) → becomes new prior<br>
+            round 2: prior = Beta(1,0), observe ¬S →  p(θ_w|¬S) = Beta(1,1) → becomes new prior<br>
+            round 3: prior = Beta(1,1), observe S &nbsp;→ p(θ_w|S) &nbsp;&nbsp;= Beta(2,1) → becomes new prior<br><br>
+            <span class="math-comment">// after all rounds: the final posterior is p(θ_w) = Beta(α_w, β_w)</span><br>
+            <span class="math-comment">// α_w = total S observations, β_w = total ¬S observations</span><br>
+            <span class="math-comment">// p(θ_w|S) and p(θ_w) are the same object — posterior and prior are round-relative labels</span>
           </div>
           <p>
-            The integral reduces to the mean of the Beta because
-            <span class="im">P(S|θ_w) = θ_w</span> — the Bernoulli likelihood is linear in
-            <span class="im">θ_w</span>, so integrating it against the Beta density gives
-            exactly the first moment. The behavioral history, accumulated round by round,
-            collapses to a single number that directly controls how much each new observation
-            moves <span class="im">P(W)</span>.
+            After all past rounds, <span class="im">p(θ_w) = Beta(α_w, β_w)</span> is
+            the final posterior with all counts baked in. Now we use it to compute
+            <span class="im">P(S|W)</span> via the law of total probability — the same
+            idea as a weighted average: for each candidate value of
+            <span class="im">θ_w</span>, ask "how likely is S under this rate?", weight
+            by "how likely is this rate?", and sum. Because
+            <span class="im">p(θ_w)</span> is continuous over [0,1], that sum is an
+            integral:
+          </p>
+          <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
+            <span class="eq-label">// marginalizing over θ_w</span>
+            P(S|W) = ∫ P(S|θ_w) · p(θ_w) dθ_w<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ∫ θ_w · p(θ_w) dθ_w &nbsp;&nbsp;<span class="math-comment">// since P(S|θ_w) = θ_w by definition of θ_w</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= E[θ_w] = α_w / (α_w + β_w) &nbsp;&nbsp;<span class="math-comment">// mean of Beta(α_w, β_w)</span>
+          </div>
+          <p>
+            Because <span class="im">P(S|θ_w) = θ_w</span>, the integral reduces to the
+            mean of <span class="im">p(θ_w)</span> — nothing more than counting suspicious
+            rounds as W and dividing by total rounds as W. With more observations, this
+            converges to the true <span class="im">θ_w</span>.
+          </p>
+          <p>
+            Notice that there are two separate layers of sequential updating happening here.
+            <span class="im">θ_w</span> is updated <em>across games</em>: each past round
+            where this player was W added one observation to
+            <span class="im">p(θ_w)</span>, incrementing <span class="im">α_w</span> or
+            <span class="im">β_w</span> by one. The likelihoods
+            <span class="im">P(S|W)</span> and <span class="im">P(S|I)</span> that result
+            are then fixed for the duration of the current game. Meanwhile,
+            <span class="im">P(W)</span> is updated <em>within the current game</em>: it
+            starts at 1/5, and each new observation this round moves it — the posterior
+            after one observation becomes the prior going into the next.
+          </p>
+          <p>
+            This can feel backwards: the likelihood carries old cross-game history, while
+            the prior absorbs fresh within-game observations. But prior and likelihood are
+            mathematical roles, not labels for new vs. old data. The prior is always your
+            current belief about the unknown quantity — here, whether this player is the
+            werewolf. The likelihood is always how well each hypothesis explains the current
+            observation — here, how probable S is under role W vs. role I. The likelihoods
+            happen to be estimated from past data, but their job is to weigh the hypotheses
+            against the current observation, and that job does not change.
           </p>
         </div>
 
