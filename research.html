@@ -534,10 +534,10 @@
 
         <div class="math-block">
           <span class="eq-label">// Beta prior in count form · W = werewolf role, I = innocent role (b = bystander)</span>
-          θ_w ~ Beta(α_w, β_w) &nbsp;&nbsp; where α_w = past suspicious acts in role W<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w = past non-suspicious acts in role W<br><br>
-          θ_b ~ Beta(α_b, β_b) &nbsp;&nbsp; where α_b = past suspicious acts in role I<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b = past non-suspicious acts in role I<br><br>
+          θ_w ~ Beta(α_w, β_w) &nbsp;&nbsp; where α_w = suspicious acts as W<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w = non-suspicious acts as W<br><br>
+          θ_b ~ Beta(α_b, β_b) &nbsp;&nbsp; where α_b = suspicious acts as I<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b = non-suspicious acts as I<br><br>
           <span class="math-comment">// E[θ_w] = α_w / (α_w + β_w) · E[θ_b] = α_b / (α_b + β_b)</span><br>
           <span class="math-comment">// More past rounds → larger α+β → narrower distribution → more confident prior.</span><br>
           <span class="math-comment">// Charles: α_w=8, β_w=2, α_b=8, β_b=2 → E[θ_w] = E[θ_b] = 0.80. Priors identical.</span><br>
