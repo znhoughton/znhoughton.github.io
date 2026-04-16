@@ -522,123 +522,100 @@
           </div>
         </div>
 
-        <h3 class="stat-h3">The Prior: Keeping Count</h3>
+        <h3 class="stat-h3">Behavioral History</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
           Before the current round starts, you've been keeping mental tally marks across all
           previous rounds. For each player you track two columns: how often they acted suspiciously
           <em>when they were the werewolf</em>, and how often they acted suspiciously <em>when they
-          were innocent</em>. These counts form the <strong>prior</strong>: everything you knew
-          about this player before the current round began. We encode them using a
-          <strong>Beta distribution</strong>:
+          were innocent</em>. We encode these counts as Beta distributions:
         </p>
 
         <div class="math-block">
-          <span class="eq-label">// Beta prior in count form · W = werewolf role, I = innocent role</span>
+          <span class="eq-label">// behavioral history in count form · W = werewolf role, I = innocent role</span>
           θ_w ~ Beta(α_w, β_w) &nbsp;&nbsp; where α_w = suspicious acts as W<br>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w = non-suspicious acts as W<br><br>
           θ_i ~ Beta(α_i, β_i) &nbsp;&nbsp; where α_i = suspicious acts as I<br>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_i = non-suspicious acts as I<br><br>
           <span class="math-comment">// E[θ_w] = α_w / (α_w + β_w) · E[θ_i] = α_i / (α_i + β_i)</span><br>
-          <span class="math-comment">// More past rounds → larger α+β → narrower distribution → more confident prior.</span><br>
-          <span class="math-comment">// Charles: α_w=8, β_w=2, α_i=8, β_i=2 → E[θ_w] = E[θ_i] = 0.80. Priors identical.</span><br>
+          <span class="math-comment">// More past rounds → larger α+β → narrower distribution → more reliable estimate.</span><br>
+          <span class="math-comment">// Charles: α_w=8, β_w=2, α_i=8, β_i=2 → E[θ_w] = E[θ_i] = 0.80. Identical.</span><br>
           <span class="math-comment">// Spencer: α_w=8, β_w=2, α_i=2, β_i=8 → E[θ_w] = 0.80, E[θ_i] = 0.20. Separated.</span>
         </div>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          The Beta distributions are the priors on θ_w and θ_i — your beliefs about each rate parameter — built entirely from past rounds. The more
-          rounds you've observed, the narrower and more reliable these distributions become.
-          Crucially, they are fixed for the duration of the current round: you're using what
-          you learned before to make inferences now.
+          These distributions are fixed for the duration of the current round — you're using
+          what you learned before to make inferences now.
         </p>
 
-        <h3 class="stat-h3">The Model</h3>
+        <h3 class="stat-h3">Updating P(W)</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          Now a new round begins. Each act is either suspicious (S) or not (¬S). Two priors
-          are at work. The first is <span class="im">P(W)</span>: a prior on which process is
-          generating your observations: the werewolf process (rate <span class="im">θ_w</span>)
-          or the innocent process (rate <span class="im">θ_i</span>). It starts at
-          <span class="im">P₀ = 0.20</span> and updates after each observation within the
-          round: each act shifts the balance toward whichever role predicted it better.
-          The second is the Beta distributions: player-level priors on the rates
-          <span class="im">θ_w</span> and <span class="im">θ_i</span> themselves, built from
-          what you've observed across previous rounds; <span class="im">θ_w</span> captures
-          how suspicious this player tends to be in role W, and <span class="im">θ_i</span>
-          captures the same for role I. These don't reset; they accumulate.
-          The likelihoods are their expected values:
+          A new round begins. <span class="im">P(W) = 1/5</span> — one werewolf among five
+          players. Each observation updates it via Bayes' rule, and the result becomes the new
+          <span class="im">P(W)</span> going into the next observation. The likelihoods come
+          directly from the behavioral history:
         </p>
 
         <div class="math-block">
-          <span class="eq-label">// Likelihoods from prior counts · S = suspicious act, ¬S = non-suspicious act</span>
+          <span class="eq-label">// likelihoods · from behavioral history</span>
           P(S  | W) = E[θ_w] = α_w / (α_w + β_w)<br>
           P(S  | I) = E[θ_i] = α_i / (α_i + β_i)<br><br>
           P(¬S | W) = 1 − E[θ_w] = β_w / (α_w + β_w)<br>
-          P(¬S | I) = 1 − E[θ_i] = β_i / (α_i + β_i)<br><br>
-          <span class="math-comment">// No integrals needed — the count ratio is the likelihood directly.</span>
+          P(¬S | I) = 1 − E[θ_i] = β_i / (α_i + β_i)
         </div>
 
-        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          Plugging these into Bayes' rule and updating sequentially after each observation:
-        </p>
-
-        <div class="math-block">
-          <span class="eq-label">// Full update rule · after observing S</span>
-          P(W | S) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · P(S|W)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · P(S|W) + (1−P(W)) · P(S|I)<br><br>
-          <span class="eq-label">// Expanding P(S|W) and P(S|I) from the Beta priors</span>
+        <div class="math-block" style="margin-top:0.75rem;">
+          <span class="eq-label">// full update rule · after observing S</span>
           P(W | S) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w)<br>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────────────────────────────<br>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w) + (1−P(W)) · α_i/(α_i+β_i)<br><br>
-          <span class="math-comment">// Symmetrically, after ¬S: replace α_w with β_w and α_i with β_i above.</span><br>
-          <span class="math-comment">// α_w, β_w, α_i, β_i are fixed within a round — they come from past rounds.</span>
-        </div>
-
-        <div class="fun-fact" style="margin:1.25rem 0;">
-          <span class="ff-label">// deeper dive · where the likelihood comes from</span>
-          <p>
-            <span class="im">P(S|W)</span> isn't a known constant: <span class="im">θ_w</span>,
-            the player's true suspicious rate in role W, is itself unknown. The Beta distribution
-            is a prior over <span class="im">θ_w</span>. To compute <span class="im">P(S|W)</span>,
-            we marginalize out the unknown <span class="im">θ_w</span> by integrating the
-            Bernoulli likelihood against the Beta prior:
-          </p>
-          <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
-            <span class="eq-label">// θ level · likelihood × prior on θ_w, integrated out</span>
-            P(S|W) = ∫ P(S|θ_w) · p(θ_w) dθ_w = E[θ_w] = α_w / (α_w + β_w)
-          </div>
-          <p>
-            Since <span class="im">P(S|θ_w) = θ_w</span> (a Bernoulli draw), the integral
-            reduces to the mean of the Beta. Substituting back, the full update is Bayes'
-            rule operating at two levels simultaneously:
-          </p>
-          <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
-            <span class="eq-label">// role level · prior × likelihood, where likelihood is itself prior × likelihood</span>
-            P(W|S) ∝ P(W) × ∫ P(S|θ_w) · p(θ_w) dθ_w<br><br>
-            <span class="math-comment">// P(W)      prior on role W</span><br>
-            <span class="math-comment">// P(S|θ_w)  Bernoulli likelihood at the θ level</span><br>
-            <span class="math-comment">// p(θ_w)    Beta prior on θ_w, marginalized out by the integral</span>
-          </div>
-          <p>
-            The thing playing the role of likelihood at the top level is itself a likelihood ×
-            prior at the level below, collapsed by integration. This is the defining structure
-            of a hierarchical model: Bayes' rule applied at two levels, where each level's
-            likelihood is obtained by marginalizing out the level below. The Beta-Bernoulli
-            combination is one of the rare cases where this integral has a clean closed form;
-            most models require numerical approximation.
-          </p>
+          <span class="math-comment">// after ¬S: replace α_w with β_w and α_i with β_i above</span><br>
+          <span class="math-comment">// α_w, β_w, α_i, β_i are fixed within a round — they come from past rounds</span>
         </div>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          The key is the <strong>likelihood ratio</strong>
-          <span class="im">P(S|W) / P(S|I)</span>: how much more likely is S under role W
-          than role I? For Charles,
-          <span class="im">P(S|W) / P(S|I) = E[θ_w] / E[θ_i] = 0.80 / 0.80 = 1</span>:
-          S is equally likely under either role, so observing it leaves
-          <span class="im">P(W)</span> unchanged. For Spencer,
-          <span class="im">P(S|W) / P(S|I) = 0.80 / 0.20 = 4</span>: each S quadruples
-          the odds he's the werewolf. The prior, built from past rounds, is what makes one
-          player's behavior informative and the other's irrelevant.
+          How much <span class="im">P(W)</span> moves is controlled by the likelihood ratio
+          <span class="im">P(S|W) / P(S|I)</span>. For Charles,
+          <span class="im">0.80 / 0.80 = 1</span>: S is equally likely under either role,
+          so it leaves <span class="im">P(W)</span> unchanged. For Spencer,
+          <span class="im">0.80 / 0.20 = 4</span>: each S quadruples the odds he's the
+          werewolf. Same observation, same rule — different behavioral history, different inference.
         </p>
+
+        <div class="fun-fact" style="margin:1.25rem 0;">
+          <span class="ff-label">// deeper dive · where the likelihoods come from</span>
+          <p>
+            Why is <span class="im">P(S|W) = α_w / (α_w + β_w)</span>? Because
+            <span class="im">θ_w</span> — the player's true suspicious rate in role W — is
+            unknown. Each past round where this player was the werewolf updated your belief
+            about it via Bayes' rule:
+          </p>
+          <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
+            <span class="eq-label">// each past observation shifts the distribution of θ_w</span>
+            observe S as W:   p(θ_w) × θ_w      → Beta(α_w + 1, β_w)<br>
+            observe ¬S as W:  p(θ_w) × (1−θ_w)  → Beta(α_w,     β_w + 1)<br><br>
+            <span class="math-comment">// after all past rounds as W: p(θ_w) = Beta(α_w, β_w)</span><br>
+            <span class="math-comment">// same process builds p(θ_i) = Beta(α_i, β_i) from rounds as I</span>
+          </div>
+          <p>
+            Because <span class="im">θ_w</span> is unknown, <span class="im">P(S|W)</span>
+            is obtained by averaging over all plausible values of <span class="im">θ_w</span>,
+            weighted by how likely each value is given past rounds:
+          </p>
+          <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
+            <span class="eq-label">// marginalizing over θ_w</span>
+            P(S|W) = ∫ P(S|θ_w) · p(θ_w) dθ_w<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ∫ θ_w · p(θ_w) dθ_w &nbsp;&nbsp;<span class="math-comment">// since P(S|θ_w) = θ_w</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= E[θ_w] = α_w / (α_w + β_w)
+          </div>
+          <p>
+            The integral reduces to the mean of the Beta because
+            <span class="im">P(S|θ_w) = θ_w</span> — the Bernoulli likelihood is linear in
+            <span class="im">θ_w</span>, so integrating it against the Beta density gives
+            exactly the first moment. The behavioral history, accumulated round by round,
+            collapses to a single number that directly controls how much each new observation
+            moves <span class="im">P(W)</span>.
+          </p>
+        </div>
 
         <h3 class="stat-h3">Between Rounds: The Prior Updates</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
