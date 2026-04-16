@@ -33,6 +33,7 @@
       border-radius: var(--radius);
       padding: 1.75rem 2rem;
       margin-top: 2rem;
+      overflow: hidden;
     }
 
     .demo-card .demo-desc {
@@ -155,6 +156,61 @@
     .bayes-btn.primary:hover { opacity: 0.85; }
     #bayes-stats { font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin-top: 0.75rem; line-height: 1.8; }
     #bayes-stats span { color: var(--text-secondary); }
+
+    /* Statistics walkthrough extras */
+    .stat-h3 {
+      font-size: 0.95rem; font-weight: 500; color: var(--text-primary);
+      margin-top: 2.5rem; margin-bottom: 0.75rem;
+    }
+    .math-block {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent); border-radius: var(--radius);
+      padding: 1.25rem 1.5rem; margin: 1.25rem 0;
+      font-family: var(--mono); font-size: 0.85rem; color: var(--text-secondary);
+      line-height: 1.9; max-width: 660px;
+    }
+    .math-block .eq-label {
+      font-size: 10px; color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 0.6rem; display: block;
+    }
+    .math-block .math-comment { color: var(--text-muted); font-size: 0.78rem; }
+    .player-pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      margin: 1.5rem 0 2rem; max-width: 660px;
+    }
+    @media (max-width: 520px) { .player-pair { grid-template-columns: 1fr; } }
+    .player-card-math {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem;
+    }
+    .player-card-math h4 {
+      font-size: 0.95rem; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem;
+    }
+    .player-card-math p {
+      font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.5rem;
+    }
+    .player-card-math .prior-tag {
+      font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.15rem;
+    }
+    .player-card-math .verdict-tag {
+      font-family: var(--mono); font-size: 0.8rem; color: var(--accent); margin-top: 0.75rem; display: block;
+    }
+    #prior-canvas { width: 100%; border-radius: 6px; display: block; }
+
+    /* Regression */
+    #reg-canvas { width: 100%; border-radius: 6px; display: block; }
+    .reg-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; align-items: center; }
+    .reg-btn { font-family: var(--mono); font-size: 13px; padding: 0.4rem 1rem; border-radius: 8px; border: 1px solid var(--border-hover); color: var(--text-secondary); cursor: pointer; background: transparent; transition: all 0.15s; }
+    .reg-btn:hover { color: var(--text-primary); border-color: var(--accent); }
+    .reg-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+    .subsection-label {
+      font-family: var(--mono); font-size: 11px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 1.25rem; margin-top: 2.5rem;
+      padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    .subsection-label:first-child { margin-top: 0; }
   </style>
 </head>
 <body>
@@ -183,7 +239,7 @@
 
       <div class="research-blurb" style="padding-bottom: 3.5rem; border-bottom: 1px solid var(--border);">
         <p>
-          Language is not a fixed system of rules — it is a dynamic cognitive process,
+          Language is not a fixed system of rules — it is a dynamic cognitive system,
           continuously reshaped by every encounter we have with it. At the heart of my work is a
           question about the architecture of that resource: <strong>how do humans and machines
           trade off between storage and computation?</strong>
@@ -349,7 +405,7 @@
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:0.75rem;line-height:1.8;">
           When a listener hears a binomial, they don't simply record the observed form — they
           infer the speaker's <em>intended</em> ordering via a
-          <strong>noisy-channel model</strong> (Gibson et al., 2013; Levy, 2008):
+          <strong>noisy-channel model</strong>:
           <span style="font-family:var(--mono);color:var(--accent);">P(Sᵢ | Sₚ) ∝ P(Sᵢ) · P(Sᵢ→Sₚ)</span>.
           The prior P(Sᵢ) represents <strong>abstract preferences</strong> —
           frequency-independent knowledge about ordering constraints (e.g., shorter words first,
@@ -391,60 +447,299 @@
         <h2 class="section-title">Statistics</h2>
         <p class="section-subtitle">Quantifying uncertainty, updating beliefs from data.</p>
 
-        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1.25rem;line-height:1.8;">
-          Most of my work uses <strong>Bayesian regression</strong> as its primary analysis tool —
-          not just for flexibility, but because it makes assumptions explicit and quantifies
-          uncertainty rather than collapsing it to a p-value. The demo below shows the mechanics
-          using Werewolf as a concrete example. θ is a player's baseline rate of acting suspiciously.
-          The prior encodes what you know about that player before watching them this round.
-          Crucially: if a player <em>always</em> looks nervous, suspicious behavior tells you nothing
-          new — they do it regardless of their role. If someone is <em>usually</em> calm and suddenly
-          acts suspicious, that's a large update. The prior is what makes the difference.
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1.5rem;line-height:1.8;">
+          Most of my work combines <strong>Bayesian modeling</strong> and
+          <strong>mixed-effects regression</strong> as its primary tools, chosen because they
+          make assumptions explicit and quantify uncertainty rather than collapsing it into a
+          p-value. This section walks through the intuition behind each.
         </p>
+
+        <div class="subsection-label" style="margin-top:0;">01 · Bayesian Modeling</div>
+
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1.25rem;line-height:1.8;">
+          For Bayesian modeling, I walk through an extended example from the social deduction
+          game <strong>Werewolf</strong>, a game I genuinely enjoy and one that maps almost
+          perfectly onto the structure of Bayesian inference. No statistics background required.
+        </p>
+
+        <h3 class="stat-h3">The Setup</h3>
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          You're playing Werewolf: 5 players, 1 is secretly the werewolf. You don't know who.
+          During the game you observe someone acting suspiciously. Should that update your belief
+          that they're the werewolf? It depends entirely on their <em>baseline rate of acting
+          suspicious</em>, and critically on whether that rate differs between their werewolf
+          and innocent roles. Compare two players from past games:
+        </p>
+
+        <div class="player-pair">
+          <div class="player-card-math">
+            <h4>Charles: always suspicious</h4>
+            <p>
+              As werewolf, Charles acted suspiciously 8 out of 10 rounds.
+              As an innocent, he acted suspiciously 8 out of 10 rounds.
+              His behavior tells you nothing about his role; it's just his personality.
+            </p>
+            <span class="prior-tag">θ_w ~ Beta(8, 2) &nbsp;· mean ≈ 0.80</span>
+            <span class="prior-tag">θ_b ~ Beta(8, 2) &nbsp;· mean ≈ 0.80</span>
+            <span class="verdict-tag">→ suspicious acts: uninformative</span>
+          </div>
+          <div class="player-card-math">
+            <h4>Spencer: only suspicious as werewolf</h4>
+            <p>
+              As werewolf, Spencer acted suspiciously 8 out of 10 rounds.
+              As an innocent, he acted suspiciously only 2 out of 10 rounds.
+              His suspicious behavior strongly distinguishes his roles.
+            </p>
+            <span class="prior-tag">θ_w ~ Beta(8, 2) &nbsp;· mean ≈ 0.80</span>
+            <span class="prior-tag">θ_b ~ Beta(2, 8) &nbsp;· mean ≈ 0.20</span>
+            <span class="verdict-tag">→ suspicious acts: highly informative</span>
+          </div>
+        </div>
+
+        <h3 class="stat-h3">The Prior: Keeping Count</h3>
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          Before the current round starts, you've been keeping mental tally marks across all
+          previous rounds. For each player you track two columns: how often they acted suspiciously
+          <em>when they were the werewolf</em>, and how often they acted suspiciously <em>when they
+          were innocent</em>. These counts form the <strong>prior</strong> — everything you knew
+          about this player before the current round began. We encode them using a
+          <strong>Beta distribution</strong>:
+        </p>
+
+        <div class="math-block">
+          <span class="eq-label">// Beta prior in count form</span>
+          θ_w ~ Beta(α_w, β_w) &nbsp;&nbsp; where α_w = past suspicious acts as werewolf<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w = past innocent acts as werewolf<br><br>
+          θ_b ~ Beta(α_b, β_b) &nbsp;&nbsp; where α_b = past suspicious acts as innocent<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b = past innocent acts as innocent<br><br>
+          <span class="math-comment">// The expected suspicious rate is just the ratio of counts: E[θ_w] = α_w / (α_w + β_w).</span><br>
+          <span class="math-comment">// More past rounds → larger α+β → narrower distribution → more confident prior.</span><br>
+          <span class="math-comment">// Charles: α_w=8, β_w=2, α_b=8, β_b=2 → E[θ_w] = E[θ_b] = 0.80. Priors identical.</span><br>
+          <span class="math-comment">// Spencer: α_w=8, β_w=2, α_b=2, β_b=8 → E[θ_w] = 0.80, E[θ_b] = 0.20. Separated.</span>
+        </div>
+
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          The Beta distributions are the prior — built entirely from past rounds. The more
+          rounds you've observed, the narrower and more reliable these distributions become.
+          Crucially, they are fixed for the duration of the current round: you're using what
+          you learned before to make inferences now.
+        </p>
+
+        <h3 class="stat-h3">The Model</h3>
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          Now a new round begins. You observe a suspicious act. You want to update
+          <strong>P(werewolf)</strong> — starting from P₀&nbsp;=&nbsp;0.20 (one werewolf
+          in five players). The likelihood of a suspicious act under each hypothesis is just
+          the expected value of the corresponding Beta prior:
+        </p>
+
+        <div class="math-block">
+          <span class="eq-label">// Likelihood from prior counts</span>
+          P(suspicious | werewolf) &nbsp;= E[θ_w] = α_w / (α_w + β_w)<br>
+          P(suspicious | innocent) &nbsp;= E[θ_b] = α_b / (α_b + β_b)<br><br>
+          P(innocent &nbsp;| werewolf) &nbsp;= 1 − E[θ_w] = β_w / (α_w + β_w)<br>
+          P(innocent &nbsp;| innocent) &nbsp;= 1 − E[θ_b] = β_b / (α_b + β_b)<br><br>
+          <span class="math-comment">// No integrals needed — the count ratio is your likelihood directly.</span>
+        </div>
+
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          Plugging these into Bayes' rule and updating sequentially after each observation:
+        </p>
+
+        <div class="math-block">
+          <span class="eq-label">// Full update rule · suspicious observation</span>
+          P(W | suspicious) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────────────────────────────<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w) &nbsp;+ (1−P(W)) · α_b/(α_b+β_b)<br><br>
+          <span class="eq-label">// Full update rule · innocent observation</span>
+          P(W | innocent) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · β_w/(α_w+β_w)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────────────────────────────<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · β_w/(α_w+β_w) + (1−P(W)) · β_b/(α_b+β_b)<br><br>
+          <span class="math-comment">// P(W) starts at P₀ = 0.20 and is replaced by the updated value after each observation.</span><br>
+          <span class="math-comment">// α_w, β_w, α_b, β_b are fixed — they come from past rounds and don't change mid-game.</span>
+        </div>
+
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          The key is the <strong>likelihood ratio</strong> — how much more likely is a suspicious
+          act under werewolf than innocent? For Charles it's 0.80/0.80 = 1: observing him is
+          completely uninformative, regardless of how many times you observe him. For Spencer
+          it's 0.80/0.20 = 4: each suspicious act quadruples the odds that he's the werewolf.
+          The prior, built from past rounds, is what makes one player's behavior informative
+          and the other's irrelevant.
+        </p>
+
+        <h3 class="stat-h3">Between Rounds: The Prior Updates</h3>
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          After the round ends and the werewolf is revealed, you update the relevant tally.
+          If the player was the werewolf, each suspicious act they took this round adds 1 to
+          α_w, each innocent act adds 1 to β_w. If they were innocent, the counts go into
+          α_b and β_b. Over many rounds the Beta distributions narrow — your prior becomes
+          more precise — and the likelihood ratios become increasingly reliable.
+        </p>
+
+        <div class="math-block">
+          <span class="eq-label">// Prior update after a revealed round</span>
+          if player was werewolf: &nbsp;&nbsp;α_w ← α_w + (suspicious acts this round)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w ← β_w + (innocent acts this round)<br><br>
+          if player was innocent: &nbsp;&nbsp;&nbsp;α_b ← α_b + (suspicious acts this round)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b ← β_b + (innocent acts this round)<br><br>
+          <span class="math-comment">// The prior for the next round is the posterior from this one.</span><br>
+          <span class="math-comment">// This is what makes the model improve over time — more rounds means better priors.</span>
+        </div>
 
         <div class="fun-fact">
           <span class="ff-label">// fun fact · neural networks as Bayesian reasoners</span>
           <p>
-            It turns out the Bayesian framework may be more than a metaphor for cognition.
+            The Bayesian framework may be more than a metaphor for cognition.
             Recent work by Kapatsinski (2026) demonstrates that GPT-2 performs
             <em>adaptive partial pooling</em> — rare contexts borrow more information from
             similar contexts, while frequent contexts rely on their own specific evidence. This is
             mathematically equivalent to Bayesian hierarchical regression. A neural network
-            trained only on next-word prediction converges on the same inferential solution that a
-            Bayesian statistician derives analytically. If this holds broadly, it suggests that
-            human language processing and neural language models may share a common computational
-            principle — both approximate optimal Bayesian inference under uncertainty.
+            trained purely on next-word prediction converges on the same inferential solution
+            that a Bayesian statistician derives analytically.
           </p>
         </div>
 
         <div class="demo-card" style="margin-top:2rem;">
-          <span class="demo-label">// interactive demo · Bayesian belief updating</span>
+          <span class="demo-label">// interactive demo · Bayesian updating with Beta priors</span>
           <p class="demo-desc">
-            θ is a player's baseline rate of acting suspiciously. A player who is <em>usually calm</em>
-            but suddenly acts suspicious is more informative than one who always looks nervous — their
-            suspicious behavior is just their personality, not a signal. Select a player and add
-            observations to see how the same evidence carries different weight depending on the prior.
+            Select a player. The top chart shows their Beta priors built from past rounds: the
+            <span style="color:#7c6ef7;font-family:var(--mono);font-size:0.82em;">purple</span> curve
+            is θ_w (suspicious rate as werewolf) and the
+            <span style="color:rgba(148,144,168,0.9);font-family:var(--mono);font-size:0.82em;">gray</span>
+            curve is θ_b (suspicious rate as innocent). Wide overlap (Charles) means no
+            observation can move the needle; clear separation (Spencer) means each act carries
+            real information. Add observations and watch P(werewolf) update below.
           </p>
           <div class="scenario-btns" id="bayes-player-btns" style="margin-bottom:1.25rem;">
-            <button class="scenario-btn active" data-a="2" data-b="8">Usually calm · E[θ] = 0.20</button>
-            <button class="scenario-btn" data-a="5" data-b="5">Unpredictable · E[θ] = 0.50</button>
-            <button class="scenario-btn" data-a="8" data-b="2">Always nervous · E[θ] = 0.80</button>
+            <button class="scenario-btn active" data-aw="8" data-bw="2" data-ab="8" data-bb="2">Charles · always suspicious</button>
+            <button class="scenario-btn" data-aw="7" data-bw="3" data-ab="3" data-bb="7">Alex · sometimes suspicious</button>
+            <button class="scenario-btn" data-aw="8" data-bw="2" data-ab="2" data-bb="8">Spencer · only suspicious as werewolf</button>
           </div>
-          <canvas id="bayes-canvas" height="220"></canvas>
+          <canvas id="prior-canvas" height="120"></canvas>
+          <canvas id="bayes-canvas" height="180" style="margin-top:0.75rem;"></canvas>
           <div class="bayes-btns">
             <button class="bayes-btn primary" id="bayes-hit">+ Suspicious</button>
             <button class="bayes-btn" id="bayes-miss">+ Innocent</button>
-            <button class="bayes-btn" id="bayes-reset">Reset</button>
+            <button class="bayes-btn" id="bayes-reset">Reset Round</button>
+          </div>
+          <div class="bayes-btns" style="margin-top:0.5rem;padding-top:0.75rem;border-top:1px solid var(--border);">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);align-self:center;">end round →</span>
+            <button class="bayes-btn" id="bayes-reveal-wolf">Reveal: Werewolf</button>
+            <button class="bayes-btn" id="bayes-reveal-inno">Reveal: Innocent</button>
+            <button class="bayes-btn" id="bayes-reset-all" style="margin-left:auto;">Reset All</button>
           </div>
           <div id="bayes-stats">
-            Prior: Beta(<span id="b-a0">2</span>, <span id="b-b0">8</span>) &nbsp;|&nbsp; Observations: <span id="b-n">0</span> &nbsp;|&nbsp;
-            Suspicious: <span id="b-h">0</span> &nbsp;|&nbsp; Posterior mean: <span id="b-mean">0.200</span>
+            Round: <span id="b-round">1</span> &nbsp;|&nbsp;
+            Observations: <span id="b-n">0</span> &nbsp;|&nbsp;
+            Suspicious: <span id="b-h">0</span> &nbsp;|&nbsp;
+            P(werewolf): <span id="b-mean">0.200</span>
+          </div>
+        </div>
+
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-top:1.75rem;margin-bottom:0;line-height:1.8;">
+          The key takeaway: <strong>what you know about a player from past rounds directly shapes
+          what you can infer from their behavior now.</strong> The priors θ_w and θ_b aren't
+          just background noise. They encode the entire history of how each player has acted
+          across roles. A player who was always suspicious as the werewolf <em>and</em> always
+          suspicious as an innocent gives you nothing to work with. A player whose suspicious
+          behavior reliably tracks their role is the one whose actions actually move the needle.
+        </p>
+
+        <div class="fun-fact" style="margin-top:1.5rem;margin-bottom:0;">
+          <span class="ff-label">// connection</span>
+          <p>Look familiar? This structure is quite similar to the noisy-channel processing model
+          used to model frequency-dependent preference extremity. In both cases, a prior encodes
+          accumulated evidence about behavior, and current observations update belief about a
+          latent state.</p>
+        </div>
+
+        <p class="research-connect">
+          <em>// research</em>
+          The Bayesian framework is more than a statistical convenience. Comprehenders appear to
+          function as probabilistic inference engines, combining prior knowledge with incoming
+          evidence. My experimental work tries to measure both quantities directly, and the
+          connection to neural network behavior (Kapatsinski, 2026) suggests these may not be
+          two separate stories.
+        </p>
+
+        <div class="subsection-label">02 · Mixed-Effects Regression</div>
+
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1.5rem;line-height:1.8;">
+          Mixed-effects regression is the everyday workhorse of experimental linguistics. It
+          models how one variable predicts another while accounting for structure in the data:
+          multiple observations from the same participant, the same words appearing across
+          participants. Treating those groups as independent inflates confidence; mixed effects
+          pool information across groups in a principled way, a process called
+          <strong>partial pooling</strong>.
+        </p>
+
+        <h3 class="stat-h3">The Question</h3>
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          Does word frequency predict reaction time in a lexical decision task? High-frequency
+          words should be recognized faster. But the size of that effect probably varies across
+          participants: some readers are more sensitive to frequency than others. A mixed-effects
+          model estimates both the population-level trend and participant-specific deviations
+          from it simultaneously.
+        </p>
+
+        <h3 class="stat-h3">The Model</h3>
+
+        <div class="math-block">
+          <span class="eq-label">// mixed-effects model · reaction time and word frequency</span>
+          RT_ij = β₀ + β₁·log(freq_j) + b₀ᵢ + b₁ᵢ·log(freq_j) + ε_ij<br><br>
+          <span class="math-comment">// RT_ij: reaction time for participant i on word j (milliseconds)</span><br>
+          <span class="math-comment">// β₀:    population intercept (average RT when log freq = 0)</span><br>
+          <span class="math-comment">// β₁:    fixed slope (average frequency effect across all participants)</span><br>
+          <span class="math-comment">// b₀ᵢ:   random intercept for participant i (overall faster/slower than average)</span><br>
+          <span class="math-comment">// b₁ᵢ:   random slope for participant i (how much their frequency effect differs)</span><br>
+          <span class="math-comment">// ε_ij:  residual error, ε ~ N(0, σ²)</span>
+        </div>
+
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          The random effects [b₀ᵢ, b₁ᵢ] are assumed jointly normal, centered at zero:
+        </p>
+
+        <div class="math-block">
+          <span class="eq-label">// random effects structure</span>
+          [b₀ᵢ, b₁ᵢ] ~ MVN(0, Σ)<br><br>
+          <span class="math-comment">// Σ captures variance in intercepts, variance in slopes, and their correlation.</span><br>
+          <span class="math-comment">// In R (lme4): lmer(RT ~ log_freq + (1 + log_freq | participant), data = df)</span>
+        </div>
+
+        <h3 class="stat-h3">Why Not Just Fit Each Participant Separately?</h3>
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          Each participant contributes only a limited number of observations, so per-participant
+          ordinary least squares estimates are noisy. The mixed model exploits the fact that
+          participants are drawn from the same population: extreme estimates get pulled toward
+          the group mean in proportion to how uncertain they are. This
+          <strong>shrinkage</strong> improves estimation without assuming everyone is identical.
+          The dashed white line in the demo below is the fixed effect; the colored lines show
+          each participant's model-estimated slope, already partially pooled toward the population.
+        </p>
+
+        <div class="demo-card" style="margin-top:2rem;">
+          <span class="demo-label">// interactive demo · reaction time and word frequency</span>
+          <p class="demo-desc">
+            Simulated data: 6 participants, 20 words each. Each point is one trial. Colored lines
+            show per-participant regression lines (fixed effect plus random effects). The dashed
+            white line is the population-level fixed effect only. Toggle each to see how
+            participants cluster around the group trend.
+          </p>
+          <canvas id="reg-canvas" height="260"></canvas>
+          <div class="reg-btns">
+            <button class="reg-btn active" id="reg-toggle-indiv">Hide individual lines</button>
+            <button class="reg-btn active" id="reg-toggle-pop">Hide population line</button>
           </div>
         </div>
 
         <p class="research-connect">
           <em>// research</em>
-          The Bayesian framework isn't just a statistical convenience — it's a model of cognition. Comprehenders are probabilistic inference engines combining prior knowledge with incoming evidence. My experimental work tries to measure both of those quantities directly, and the connection to neural network behavior (Kapatsinski, 2026) suggests these may not be two separate stories.
+          Mixed-effects models are foundational to my experimental work. When measuring reading
+          times, ordering preferences, or recognition responses, the model must account for the
+          fact that items and participants each introduce their own variance. The random effects
+          structure reflects the actual data-generating process and determines which conclusions
+          the data can support.
         </p>
       </section>
 
@@ -700,7 +995,8 @@
     }
 
     function drawRW(){
-      var W2=canvas.parentElement.clientWidth;
+      var ps=window.getComputedStyle(canvas.parentElement);
+      var W2=canvas.parentElement.clientWidth-parseFloat(ps.paddingLeft)-parseFloat(ps.paddingRight);
       canvas.width=W2*DPR; canvas.height=260*DPR;
       canvas.style.width=W2+'px'; canvas.style.height='260px';
       var w=W2*DPR,h=260*DPR;
@@ -739,8 +1035,7 @@
         vals.forEach(function(v,i){ var x=toX(i),y=toY(v); if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y); });
         ctx.stroke();
       });
-      // Cue labels — inside clip region, floating above each line near trial 80%
-      ctx.save(); ctx.beginPath(); ctx.rect(pad.left,pad.top,pw,ph); ctx.clip();
+      // Cue labels — floating above each line near trial 80%
       s.cues.forEach(function(cue){
         var vals=hist[cue];
         var ti=Math.round(N*0.82), lv=vals[ti];
@@ -754,7 +1049,8 @@
         ctx.fillText('Phase 1', (pad.left+toX(sep))/2, pad.top+14*DPR);
         ctx.fillText('Phase 2', (toX(sep)+pad.left+pw)/2, pad.top+14*DPR);
       }
-      ctx.restore();
+
+      ctx.restore(); // end clip — now Y-axis labels and x-title can draw outside plot rect
 
       // Y axis labels
       ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.font=(10*DPR)+'px "JetBrains Mono"'; ctx.textAlign='right';
@@ -963,7 +1259,9 @@
     }
 
     function drawNC() {
-      var W2 = canvas.parentElement.clientWidth, H2 = 320;
+      var ps=window.getComputedStyle(canvas.parentElement);
+      var W2=canvas.parentElement.clientWidth-parseFloat(ps.paddingLeft)-parseFloat(ps.paddingRight);
+      var H2=320;
       canvas.width=W2*DPR; canvas.height=H2*DPR;
       canvas.style.width=W2+'px'; canvas.style.height=H2+'px';
       var w=W2*DPR, h=H2*DPR;
@@ -1035,6 +1333,7 @@
       // X ticks
       [0,0.25,0.5,0.75,1.0].forEach(function(v){
         ctx.fillStyle='rgba(255,255,255,0.18)';
+        ctx.textAlign = v===0 ? 'left' : (v===1.0 ? 'right' : 'center');
         ctx.fillText(v.toFixed(2), pad.left+pw*v, pad.top+ph+14*DPR);
       });
       // Y axis label (rotated)
@@ -1068,111 +1367,473 @@
   <!-- ══ 4. BAYESIAN UPDATING ══ -->
   <script>
   (function(){
-    var canvas=document.getElementById('bayes-canvas'),ctx=canvas.getContext('2d'),DPR=window.devicePixelRatio||1;
-    var alpha0=2, beta0=8;
-    var hits=0, misses=0;
+    var priorCanvas = document.getElementById('prior-canvas');
+    var bayesCanvas = document.getElementById('bayes-canvas');
+    var pCtx = priorCanvas.getContext('2d');
+    var bCtx = bayesCanvas.getContext('2d');
+    var DPR = window.devicePixelRatio || 1;
 
-    document.querySelectorAll('#bayes-player-btns .scenario-btn').forEach(function(btn){
-      btn.addEventListener('click',function(){
-        document.querySelectorAll('#bayes-player-btns .scenario-btn').forEach(function(b){b.classList.remove('active');});
+    // Player-specific Beta prior counts (set by button)
+    var aw = 8, bw = 2, ab = 8, bb = 2;
+    // Initial counts per player — restored on Reset All
+    var initAw = 8, initBw = 2, initAb = 8, initBb = 2;
+    // Previous round's counts — drawn as faded overlay on prior canvas
+    var prevAw = null, prevBw = null, prevAb = null, prevBb = null;
+    // Prior P(werewolf) — 1 in 5 players
+    var P0 = 0.20;
+    var history = [P0];
+    var obsTypes = [];  // 'S' or 'I' for each observation
+    var roundNum = 1;
+    var MAX_OBS = 15;
+
+    // ── Likelihood from prior counts ──
+    function updatePWolf(isSuspicious, currentP) {
+      var lw = isSuspicious ? aw / (aw + bw) : bw / (aw + bw);
+      var li = isSuspicious ? ab / (ab + bb) : bb / (ab + bb);
+      var num = currentP * lw;
+      var den = num + (1 - currentP) * li;
+      return den > 0 ? num / den : currentP;
+    }
+
+    function betaPDF(x, alpha, beta) {
+      if (x <= 0 || x >= 1) return 0;
+      // Unnormalized — B(α,β) constant omitted since we normalize by maxDens for display
+      return Math.pow(x, alpha - 1) * Math.pow(1 - x, beta - 1);
+    }
+
+    // ── Draw prior canvas (two Beta distributions) ──
+    function drawPrior() {
+      var ps = window.getComputedStyle(priorCanvas.parentElement);
+      var W2 = priorCanvas.parentElement.clientWidth - parseFloat(ps.paddingLeft) - parseFloat(ps.paddingRight);
+      priorCanvas.width = W2 * DPR; priorCanvas.height = 120 * DPR;
+      priorCanvas.style.width = W2 + 'px'; priorCanvas.style.height = '120px';
+      var w = W2 * DPR, h = 120 * DPR;
+      pCtx.clearRect(0, 0, w, h);
+
+      var pad = {top: 10 * DPR, right: 20 * DPR, bot: 30 * DPR, left: 20 * DPR};
+      var pw = w - pad.left - pad.right, ph = h - pad.top - pad.bot;
+
+      // Sample Beta PDFs
+      var N = 200;
+      var xs = [], wVals = [], bVals = [];
+      for (var i = 0; i <= N; i++) {
+        var x = 0.002 + 0.996 * i / N;
+        xs.push(x);
+        wVals.push(betaPDF(x, aw, bw));
+        bVals.push(betaPDF(x, ab, bb));
+      }
+      var maxDens = Math.max.apply(null, wVals.concat(bVals));
+      // Include previous round curves in scale so both are visually comparable
+      if (prevAw !== null) {
+        for (var i = 0; i <= N; i++) {
+          maxDens = Math.max(maxDens, betaPDF(xs[i], prevAw, prevBw), betaPDF(xs[i], prevAb, prevBb));
+        }
+      }
+      if (maxDens <= 0) maxDens = 1;
+
+      function toX(x) { return pad.left + pw * x; }
+      function toY(d) { return pad.top + ph * (1 - d / maxDens); }
+      var baseline = pad.top + ph;
+
+      // Clip to plot rect
+      pCtx.save(); pCtx.beginPath(); pCtx.rect(pad.left, pad.top, pw, ph); pCtx.clip();
+
+      // Previous round distributions (faded dashed overlay)
+      if (prevAw !== null) {
+        pCtx.setLineDash([3 * DPR, 3 * DPR]);
+        pCtx.lineWidth = 1;
+        pCtx.strokeStyle = 'rgba(148,144,168,0.30)';
+        pCtx.beginPath();
+        for (var i = 0; i <= N; i++) {
+          var d = betaPDF(xs[i], prevAb, prevBb);
+          if (i === 0) pCtx.moveTo(toX(xs[i]), toY(d));
+          else pCtx.lineTo(toX(xs[i]), toY(d));
+        }
+        pCtx.stroke();
+        pCtx.strokeStyle = 'rgba(124,110,247,0.30)';
+        pCtx.beginPath();
+        for (var i = 0; i <= N; i++) {
+          var d = betaPDF(xs[i], prevAw, prevBw);
+          if (i === 0) pCtx.moveTo(toX(xs[i]), toY(d));
+          else pCtx.lineTo(toX(xs[i]), toY(d));
+        }
+        pCtx.stroke();
+        pCtx.setLineDash([]);
+      }
+
+      // Draw θ_b (innocent) — gray, behind
+      pCtx.beginPath();
+      pCtx.moveTo(toX(xs[0]), baseline);
+      for (var i = 0; i <= N; i++) pCtx.lineTo(toX(xs[i]), toY(bVals[i]));
+      pCtx.lineTo(toX(xs[N]), baseline);
+      pCtx.closePath();
+      pCtx.fillStyle = 'rgba(148,144,168,0.18)';
+      pCtx.fill();
+      pCtx.strokeStyle = 'rgba(148,144,168,0.55)'; pCtx.lineWidth = 1.5;
+      pCtx.beginPath();
+      for (var i = 0; i <= N; i++) {
+        if (i === 0) pCtx.moveTo(toX(xs[i]), toY(bVals[i]));
+        else pCtx.lineTo(toX(xs[i]), toY(bVals[i]));
+      }
+      pCtx.stroke();
+
+      // Draw θ_w (werewolf) — purple, in front
+      pCtx.beginPath();
+      pCtx.moveTo(toX(xs[0]), baseline);
+      for (var i = 0; i <= N; i++) pCtx.lineTo(toX(xs[i]), toY(wVals[i]));
+      pCtx.lineTo(toX(xs[N]), baseline);
+      pCtx.closePath();
+      pCtx.fillStyle = 'rgba(124,110,247,0.22)';
+      pCtx.fill();
+      pCtx.strokeStyle = 'rgba(124,110,247,0.85)'; pCtx.lineWidth = 2;
+      pCtx.beginPath();
+      for (var i = 0; i <= N; i++) {
+        if (i === 0) pCtx.moveTo(toX(xs[i]), toY(wVals[i]));
+        else pCtx.lineTo(toX(xs[i]), toY(wVals[i]));
+      }
+      pCtx.stroke();
+
+      pCtx.restore(); // end clip
+
+      // X-axis ticks
+      pCtx.fillStyle = 'rgba(255,255,255,0.2)'; pCtx.font = (9 * DPR) + 'px "JetBrains Mono"';
+      [0, 0.25, 0.5, 0.75, 1.0].forEach(function(v) {
+        pCtx.textAlign = v === 0 ? 'left' : (v === 1 ? 'right' : 'center');
+        pCtx.fillText(v.toFixed(2), toX(v), baseline + 13 * DPR);
+      });
+
+      // X-axis title
+      pCtx.fillStyle = 'rgba(255,255,255,0.25)'; pCtx.font = (9 * DPR) + 'px "JetBrains Mono"';
+      pCtx.textAlign = 'center';
+      pCtx.fillText('θ (suspicious rate)', pad.left + pw / 2, h - 1 * DPR);
+
+      // Legend — top-right, outside clip
+      pCtx.font = (9 * DPR) + 'px "JetBrains Mono"'; pCtx.textAlign = 'right';
+      pCtx.fillStyle = 'rgba(124,110,247,0.85)';
+      pCtx.fillText('θ_w · werewolf', pad.left + pw - 4 * DPR, pad.top + 13 * DPR);
+      pCtx.fillStyle = 'rgba(148,144,168,0.75)';
+      pCtx.fillText('θ_b · innocent', pad.left + pw - 4 * DPR, pad.top + 25 * DPR);
+      if (prevAw !== null) {
+        pCtx.fillStyle = 'rgba(255,255,255,0.22)';
+        pCtx.fillText('dashed · prev round', pad.left + pw - 4 * DPR, pad.top + 37 * DPR);
+      }
+    }
+
+    // ── Draw Bayes canvas (P(werewolf) history) ──
+    function drawBayes() {
+      var ps = window.getComputedStyle(bayesCanvas.parentElement);
+      var W2 = bayesCanvas.parentElement.clientWidth - parseFloat(ps.paddingLeft) - parseFloat(ps.paddingRight);
+      bayesCanvas.width = W2 * DPR; bayesCanvas.height = 180 * DPR;
+      bayesCanvas.style.width = W2 + 'px'; bayesCanvas.style.height = '180px';
+      var w = W2 * DPR, h = 180 * DPR;
+      bCtx.clearRect(0, 0, w, h);
+
+      var pad = {top: 16 * DPR, right: 20 * DPR, bot: 38 * DPR, left: 52 * DPR};
+      var pw = w - pad.left - pad.right, ph = h - pad.top - pad.bot;
+
+      function toX(i) { return pad.left + pw * i / MAX_OBS; }
+      function toY(p) { return pad.top + ph * (1 - p); }
+
+      var curP = history[history.length - 1];
+
+      // Clip to plot rect
+      bCtx.save(); bCtx.beginPath(); bCtx.rect(pad.left, pad.top, pw, ph); bCtx.clip();
+
+      // Grid lines
+      bCtx.strokeStyle = 'rgba(255,255,255,0.05)'; bCtx.lineWidth = 1;
+      [0, 0.25, 0.5, 0.75, 1.0].forEach(function(v) {
+        bCtx.beginPath(); bCtx.moveTo(pad.left, toY(v)); bCtx.lineTo(pad.left + pw, toY(v)); bCtx.stroke();
+      });
+
+      // 0.5 coin-flip reference (dashed)
+      bCtx.strokeStyle = 'rgba(255,255,255,0.12)'; bCtx.setLineDash([4 * DPR, 4 * DPR]); bCtx.lineWidth = 1;
+      bCtx.beginPath(); bCtx.moveTo(pad.left, toY(0.5)); bCtx.lineTo(pad.left + pw, toY(0.5)); bCtx.stroke();
+      bCtx.setLineDash([]);
+
+      // P0 prior reference (dashed)
+      bCtx.strokeStyle = 'rgba(124,110,247,0.22)'; bCtx.setLineDash([3 * DPR, 3 * DPR]); bCtx.lineWidth = 1;
+      bCtx.beginPath(); bCtx.moveTo(pad.left, toY(P0)); bCtx.lineTo(pad.left + pw, toY(P0)); bCtx.stroke();
+      bCtx.setLineDash([]);
+
+      // Observation dots near bottom of plot
+      obsTypes.forEach(function(o, i) {
+        bCtx.fillStyle = o === 'S' ? 'rgba(239,68,68,0.75)' : 'rgba(52,211,153,0.75)';
+        bCtx.beginPath();
+        bCtx.arc(toX(i + 0.5), toY(0) - 7 * DPR, 3.5 * DPR, 0, 2 * Math.PI);
+        bCtx.fill();
+      });
+
+      // P(werewolf) history line
+      if (history.length > 1) {
+        bCtx.strokeStyle = '#7c6ef7'; bCtx.lineWidth = 2.5; bCtx.lineJoin = 'round';
+        bCtx.beginPath();
+        history.forEach(function(p, i) {
+          if (i === 0) bCtx.moveTo(toX(i), toY(p)); else bCtx.lineTo(toX(i), toY(p));
+        });
+        bCtx.stroke();
+      }
+
+      // Current P dot
+      bCtx.fillStyle = '#7c6ef7';
+      bCtx.beginPath(); bCtx.arc(toX(history.length - 1), toY(curP), 5 * DPR, 0, 2 * Math.PI); bCtx.fill();
+
+      // Labels inside plot
+      bCtx.font = (9 * DPR) + 'px "JetBrains Mono"'; bCtx.textAlign = 'left';
+      bCtx.fillStyle = 'rgba(124,110,247,0.5)';
+      bCtx.fillText('prior = ' + P0.toFixed(2), pad.left + 4 * DPR, toY(P0) - 4 * DPR);
+      bCtx.fillStyle = 'rgba(255,255,255,0.18)';
+      bCtx.fillText('coin flip', pad.left + 4 * DPR, toY(0.5) - 4 * DPR);
+
+      bCtx.restore(); // end clip
+
+      // Y-axis labels
+      bCtx.fillStyle = 'rgba(255,255,255,0.2)'; bCtx.font = (9 * DPR) + 'px "JetBrains Mono"'; bCtx.textAlign = 'right';
+      [0, 0.25, 0.5, 0.75, 1.0].forEach(function(v) {
+        bCtx.fillText(v.toFixed(2), pad.left - 4 * DPR, toY(v) + 3 * DPR);
+      });
+
+      // Y-axis title (rotated)
+      bCtx.save();
+      bCtx.translate(12 * DPR, pad.top + ph / 2);
+      bCtx.rotate(-Math.PI / 2);
+      bCtx.fillStyle = 'rgba(255,255,255,0.2)'; bCtx.font = (9 * DPR) + 'px "JetBrains Mono"'; bCtx.textAlign = 'center';
+      bCtx.fillText('P(werewolf)', 0, 0);
+      bCtx.restore();
+
+      // X-axis label
+      bCtx.fillStyle = 'rgba(255,255,255,0.25)'; bCtx.font = (10 * DPR) + 'px "JetBrains Mono"'; bCtx.textAlign = 'center';
+      bCtx.fillText('Observation #', pad.left + pw / 2, h - 5 * DPR);
+
+      // X ticks
+      bCtx.fillStyle = 'rgba(255,255,255,0.18)'; bCtx.font = (9 * DPR) + 'px "JetBrains Mono"';
+      [0, 5, 10, 15].forEach(function(t) {
+        bCtx.textAlign = t === 0 ? 'left' : (t === 15 ? 'right' : 'center');
+        bCtx.fillText(String(t), toX(t), pad.top + ph + 14 * DPR);
+      });
+
+      // Stats
+      var nObs = obsTypes.length;
+      var nSus = obsTypes.filter(function(o) { return o === 'S'; }).length;
+      document.getElementById('b-round').textContent = roundNum;
+      document.getElementById('b-n').textContent = nObs;
+      document.getElementById('b-h').textContent = nSus;
+      document.getElementById('b-mean').textContent = curP.toFixed(3);
+    }
+
+    function draw() { drawPrior(); drawBayes(); }
+
+    function addObs(isSuspicious) {
+      if (obsTypes.length >= MAX_OBS) return;
+      obsTypes.push(isSuspicious ? 'S' : 'I');
+      history.push(updatePWolf(isSuspicious, history[history.length - 1]));
+      draw();
+    }
+
+    function endRound(wasWerewolf) {
+      var nSus = obsTypes.filter(function(o) { return o === 'S'; }).length;
+      var nInno = obsTypes.length - nSus;
+      prevAw = aw; prevBw = bw; prevAb = ab; prevBb = bb;
+      if (wasWerewolf) { aw += nSus; bw += nInno; }
+      else             { ab += nSus; bb += nInno; }
+      roundNum++;
+      history = [P0]; obsTypes = [];
+      draw();
+    }
+
+    // Player buttons
+    document.querySelectorAll('#bayes-player-btns .scenario-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('#bayes-player-btns .scenario-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
-        alpha0=parseInt(btn.dataset.a); beta0=parseInt(btn.dataset.b);
-        hits=0; misses=0;
-        document.getElementById('b-a0').textContent=alpha0;
-        document.getElementById('b-b0').textContent=beta0;
+        aw = parseInt(btn.dataset.aw); bw = parseInt(btn.dataset.bw);
+        ab = parseInt(btn.dataset.ab); bb = parseInt(btn.dataset.bb);
+        initAw = aw; initBw = bw; initAb = ab; initBb = bb;
+        prevAw = null; prevBw = null; prevAb = null; prevBb = null;
+        history = [P0]; obsTypes = []; roundNum = 1;
         draw();
       });
     });
 
-    function lgamma(x){
-      var g=7,c=[0.99999999999980993,676.5203681218851,-1259.1392167224028,
-        771.32342877765313,-176.61502916214059,12.507343278686905,
-        -0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];
-      if(x<0.5) return Math.log(Math.PI/Math.sin(Math.PI*x))-lgamma(1-x);
-      x-=1; var ag=c[0]; for(var i=1;i<g+2;i++) ag+=c[i]/(x+i);
-      var t=x+g+0.5; return 0.5*Math.log(2*Math.PI)+(x+0.5)*Math.log(t)-t+Math.log(ag);
-    }
-    function logBeta(a,b){return lgamma(a)+lgamma(b)-lgamma(a+b);}
-    function betaPDF(x,a,b){
-      if(x<=0||x>=1) return 0;
-      return Math.exp((a-1)*Math.log(x)+(b-1)*Math.log(1-x)-logBeta(a,b));
+    document.getElementById('bayes-hit').addEventListener('click', function() { addObs(true); });
+    document.getElementById('bayes-miss').addEventListener('click', function() { addObs(false); });
+    document.getElementById('bayes-reset').addEventListener('click', function() {
+      history = [P0]; obsTypes = []; draw();
+    });
+    document.getElementById('bayes-reveal-wolf').addEventListener('click', function() { endRound(true); });
+    document.getElementById('bayes-reveal-inno').addEventListener('click', function() { endRound(false); });
+    document.getElementById('bayes-reset-all').addEventListener('click', function() {
+      aw = initAw; bw = initBw; ab = initAb; bb = initBb;
+      prevAw = null; prevBw = null; prevAb = null; prevBb = null;
+      history = [P0]; obsTypes = []; roundNum = 1; draw();
+    });
+    window.addEventListener('resize', draw);
+    draw();
+  })();
+  </script>
+
+  <!-- ══ REGRESSION DEMO ══ -->
+  <script>
+  (function() {
+    var canvas = document.getElementById('reg-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var DPR = window.devicePixelRatio || 1;
+    var showIndiv = true, showPop = true;
+
+    // Seeded pseudo-random for reproducible simulated data
+    var _seed = 1337;
+    function rng() { _seed = (_seed * 1664525 + 1013904223) >>> 0; return _seed / 4294967296; }
+    function randn() {
+      var u = rng() + 1e-12, v = rng();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
     }
 
-    function draw(){
-      var W2=canvas.parentElement.clientWidth;
-      canvas.width=W2*DPR; canvas.height=220*DPR;
-      canvas.style.width=W2+'px'; canvas.style.height='220px';
-      var w=W2*DPR,h=220*DPR;
-      ctx.clearRect(0,0,w,h);
-      var pad={top:20*DPR,right:20*DPR,bot:36*DPR,left:48*DPR};
-      var pw=w-pad.left-pad.right,ph=h-pad.top-pad.bot;
-      var a=alpha0+hits,b=beta0+misses;
-      var N=200,ys=[]; for(var i=0;i<=N;i++) ys.push(betaPDF(i/N,a,b));
-      var maxY=Math.max.apply(null,ys)||1;
-      // Use combined max so prior never bleeds above posterior scale
-      if(hits+misses>0){
-        var py=[]; for(var i=0;i<=N;i++) py.push(betaPDF(i/N,alpha0,beta0));
-        maxY=Math.max(maxY,Math.max.apply(null,py));
+    // Population parameters
+    var BETA0 = 700, BETA1 = -35;
+    var N_PART = 6, N_WORDS = 20;
+    var SD_INT = 55, SD_SLP = 10, SD_RES = 45;
+
+    // Random effects per participant
+    var b0 = [], b1 = [];
+    for (var i = 0; i < N_PART; i++) { b0.push(randn() * SD_INT); b1.push(randn() * SD_SLP); }
+
+    // Word log-frequencies
+    var logFreqs = [];
+    for (var j = 0; j < N_WORDS; j++) logFreqs.push(1 + rng() * 7);
+
+    // Simulated observations
+    var pts = [];
+    for (var i = 0; i < N_PART; i++) {
+      for (var j = 0; j < N_WORDS; j++) {
+        var x = logFreqs[j];
+        var y = BETA0 + BETA1 * x + b0[i] + b1[i] * x + randn() * SD_RES;
+        pts.push({ p: i, x: x, y: y });
       }
+    }
 
-      // Clip all interior drawing to the plot rectangle
-      ctx.save(); ctx.beginPath(); ctx.rect(pad.left,pad.top,pw,ph); ctx.clip();
+    var COLORS = ['#7c6ef7','#ef6c6c','#4ec9a0','#f0a05a','#5ab4f0','#c06ef7'];
+    var X_MIN = 0.5, X_MAX = 8.5, Y_MIN = 200, Y_MAX = 1150;
+
+    function draw() {
+      var ps = window.getComputedStyle(canvas.parentElement);
+      var W = canvas.parentElement.clientWidth - parseFloat(ps.paddingLeft) - parseFloat(ps.paddingRight);
+      canvas.width = W * DPR; canvas.height = 260 * DPR;
+      canvas.style.width = W + 'px'; canvas.style.height = '260px';
+      var w = W * DPR, h = 260 * DPR;
+      ctx.clearRect(0, 0, w, h);
+
+      var pad = { top: 16*DPR, right: 20*DPR, bot: 44*DPR, left: 60*DPR };
+      var pw = w - pad.left - pad.right, ph = h - pad.top - pad.bot;
+
+      function toX(x) { return pad.left + pw * (x - X_MIN) / (X_MAX - X_MIN); }
+      function toY(y) { return pad.top + ph * (1 - (y - Y_MIN) / (Y_MAX - Y_MIN)); }
+
+      // Background
+      ctx.fillStyle = 'rgba(18,16,32,0.6)';
+      ctx.fillRect(pad.left, pad.top, pw, ph);
 
       // Grid
-      ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
-      for(var g=0;g<=4;g++){
-        var gy=pad.top+ph*(1-g/4);
-        ctx.beginPath(); ctx.moveTo(pad.left,gy); ctx.lineTo(pad.left+pw,gy); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
+      [300, 500, 700, 900, 1100].forEach(function(y) {
+        ctx.beginPath(); ctx.moveTo(pad.left, toY(y)); ctx.lineTo(pad.left + pw, toY(y)); ctx.stroke();
+      });
+      [2, 4, 6, 8].forEach(function(x) {
+        ctx.beginPath(); ctx.moveTo(toX(x), pad.top); ctx.lineTo(toX(x), pad.top + ph); ctx.stroke();
+      });
+
+      // Clip
+      ctx.save(); ctx.beginPath(); ctx.rect(pad.left, pad.top, pw, ph); ctx.clip();
+
+      // Data points
+      pts.forEach(function(d) {
+        ctx.fillStyle = COLORS[d.p]; ctx.globalAlpha = 0.5;
+        ctx.beginPath(); ctx.arc(toX(d.x), toY(d.y), 2.8 * DPR, 0, 2 * Math.PI); ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+
+      // Per-participant lines
+      if (showIndiv) {
+        for (var i = 0; i < N_PART; i++) {
+          var sl = BETA1 + b1[i], ic = BETA0 + b0[i];
+          ctx.strokeStyle = COLORS[i]; ctx.globalAlpha = 0.75; ctx.lineWidth = 1.5 * DPR;
+          ctx.beginPath();
+          ctx.moveTo(toX(X_MIN), toY(ic + sl * X_MIN));
+          ctx.lineTo(toX(X_MAX), toY(ic + sl * X_MAX));
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
       }
 
-      // Prior (faint dashed) when there are observations
-      if(hits+misses>0){
+      // Population line
+      if (showPop) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 2.5 * DPR;
+        ctx.setLineDash([6 * DPR, 3 * DPR]);
         ctx.beginPath();
-        py.forEach(function(v,i){
-          var x=pad.left+pw*i/N, y=pad.top+ph*(1-v/maxY);
-          if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-        });
-        ctx.strokeStyle='rgba(124,110,247,0.18)'; ctx.lineWidth=1.5;
-        ctx.setLineDash([3*DPR,4*DPR]); ctx.stroke(); ctx.setLineDash([]);
+        ctx.moveTo(toX(X_MIN), toY(BETA0 + BETA1 * X_MIN));
+        ctx.lineTo(toX(X_MAX), toY(BETA0 + BETA1 * X_MAX));
+        ctx.stroke();
+        ctx.setLineDash([]);
       }
-
-      // Posterior fill
-      ctx.beginPath(); ctx.moveTo(pad.left,pad.top+ph);
-      for(var i=0;i<=N;i++){ctx.lineTo(pad.left+pw*i/N, pad.top+ph*(1-ys[i]/maxY));}
-      ctx.lineTo(pad.left+pw,pad.top+ph); ctx.closePath();
-      var grad=ctx.createLinearGradient(0,pad.top,0,pad.top+ph);
-      grad.addColorStop(0,'rgba(124,110,247,0.5)'); grad.addColorStop(1,'rgba(124,110,247,0.06)');
-      ctx.fillStyle=grad; ctx.fill();
-
-      // Posterior stroke
-      ctx.beginPath();
-      ys.forEach(function(v,i){ var x=pad.left+pw*i/N,y=pad.top+ph*(1-v/maxY); if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y); });
-      ctx.strokeStyle='#7c6ef7'; ctx.lineWidth=2; ctx.stroke();
-
-      // Posterior mean line
-      var mean=a/(a+b),meanX=pad.left+pw*mean;
-      ctx.strokeStyle='rgba(124,110,247,0.55)'; ctx.setLineDash([4*DPR,3*DPR]); ctx.lineWidth=1.5;
-      ctx.beginPath(); ctx.moveTo(meanX,pad.top); ctx.lineTo(meanX,pad.top+ph); ctx.stroke();
-      ctx.setLineDash([]);
 
       ctx.restore(); // end clip
 
-      // X ticks (outside clip, below plot)
-      ctx.fillStyle='rgba(255,255,255,0.2)'; ctx.font=(10*DPR)+'px "JetBrains Mono"'; ctx.textAlign='center';
-      for(var t2=0;t2<=10;t2+=2) ctx.fillText((t2/10).toFixed(1),pad.left+pw*t2/10,pad.top+ph+16*DPR);
-      ctx.fillText('suspicion rate θ',pad.left+pw/2,h-6*DPR);
+      // Axes
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad.left, pad.top); ctx.lineTo(pad.left, pad.top + ph); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(pad.left, pad.top + ph); ctx.lineTo(pad.left + pw, pad.top + ph); ctx.stroke();
 
-      var n=hits+misses;
-      document.getElementById('b-n').textContent=n;
-      document.getElementById('b-h').textContent=hits;
-      document.getElementById('b-mean').textContent=mean.toFixed(3);
+      // Y labels
+      ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.font = (9 * DPR) + 'px "JetBrains Mono"'; ctx.textAlign = 'right';
+      [300, 500, 700, 900, 1100].forEach(function(y) {
+        ctx.fillText(y + 'ms', pad.left - 4 * DPR, toY(y) + 3 * DPR);
+      });
+
+      // X labels
+      ctx.textAlign = 'center';
+      [2, 4, 6, 8].forEach(function(x) { ctx.fillText(String(x), toX(x), pad.top + ph + 13 * DPR); });
+
+      // Axis titles
+      ctx.fillStyle = 'rgba(255,255,255,0.22)'; ctx.textAlign = 'center';
+      ctx.fillText('log word frequency', pad.left + pw / 2, h - 3 * DPR);
+      ctx.save();
+      ctx.translate(12 * DPR, pad.top + ph / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText('reaction time (ms)', 0, 0);
+      ctx.restore();
+
+      // Legend
+      var lx = pad.left + pw - 4 * DPR, ly = pad.top + 13 * DPR;
+      ctx.font = (9 * DPR) + 'px "JetBrains Mono"'; ctx.textAlign = 'right';
+      if (showPop) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 2 * DPR;
+        ctx.setLineDash([4 * DPR, 2 * DPR]);
+        ctx.beginPath(); ctx.moveTo(lx - 90 * DPR, ly - 3 * DPR); ctx.lineTo(lx - 70 * DPR, ly - 3 * DPR); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.fillText('population avg', lx, ly);
+        ly += 14 * DPR;
+      }
+      if (showIndiv) {
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.fillText('per-participant', lx, ly);
+      }
     }
 
-    document.getElementById('bayes-hit').addEventListener('click',function(){hits++;draw();});
-    document.getElementById('bayes-miss').addEventListener('click',function(){misses++;draw();});
-    document.getElementById('bayes-reset').addEventListener('click',function(){hits=0;misses=0;draw();});
-    document.getElementById('b-mean').textContent=(alpha0/(alpha0+beta0)).toFixed(3);
-    window.addEventListener('resize',draw);
+    document.getElementById('reg-toggle-indiv').addEventListener('click', function() {
+      showIndiv = !showIndiv;
+      this.textContent = showIndiv ? 'Hide individual lines' : 'Show individual lines';
+      this.classList.toggle('active', showIndiv);
+      draw();
+    });
+
+    document.getElementById('reg-toggle-pop').addEventListener('click', function() {
+      showPop = !showPop;
+      this.textContent = showPop ? 'Hide population line' : 'Show population line';
+      this.classList.toggle('active', showPop);
+      draw();
+    });
+
+    window.addEventListener('resize', draw);
     draw();
   })();
   </script>
