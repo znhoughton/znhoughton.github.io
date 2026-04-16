@@ -410,7 +410,7 @@
             <label class="right">Holistic</label>
           </div>
           <p style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:0.75rem;">
-            Dot size = relative frequency. Frequency drives where a binomial falls on this axis: high-frequency binomials (larger dots) diverge more toward holistic storage, while low-frequency ones remain near the compositional baseline.
+            Each binomial appears twice: a filled dot (●) for the canonical ordering and an outlined dot (○) for the reversed ordering, connected by a line. At <em>Compositional</em>, both dots sit at the same point — the average of their two words' GloVe vectors — because a fully compositional system treats both orderings as equivalent. Drag toward <em>Holistic</em> to reveal each ordering's actual position in GloVe space. High-frequency binomials (brighter) diverge more, reflecting that their canonical and reversed forms have developed more distinct distributional histories. Hover over a dot to see the label.
           </p>
         </div>
 
@@ -1246,7 +1246,7 @@
       ctx2.beginPath(); ctx2.moveTo(PAD*DPR,origin[1]); ctx2.lineTo(w-PAD*DPR,origin[1]); ctx2.stroke();
 
       BDATA.forEach(function(d,i){
-        var pos=dotPos(d,animT),col=freqColor(d.freq,1),dotR=(2.5+d.freq*0.6)*DPR,isHov=(i===hovIdx);
+        var pos=dotPos(d,animT),col=freqColor(d.freq,1),dotR=5*DPR,isHov=(i===hovIdx);
         if(animT>0.01){
           ctx2.beginPath(); ctx2.moveTo(pos.c[0],pos.c[1]); ctx2.lineTo(pos.r[0],pos.r[1]);
           ctx2.strokeStyle=freqColor(d.freq,0.25*animT); ctx2.lineWidth=1.2; ctx2.stroke();
