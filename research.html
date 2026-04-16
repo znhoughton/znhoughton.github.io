@@ -555,6 +555,24 @@
           <span class="math-comment">// No integrals needed — the count ratio is the likelihood directly.</span>
         </div>
 
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
+          Plugging these into Bayes' rule and updating sequentially after each observation:
+        </p>
+
+        <div class="math-block">
+          <span class="eq-label">// Full update rule · after observing S</span>
+          P(W | S) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · P(S|W)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · P(S|W) + (1−P(W)) · P(S|I)<br><br>
+          <span class="eq-label">// Expanding P(S|W) and P(S|I) from the Beta priors</span>
+          P(W | S) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────────────────────────────<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w) + (1−P(W)) · α_b/(α_b+β_b)<br><br>
+          <span class="math-comment">// Symmetrically, after ¬S: replace α_w with β_w and α_b with β_b above.</span><br>
+          <span class="math-comment">// P(W) on the right is the current belief; it becomes P(W|S) after the update.</span><br>
+          <span class="math-comment">// α_w, β_w, α_b, β_b are fixed within a round — they come from past rounds.</span>
+        </div>
+
         <div class="fun-fact" style="margin:1.25rem 0;">
           <span class="ff-label">// deeper dive · where the likelihood comes from</span>
           <p>
@@ -586,24 +604,6 @@
             combination is one of the rare cases where this integral has a clean closed form —
             most models require numerical approximation.
           </p>
-        </div>
-
-        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          Plugging these into Bayes' rule and updating sequentially after each observation:
-        </p>
-
-        <div class="math-block">
-          <span class="eq-label">// Full update rule · after observing S</span>
-          P(W | S) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · P(S|W)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · P(S|W) + (1−P(W)) · P(S|I)<br><br>
-          <span class="eq-label">// Expanding P(S|W) and P(S|I) from the Beta priors</span>
-          P(W | S) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────────────────────────────<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w) + (1−P(W)) · α_b/(α_b+β_b)<br><br>
-          <span class="math-comment">// Symmetrically, after ¬S: replace α_w with β_w and α_b with β_b above.</span><br>
-          <span class="math-comment">// P(W) on the right is the current belief; it becomes P(W|S) after the update.</span><br>
-          <span class="math-comment">// α_w, β_w, α_b, β_b are fixed within a round — they come from past rounds.</span>
         </div>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
