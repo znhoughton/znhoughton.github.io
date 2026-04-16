@@ -417,24 +417,35 @@
         <!-- Noisy Channel -->
         <h3 style="font-size:1rem;font-weight:500;color:var(--text-primary);margin-top:3rem;margin-bottom:0.5rem;">Noisy-Channel Comprehension &amp; Frequency-Dependent Preference Extremity</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:0.75rem;line-height:1.8;">
-          When a listener hears a binomial, they don't simply record the observed form; they
-          infer the speaker's <em>intended</em> ordering via a
-          <strong>noisy-channel model</strong>:
-          <span style="font-family:var(--mono);color:var(--accent);">P(Sᵢ | Sₚ) ∝ P(Sᵢ) · P(Sᵢ→Sₚ)</span>.
-          The prior P(Sᵢ) represents <strong>abstract preferences</strong>:
-          frequency-independent knowledge about ordering constraints (e.g., shorter words first,
-          animate before inanimate). Frequency does not strengthen the prior; it determines
-          <strong>N</strong>: the number of tokens a learner hears.
+          Language is transmitted through a noisy channel. Words get swallowed in a crowd,
+          misheard over a bad connection, or garbled by a fast speaker. A rational listener
+          doesn't simply record what they heard — they infer what the speaker most likely
+          <em>intended</em>, given both the signal that arrived and prior knowledge about what
+          speakers tend to say. This is the core insight behind noisy-channel models of
+          comprehension (Gibson et al., 2013): perception is not passive recording but active
+          probabilistic inference.
+        </p>
+        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:0.75rem;line-height:1.8;">
+          For binomials, the relevant "noise" is word-order error: the possibility that a speaker
+          intended one ordering but produced the other. A listener who hears <em>butter and bread</em>
+          doesn't necessarily update toward believing that order is acceptable — they may instead
+          infer that the speaker meant <em>bread and butter</em> and made a slip. The noisy-channel
+          model formalizes this:
+          <span style="font-family:var(--mono);color:var(--accent);">P(Sᵢ | Sₚ) ∝ P(Sᵢ) · P(Sᵢ→Sₚ)</span>,
+          where Sᵢ is the inferred intended ordering, Sₚ is what was perceived, P(Sᵢ) encodes
+          <strong>abstract ordering preferences</strong> (shorter before longer, animate before
+          inanimate, and so on), and P(Sᵢ→Sₚ) is the probability that the intended form was
+          distorted into the perceived form. Frequency does not strengthen the prior — it
+          determines <strong>N</strong>: how many times a learner encounters the expression.
         </p>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:2rem;line-height:1.8;">
-          In an <strong>iterated learning paradigm</strong>, each generation of learners hears
-          N tokens, updates beliefs via noisy-channel inference, and transmits the language to the
-          next generation. The result is <strong>frequency-dependent preference extremity</strong>
-          (Houghton &amp; Morgan, 2024): when listeners infer more noise than speakers actually
-          produce, preferences become increasingly polarized, but only for high-N binomials.
-          For low-N binomials, fewer exposures mean the inferential compounding has less
-          opportunity to take hold. Toggle noise below to see: <em>without noise, all N values
-          converge to the prior (the diagonal) and frequency has no effect.</em>
+          In an <strong>iterated learning paradigm</strong>, each generation hears N tokens,
+          updates beliefs via noisy-channel inference, and passes the language on. When listeners
+          infer slightly more noise than speakers actually produce, a small bias compounds across
+          generations: the preferred ordering becomes increasingly dominant, but only for
+          high-N expressions. Low-frequency binomials lack the exposure for the compounding to
+          take hold, so their preferences stay weak and variable. Toggle noise below to see:
+          <em>without noise, all N-curves collapse to the diagonal and frequency has no effect.</em>
         </p>
 
         <div class="demo-card">
@@ -452,7 +463,7 @@
 
         <p class="research-connect">
           <em>// research</em>
-          This model (Houghton &amp; Morgan, 2024) demonstrates that frequency-dependent preference extremity can arise purely from noisy-channel processing, and that it requires listeners to infer more noise than speakers actually produce. The model accounts for the corpus-wide distribution of binomial ordering preferences across 594 binomials from Morgan &amp; Levy (2015).
+          This model (Houghton &amp; Morgan, 2024) demonstrates that frequency-dependent preference extremity can arise purely from noisy-channel processing, and that it requires listeners to infer more noise than speakers actually produce. The model accounts for the corpus-wide distribution of binomial ordering preferences across 594 binomials from Morgan &amp; Levy (2015). It also offers a natural explanation for why the most frozen, non-reversible binomials — <em>bread and butter</em>, <em>black and white</em>, <em>rise and fall</em> — tend to be the most frequent: high frequency means more exposures, more inferential compounding, and stronger polarization away from the dispreferred order. Freezing is not an accident of convention; it is a predictable consequence of being heard often.
         </p>
       </section>
 
