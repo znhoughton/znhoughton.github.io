@@ -548,7 +548,9 @@
           round: each act shifts the balance toward whichever role predicted it better.
           The second is the Beta distributions: player-level priors on the rates
           <span class="im">θ_w</span> and <span class="im">θ_b</span> themselves, built from
-          what you've observed across previous rounds. These don't reset — they accumulate.
+          what you've observed across previous rounds — <span class="im">θ_w</span> captures
+          how suspicious this player tends to be in role W, and <span class="im">θ_b</span>
+          captures the same for role I. These don't reset — they accumulate.
           The likelihoods are their expected values:
         </p>
 
