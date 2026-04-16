@@ -514,7 +514,7 @@
           Before the current round starts, you've been keeping mental tally marks across all
           previous rounds. For each player you track two columns: how often they acted suspiciously
           <em>when they were the werewolf</em>, and how often they acted suspiciously <em>when they
-          were innocent</em>. These counts form the <strong>prior</strong> — everything you knew
+          were innocent</em>. These counts form the <strong>prior</strong>: everything you knew
           about this player before the current round began. We encode them using a
           <strong>Beta distribution</strong>:
         </p>
@@ -542,15 +542,15 @@
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
           Now a new round begins. Each act is either suspicious (S) or not (¬S). Two priors
           are at work. The first is <span class="im">P(W)</span>: a prior on which process is
-          generating your observations — the werewolf process (rate <span class="im">θ_w</span>)
+          generating your observations: the werewolf process (rate <span class="im">θ_w</span>)
           or the innocent process (rate <span class="im">θ_b</span>). It starts at
           <span class="im">P₀ = 0.20</span> and updates after each observation within the
           round: each act shifts the balance toward whichever role predicted it better.
           The second is the Beta distributions: player-level priors on the rates
           <span class="im">θ_w</span> and <span class="im">θ_b</span> themselves, built from
-          what you've observed across previous rounds — <span class="im">θ_w</span> captures
+          what you've observed across previous rounds; <span class="im">θ_w</span> captures
           how suspicious this player tends to be in role W, and <span class="im">θ_b</span>
-          captures the same for role I. These don't reset — they accumulate.
+          captures the same for role I. These don't reset; they accumulate.
           The likelihoods are their expected values:
         </p>
 
@@ -584,7 +584,7 @@
         <div class="fun-fact" style="margin:1.25rem 0;">
           <span class="ff-label">// deeper dive · where the likelihood comes from</span>
           <p>
-            <span class="im">P(S|W)</span> isn't a known constant — <span class="im">θ_w</span>,
+            <span class="im">P(S|W)</span> isn't a known constant: <span class="im">θ_w</span>,
             the player's true suspicious rate in role W, is itself unknown. The Beta distribution
             is a prior over <span class="im">θ_w</span>. To compute <span class="im">P(S|W)</span>,
             we marginalize out the unknown <span class="im">θ_w</span> by integrating the
@@ -611,7 +611,7 @@
             prior at the level below, collapsed by integration. This is the defining structure
             of a hierarchical model: Bayes' rule applied at two levels, where each level's
             likelihood is obtained by marginalizing out the level below. The Beta-Bernoulli
-            combination is one of the rare cases where this integral has a clean closed form —
+            combination is one of the rare cases where this integral has a clean closed form;
             most models require numerical approximation.
           </p>
         </div>
@@ -654,7 +654,7 @@
           <p>
             The Bayesian framework may be more than a metaphor for cognition.
             Recent work by Kapatsinski (2026) demonstrates that GPT-2 performs
-            <em>adaptive partial pooling</em> — rare contexts borrow more information from
+            <em>adaptive partial pooling</em>: rare contexts borrow more information from
             similar contexts, while frequent contexts rely on their own specific evidence. This is
             mathematically equivalent to Bayesian hierarchical regression. A neural network
             trained purely on next-word prediction converges on the same inferential solution
