@@ -617,27 +617,6 @@
           </p>
         </div>
 
-        <h3 class="stat-h3">Between Rounds: The Prior Updates</h3>
-        <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          After the round ends and the werewolf is revealed, you update the relevant tally.
-          If the player was in role W, each S adds 1 to <span class="im">α_w</span> and
-          each <span class="im">¬S</span> adds 1 to <span class="im">β_w</span>. If they
-          were in role I, the counts go into <span class="im">α_i</span> and
-          <span class="im">β_i</span>. Over many rounds the Beta distributions narrow, the
-          prior becomes more precise, and <span class="im">P(S|W) / P(S|I)</span> becomes
-          an increasingly reliable signal.
-        </p>
-
-        <div class="math-block">
-          <span class="eq-label">// Prior update after a revealed round</span>
-          if role was W: &nbsp;α_w ← α_w + (S count this round)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w ← β_w + (¬S count this round)<br><br>
-          if role was I: &nbsp;α_i ← α_i + (S count this round)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_i ← β_i + (¬S count this round)<br><br>
-          <span class="math-comment">// The prior for the next round is the posterior from this one.</span><br>
-          <span class="math-comment">// More rounds → larger α+β → narrower Beta → more reliable likelihood ratio.</span>
-        </div>
-
         <div class="fun-fact">
           <span class="ff-label">// fun fact · neural networks as Bayesian reasoners</span>
           <p>
