@@ -506,7 +506,7 @@
               His behavior tells you nothing about his role; it's just his personality.
             </p>
             <span class="prior-tag">θ_w ~ Beta(8, 2) &nbsp;· mean ≈ 0.80</span>
-            <span class="prior-tag">θ_b ~ Beta(8, 2) &nbsp;· mean ≈ 0.80</span>
+            <span class="prior-tag">θ_i ~ Beta(8, 2) &nbsp;· mean ≈ 0.80</span>
             <span class="verdict-tag">→ suspicious acts: uninformative</span>
           </div>
           <div class="player-card-math">
@@ -517,7 +517,7 @@
               His suspicious behavior strongly distinguishes his roles.
             </p>
             <span class="prior-tag">θ_w ~ Beta(8, 2) &nbsp;· mean ≈ 0.80</span>
-            <span class="prior-tag">θ_b ~ Beta(2, 8) &nbsp;· mean ≈ 0.20</span>
+            <span class="prior-tag">θ_i ~ Beta(2, 8) &nbsp;· mean ≈ 0.20</span>
             <span class="verdict-tag">→ suspicious acts: highly informative</span>
           </div>
         </div>
@@ -533,15 +533,15 @@
         </p>
 
         <div class="math-block">
-          <span class="eq-label">// Beta prior in count form · W = werewolf role, I = innocent role (b = bystander)</span>
+          <span class="eq-label">// Beta prior in count form · W = werewolf role, I = innocent role</span>
           θ_w ~ Beta(α_w, β_w) &nbsp;&nbsp; where α_w = suspicious acts as W<br>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w = non-suspicious acts as W<br><br>
-          θ_b ~ Beta(α_b, β_b) &nbsp;&nbsp; where α_b = suspicious acts as I<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b = non-suspicious acts as I<br><br>
-          <span class="math-comment">// E[θ_w] = α_w / (α_w + β_w) · E[θ_b] = α_b / (α_b + β_b)</span><br>
+          θ_i ~ Beta(α_i, β_i) &nbsp;&nbsp; where α_i = suspicious acts as I<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_i = non-suspicious acts as I<br><br>
+          <span class="math-comment">// E[θ_w] = α_w / (α_w + β_w) · E[θ_i] = α_i / (α_i + β_i)</span><br>
           <span class="math-comment">// More past rounds → larger α+β → narrower distribution → more confident prior.</span><br>
-          <span class="math-comment">// Charles: α_w=8, β_w=2, α_b=8, β_b=2 → E[θ_w] = E[θ_b] = 0.80. Priors identical.</span><br>
-          <span class="math-comment">// Spencer: α_w=8, β_w=2, α_b=2, β_b=8 → E[θ_w] = 0.80, E[θ_b] = 0.20. Separated.</span>
+          <span class="math-comment">// Charles: α_w=8, β_w=2, α_i=8, β_i=2 → E[θ_w] = E[θ_i] = 0.80. Priors identical.</span><br>
+          <span class="math-comment">// Spencer: α_w=8, β_w=2, α_i=2, β_i=8 → E[θ_w] = 0.80, E[θ_i] = 0.20. Separated.</span>
         </div>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
@@ -556,13 +556,13 @@
           Now a new round begins. Each act is either suspicious (S) or not (¬S). Two priors
           are at work. The first is <span class="im">P(W)</span>: a prior on which process is
           generating your observations: the werewolf process (rate <span class="im">θ_w</span>)
-          or the innocent process (rate <span class="im">θ_b</span>). It starts at
+          or the innocent process (rate <span class="im">θ_i</span>). It starts at
           <span class="im">P₀ = 0.20</span> and updates after each observation within the
           round: each act shifts the balance toward whichever role predicted it better.
           The second is the Beta distributions: player-level priors on the rates
-          <span class="im">θ_w</span> and <span class="im">θ_b</span> themselves, built from
+          <span class="im">θ_w</span> and <span class="im">θ_i</span> themselves, built from
           what you've observed across previous rounds; <span class="im">θ_w</span> captures
-          how suspicious this player tends to be in role W, and <span class="im">θ_b</span>
+          how suspicious this player tends to be in role W, and <span class="im">θ_i</span>
           captures the same for role I. These don't reset; they accumulate.
           The likelihoods are their expected values:
         </p>
@@ -570,9 +570,9 @@
         <div class="math-block">
           <span class="eq-label">// Likelihoods from prior counts · S = suspicious act, ¬S = non-suspicious act</span>
           P(S  | W) = E[θ_w] = α_w / (α_w + β_w)<br>
-          P(S  | I) = E[θ_b] = α_b / (α_b + β_b)<br><br>
+          P(S  | I) = E[θ_i] = α_i / (α_i + β_i)<br><br>
           P(¬S | W) = 1 − E[θ_w] = β_w / (α_w + β_w)<br>
-          P(¬S | I) = 1 − E[θ_b] = β_b / (α_b + β_b)<br><br>
+          P(¬S | I) = 1 − E[θ_i] = β_i / (α_i + β_i)<br><br>
           <span class="math-comment">// No integrals needed — the count ratio is the likelihood directly.</span>
         </div>
 
@@ -588,10 +588,10 @@
           <span class="eq-label">// Expanding P(S|W) and P(S|I) from the Beta priors</span>
           P(W | S) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w)<br>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────────────────────────────<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w) + (1−P(W)) · α_b/(α_b+β_b)<br><br>
-          <span class="math-comment">// Symmetrically, after ¬S: replace α_w with β_w and α_b with β_b above.</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w) + (1−P(W)) · α_i/(α_i+β_i)<br><br>
+          <span class="math-comment">// Symmetrically, after ¬S: replace α_w with β_w and α_i with β_i above.</span><br>
           <span class="math-comment">// P(W) on the right is the current belief; it becomes P(W|S) after the update.</span><br>
-          <span class="math-comment">// α_w, β_w, α_b, β_b are fixed within a round — they come from past rounds.</span>
+          <span class="math-comment">// α_w, β_w, α_i, β_i are fixed within a round — they come from past rounds.</span>
         </div>
 
         <div class="fun-fact" style="margin:1.25rem 0;">
@@ -633,7 +633,7 @@
           The key is the <strong>likelihood ratio</strong>
           <span class="im">P(S|W) / P(S|I)</span>: how much more likely is S under role W
           than role I? For Charles,
-          <span class="im">P(S|W) / P(S|I) = E[θ_w] / E[θ_b] = 0.80 / 0.80 = 1</span>:
+          <span class="im">P(S|W) / P(S|I) = E[θ_w] / E[θ_i] = 0.80 / 0.80 = 1</span>:
           S is equally likely under either role, so observing it leaves
           <span class="im">P(W)</span> unchanged. For Spencer,
           <span class="im">P(S|W) / P(S|I) = 0.80 / 0.20 = 4</span>: each S quadruples
@@ -646,8 +646,8 @@
           After the round ends and the werewolf is revealed, you update the relevant tally.
           If the player was in role W, each S adds 1 to <span class="im">α_w</span> and
           each <span class="im">¬S</span> adds 1 to <span class="im">β_w</span>. If they
-          were in role I, the counts go into <span class="im">α_b</span> and
-          <span class="im">β_b</span>. Over many rounds the Beta distributions narrow, the
+          were in role I, the counts go into <span class="im">α_i</span> and
+          <span class="im">β_i</span>. Over many rounds the Beta distributions narrow, the
           prior becomes more precise, and <span class="im">P(S|W) / P(S|I)</span> becomes
           an increasingly reliable signal.
         </p>
@@ -656,8 +656,8 @@
           <span class="eq-label">// Prior update after a revealed round</span>
           if role was W: &nbsp;α_w ← α_w + (S count this round)<br>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w ← β_w + (¬S count this round)<br><br>
-          if role was I: &nbsp;α_b ← α_b + (S count this round)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b ← β_b + (¬S count this round)<br><br>
+          if role was I: &nbsp;α_i ← α_i + (S count this round)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_i ← β_i + (¬S count this round)<br><br>
           <span class="math-comment">// The prior for the next round is the posterior from this one.</span><br>
           <span class="math-comment">// More rounds → larger α+β → narrower Beta → more reliable likelihood ratio.</span>
         </div>
@@ -682,7 +682,7 @@
             <span style="color:#7c6ef7;font-family:var(--mono);font-size:0.82em;">purple</span> curve
             is <span class="im">θ_w</span> (suspicious rate in role W) and the
             <span style="color:rgba(148,144,168,0.9);font-family:var(--mono);font-size:0.82em;">gray</span>
-            curve is <span class="im">θ_b</span> (suspicious rate in role I). Wide overlap
+            curve is <span class="im">θ_i</span> (suspicious rate in role I). Wide overlap
             (Charles) means no S can move <span class="im">P(W)</span>; clear separation
             (Spencer) means each S carries real information.
             Add observations and watch P(W) update below.
@@ -715,7 +715,7 @@
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-top:1.75rem;margin-bottom:0;line-height:1.8;">
           The key takeaway: <strong>what you know about a player from past rounds directly shapes
-          what you can infer from their behavior now.</strong> The priors θ_w and θ_b aren't
+          what you can infer from their behavior now.</strong> The priors θ_w and θ_i aren't
           just background noise. They encode the entire history of how each player has acted
           across roles. A player who was always suspicious as the werewolf <em>and</em> always
           suspicious as an innocent gives you nothing to work with. A player whose suspicious
@@ -1563,7 +1563,7 @@
         pCtx.setLineDash([]);
       }
 
-      // Draw θ_b (innocent) — gray, behind
+      // Draw θ_i (innocent) — gray, behind
       pCtx.beginPath();
       pCtx.moveTo(toX(xs[0]), baseline);
       for (var i = 0; i <= N; i++) pCtx.lineTo(toX(xs[i]), toY(bVals[i]));
@@ -1614,7 +1614,7 @@
       pCtx.fillStyle = 'rgba(124,110,247,0.85)';
       pCtx.fillText('θ_w · werewolf', pad.left + pw - 4 * DPR, pad.top + 13 * DPR);
       pCtx.fillStyle = 'rgba(148,144,168,0.75)';
-      pCtx.fillText('θ_b · innocent', pad.left + pw - 4 * DPR, pad.top + 25 * DPR);
+      pCtx.fillText('θ_i · innocent', pad.left + pw - 4 * DPR, pad.top + 25 * DPR);
       if (prevAw !== null) {
         pCtx.fillStyle = 'rgba(255,255,255,0.22)';
         pCtx.fillText('dashed · prev round', pad.left + pw - 4 * DPR, pad.top + 37 * DPR);
