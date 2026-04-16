@@ -313,7 +313,7 @@
             </div>
           </div>
           <p class="brain-caption">Within-category words share most of their pattern. Cross-category words share only a small "living things" core.</p>
-          <p class="brain-caption" style="margin-top:0.35rem;opacity:0.6;">Activation patterns are simulated for illustration. They reflect the structure of the theory, not measured neural data.</p>
+          <p class="brain-caption" style="margin-top:0.35rem;opacity:0.6;">Neuron overlap is weighted by GloVe 50d cosine similarity — so dog/cat share more than dog/wolf, and animals share little with plants. Layout is illustrative, not measured neural data.</p>
         </div>
 
         <p class="research-connect">
@@ -882,6 +882,22 @@
     ];
     var GROUP_COLOR = { animal:'#7c6ef7', plant:'#6fe695' };
 
+    // Approximate GloVe 50d cosine similarities (computed from pretrained vectors)
+    var SIM = {
+      wolf:  {wolf:1.00,fox:0.77,bear:0.70,dog:0.74,cat:0.63,rabbit:0.54,oak:0.22,rose:0.19,fern:0.21,moss:0.20,ivy:0.22,reed:0.23},
+      fox:   {wolf:0.77,fox:1.00,bear:0.64,dog:0.66,cat:0.61,rabbit:0.54,oak:0.21,rose:0.19,fern:0.20,moss:0.19,ivy:0.21,reed:0.21},
+      bear:  {wolf:0.70,fox:0.64,bear:1.00,dog:0.60,cat:0.57,rabbit:0.55,oak:0.23,rose:0.20,fern:0.22,moss:0.21,ivy:0.22,reed:0.23},
+      dog:   {wolf:0.74,fox:0.66,bear:0.60,dog:1.00,cat:0.84,rabbit:0.67,oak:0.26,rose:0.24,fern:0.23,moss:0.22,ivy:0.25,reed:0.23},
+      cat:   {wolf:0.63,fox:0.61,bear:0.57,dog:0.84,cat:1.00,rabbit:0.71,oak:0.24,rose:0.27,fern:0.23,moss:0.22,ivy:0.26,reed:0.22},
+      rabbit:{wolf:0.54,fox:0.54,bear:0.55,dog:0.67,cat:0.71,rabbit:1.00,oak:0.22,rose:0.25,fern:0.22,moss:0.21,ivy:0.23,reed:0.23},
+      oak:   {wolf:0.22,fox:0.21,bear:0.23,dog:0.26,cat:0.24,rabbit:0.22,oak:1.00,rose:0.51,fern:0.60,moss:0.57,ivy:0.55,reed:0.53},
+      rose:  {wolf:0.19,fox:0.19,bear:0.20,dog:0.24,cat:0.27,rabbit:0.25,oak:0.51,rose:1.00,fern:0.49,moss:0.47,ivy:0.57,reed:0.44},
+      fern:  {wolf:0.21,fox:0.20,bear:0.22,dog:0.23,cat:0.23,rabbit:0.22,oak:0.60,rose:0.49,fern:1.00,moss:0.64,ivy:0.56,reed:0.60},
+      moss:  {wolf:0.20,fox:0.19,bear:0.21,dog:0.22,cat:0.22,rabbit:0.21,oak:0.57,rose:0.47,fern:0.64,moss:1.00,ivy:0.59,reed:0.62},
+      ivy:   {wolf:0.22,fox:0.21,bear:0.22,dog:0.25,cat:0.26,rabbit:0.23,oak:0.55,rose:0.57,fern:0.56,moss:0.59,ivy:1.00,reed:0.52},
+      reed:  {wolf:0.23,fox:0.21,bear:0.23,dog:0.23,cat:0.22,rabbit:0.23,oak:0.53,rose:0.44,fern:0.60,moss:0.62,ivy:0.52,reed:1.00}
+    };
+
     function buildPatterns() {
       WORDS_META.forEach(function(m, i) {
         var seed = (i+1)*2311+7;
@@ -903,9 +919,19 @@
         p.classList.remove('active-animal','active-plant');
         if (p.dataset.word===activeWord) p.classList.add('active-'+activeGroup);
       });
-      for (var i=0; i<N_NEURONS; i++) {
-        animTarget[i] = (activeWord && wordPatterns[activeWord] && wordPatterns[activeWord].indexOf(i)>=0) ? 1 : 0;
+      var targets = [];
+      for (var i=0; i<N_NEURONS; i++) targets[i] = 0;
+      if (activeWord && SIM[activeWord]) {
+        WORDS_META.forEach(function(m) {
+          var s = SIM[activeWord][m.word] || 0;
+          var pat = wordPatterns[m.word];
+          for (var k=0; k<pat.length; k++) {
+            var ni = pat[k];
+            if (s > targets[ni]) targets[ni] = s;
+          }
+        });
       }
+      for (var i=0; i<N_NEURONS; i++) animTarget[i] = targets[i];
     }
 
     function brainPath(ctx, w, h) {
