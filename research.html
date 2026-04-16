@@ -542,6 +542,38 @@
           <span class="math-comment">// No integrals needed — the count ratio is the likelihood directly.</span>
         </div>
 
+        <div class="fun-fact" style="margin:1.25rem 0;">
+          <span class="ff-label">// deeper dive · where the likelihood comes from</span>
+          <p>
+            P(S|W) isn't a known constant — θ_w, the player's true suspicious rate in role W,
+            is itself unknown. The Beta distribution is a prior over θ_w. To compute P(S|W),
+            we marginalize out the unknown θ_w by integrating the Bernoulli likelihood against
+            the Beta prior:
+          </p>
+          <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
+            <span class="eq-label">// θ level · likelihood × prior on θ_w, integrated out</span>
+            P(S|W) = ∫ P(S|θ_w) · p(θ_w) dθ_w = E[θ_w] = α_w / (α_w + β_w)
+          </div>
+          <p>
+            Since P(S|θ_w) = θ_w (a Bernoulli draw), the integral reduces to the mean of
+            the Beta. Substituting back, the full update is Bayes' rule operating at two
+            levels simultaneously:
+          </p>
+          <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
+            <span class="eq-label">// role level · prior × likelihood, where likelihood is itself prior × likelihood</span>
+            P(W|S) ∝ P(W) × ∫ P(S|θ_w) · p(θ_w) dθ_w<br><br>
+            <span class="math-comment">// ↑ prior on W &nbsp;&nbsp; ↑ Bernoulli likelihood &nbsp;&nbsp; ↑ Beta prior on θ_w (marginalized out)</span>
+          </div>
+          <p>
+            The thing playing the role of likelihood at the top level is itself a likelihood ×
+            prior at the level below, collapsed by integration. This is the defining structure
+            of a hierarchical model: Bayes' rule applied at two levels, where each level's
+            likelihood is obtained by marginalizing out the level below. The Beta-Bernoulli
+            combination is one of the rare cases where this integral has a clean closed form —
+            most models require numerical approximation.
+          </p>
+        </div>
+
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
           Plugging these into Bayes' rule and updating sequentially after each observation:
         </p>
