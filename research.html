@@ -584,25 +584,34 @@
         <div class="fun-fact" style="margin:1.25rem 0;">
           <span class="ff-label">// deeper dive · where the likelihoods come from</span>
           <p>
-            Why is <span class="im">P(S|W) = α_w / (α_w + β_w)</span>? Because
-            <span class="im">θ_w</span> — the player's true suspicious rate in role W — is
-            unknown. Each past round where this player was the werewolf updated your belief
-            about it via Bayes' rule:
+            Why is <span class="im">P(S|W) = α_w / (α_w + β_w)</span>? The answer is
+            marginalization: <span class="im">P(S|W) = ∫ P(S|θ_w) · p(θ_w) dθ_w</span>,
+            where <span class="im">p(θ_w) = Beta(α_w, β_w)</span> is your accumulated belief
+            about the player's true suspicious rate after all past rounds as W. Each past round
+            contributed one Bayesian update — here's what a single update looks like, starting
+            from a current prior <span class="im">Beta(α_w, β_w)</span> and observing S:
           </p>
           <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
-            <span class="eq-label">// each past observation shifts the distribution of θ_w</span>
-            observe S as W:   p(θ_w) × θ_w      → Beta(α_w + 1, β_w)<br>
-            observe ¬S as W:  p(θ_w) × (1−θ_w)  → Beta(α_w,     β_w + 1)<br><br>
+            <span class="eq-label">// one round's update to θ_w after observing S as W</span>
+            p(θ_w | S) ∝ P(S | θ_w) · p(θ_w)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= θ_w · Beta(α_w, β_w)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= Beta(α_w + 1, β_w) &nbsp;&nbsp;<span class="math-comment">// by Beta-Bernoulli conjugacy</span><br><br>
+            <span class="math-comment">// symmetrically, after ¬S: p(θ_w | ¬S) = Beta(α_w, β_w + 1)</span><br>
+            <span class="math-comment">// each round's posterior becomes the prior for the next</span><br>
             <span class="math-comment">// after all past rounds as W: p(θ_w) = Beta(α_w, β_w)</span><br>
             <span class="math-comment">// same process builds p(θ_i) = Beta(α_i, β_i) from rounds as I</span>
           </div>
           <p>
-            Because <span class="im">θ_w</span> is unknown, <span class="im">P(S|W)</span>
-            is obtained by averaging over all plausible values of <span class="im">θ_w</span>,
-            weighted by how likely each value is given past rounds:
+            That accumulated posterior — <span class="im">p(θ_w | all past rounds as W) = Beta(α_w, β_w)</span> —
+            is the <span class="im">p(θ_w)</span> term in the marginalization integral below.
+            We write it as <span class="im">p(θ_w)</span> for short because <span class="im">α_w</span>
+            and <span class="im">β_w</span> already encode all past observations.
+            Rather than using a single fixed value for <span class="im">θ_w</span>, we
+            integrate <span class="im">P(S|θ_w)</span> over all its plausible values, weighted
+            by <span class="im">Beta(α_w, β_w)</span>:
           </p>
           <div class="math-block" style="margin:0.75rem 0;max-width:100%;">
-            <span class="eq-label">// marginalizing over θ_w</span>
+            <span class="eq-label">// substituting p(θ_w) = Beta(α_w, β_w) into the marginalization</span>
             P(S|W) = ∫ P(S|θ_w) · p(θ_w) dθ_w<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ∫ θ_w · p(θ_w) dθ_w &nbsp;&nbsp;<span class="math-comment">// since P(S|θ_w) = θ_w</span><br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= E[θ_w] = α_w / (α_w + β_w)
