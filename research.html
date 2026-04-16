@@ -507,19 +507,19 @@
         </p>
 
         <div class="math-block">
-          <span class="eq-label">// Beta prior in count form</span>
-          θ_w ~ Beta(α_w, β_w) &nbsp;&nbsp; where α_w = past suspicious acts as werewolf<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w = past innocent acts as werewolf<br><br>
-          θ_b ~ Beta(α_b, β_b) &nbsp;&nbsp; where α_b = past suspicious acts as innocent<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b = past innocent acts as innocent<br><br>
-          <span class="math-comment">// The expected suspicious rate is just the ratio of counts: E[θ_w] = α_w / (α_w + β_w).</span><br>
+          <span class="eq-label">// Beta prior in count form · W = werewolf role, I = innocent role (b = bystander)</span>
+          θ_w ~ Beta(α_w, β_w) &nbsp;&nbsp; where α_w = past suspicious acts in role W<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w = past non-suspicious acts in role W<br><br>
+          θ_b ~ Beta(α_b, β_b) &nbsp;&nbsp; where α_b = past suspicious acts in role I<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b = past non-suspicious acts in role I<br><br>
+          <span class="math-comment">// E[θ_w] = α_w / (α_w + β_w) · E[θ_b] = α_b / (α_b + β_b)</span><br>
           <span class="math-comment">// More past rounds → larger α+β → narrower distribution → more confident prior.</span><br>
           <span class="math-comment">// Charles: α_w=8, β_w=2, α_b=8, β_b=2 → E[θ_w] = E[θ_b] = 0.80. Priors identical.</span><br>
           <span class="math-comment">// Spencer: α_w=8, β_w=2, α_b=2, β_b=8 → E[θ_w] = 0.80, E[θ_b] = 0.20. Separated.</span>
         </div>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          The Beta distributions are the prior — built entirely from past rounds. The more
+          The Beta distributions are the prior, built entirely from past rounds. The more
           rounds you've observed, the narrower and more reliable these distributions become.
           Crucially, they are fixed for the duration of the current round: you're using what
           you learned before to make inferences now.
@@ -527,19 +527,19 @@
 
         <h3 class="stat-h3">The Model</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          Now a new round begins. You observe a suspicious act. You want to update
-          <strong>P(werewolf)</strong> — starting from P₀&nbsp;=&nbsp;0.20 (one werewolf
-          in five players). The likelihood of a suspicious act under each hypothesis is just
-          the expected value of the corresponding Beta prior:
+          Now a new round begins. Each act is either suspicious (S) or not (¬S). You want
+          to update <strong>P(W)</strong>, starting from P₀&nbsp;=&nbsp;0.20 (one werewolf in
+          five players). The likelihood of S under each role is the expected value of the
+          corresponding Beta prior:
         </p>
 
         <div class="math-block">
-          <span class="eq-label">// Likelihood from prior counts</span>
-          P(suspicious | werewolf) &nbsp;= E[θ_w] = α_w / (α_w + β_w)<br>
-          P(suspicious | innocent) &nbsp;= E[θ_b] = α_b / (α_b + β_b)<br><br>
-          P(innocent &nbsp;| werewolf) &nbsp;= 1 − E[θ_w] = β_w / (α_w + β_w)<br>
-          P(innocent &nbsp;| innocent) &nbsp;= 1 − E[θ_b] = β_b / (α_b + β_b)<br><br>
-          <span class="math-comment">// No integrals needed — the count ratio is your likelihood directly.</span>
+          <span class="eq-label">// Likelihoods from prior counts · S = suspicious act, ¬S = non-suspicious act</span>
+          P(S  | W) = E[θ_w] = α_w / (α_w + β_w)<br>
+          P(S  | I) = E[θ_b] = α_b / (α_b + β_b)<br><br>
+          P(¬S | W) = 1 − E[θ_w] = β_w / (α_w + β_w)<br>
+          P(¬S | I) = 1 − E[θ_b] = β_b / (α_b + β_b)<br><br>
+          <span class="math-comment">// No integrals needed — the count ratio is the likelihood directly.</span>
         </div>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
@@ -547,44 +547,45 @@
         </p>
 
         <div class="math-block">
-          <span class="eq-label">// Full update rule · suspicious observation</span>
-          P(W | suspicious) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────────────────────────────<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w) &nbsp;+ (1−P(W)) · α_b/(α_b+β_b)<br><br>
-          <span class="eq-label">// Full update rule · innocent observation</span>
-          P(W | innocent) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · β_w/(α_w+β_w)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────────────────────────────<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · β_w/(α_w+β_w) + (1−P(W)) · β_b/(α_b+β_b)<br><br>
-          <span class="math-comment">// P(W) starts at P₀ = 0.20 and is replaced by the updated value after each observation.</span><br>
-          <span class="math-comment">// α_w, β_w, α_b, β_b are fixed — they come from past rounds and don't change mid-game.</span>
+          <span class="eq-label">// Full update rule · after observing S</span>
+          P(W | S) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · P(S|W)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · P(S|W) + (1−P(W)) · P(S|I)<br><br>
+          <span class="eq-label">// Expanding P(S|W) and P(S|I) from the Beta priors</span>
+          P(W | S) = &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;──────────────────────────────────────────────────────────────<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;P(W) · α_w/(α_w+β_w) + (1−P(W)) · α_b/(α_b+β_b)<br><br>
+          <span class="math-comment">// Symmetrically, after ¬S: replace α_w with β_w and α_b with β_b above.</span><br>
+          <span class="math-comment">// P(W) on the right is the current belief; it becomes P(W|S) after the update.</span><br>
+          <span class="math-comment">// α_w, β_w, α_b, β_b are fixed within a round — they come from past rounds.</span>
         </div>
 
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
-          The key is the <strong>likelihood ratio</strong> — how much more likely is a suspicious
-          act under werewolf than innocent? For Charles it's 0.80/0.80 = 1: observing him is
-          completely uninformative, regardless of how many times you observe him. For Spencer
-          it's 0.80/0.20 = 4: each suspicious act quadruples the odds that he's the werewolf.
-          The prior, built from past rounds, is what makes one player's behavior informative
-          and the other's irrelevant.
+          The key is the <strong>likelihood ratio</strong> P(S|W)/P(S|I) — how much more
+          likely is S under role W than role I? For Charles, P(S|W)/P(S|I) = E[θ_w]/E[θ_b] =
+          0.80/0.80 = 1: S is equally likely under either role, so observing it moves P(W)
+          not at all. For Spencer, P(S|W)/P(S|I) = 0.80/0.20 = 4: each S quadruples the odds
+          he's the werewolf. The prior, built from past rounds, is what makes one player's
+          behavior informative and the other's irrelevant.
         </p>
 
         <h3 class="stat-h3">Between Rounds: The Prior Updates</h3>
         <p style="font-size:0.9rem;color:var(--text-secondary);max-width:660px;margin-bottom:1rem;line-height:1.8;">
           After the round ends and the werewolf is revealed, you update the relevant tally.
-          If the player was the werewolf, each suspicious act they took this round adds 1 to
-          α_w, each innocent act adds 1 to β_w. If they were innocent, the counts go into
-          α_b and β_b. Over many rounds the Beta distributions narrow — your prior becomes
-          more precise — and the likelihood ratios become increasingly reliable.
+          If the player was in role W, each S adds 1 to α_w and each ¬S adds 1 to β_w. If
+          they were in role I, the counts go into α_b and β_b. Over many rounds the Beta
+          distributions narrow, the prior becomes more precise, and P(S|W)/P(S|I) becomes an
+          increasingly reliable signal.
         </p>
 
         <div class="math-block">
           <span class="eq-label">// Prior update after a revealed round</span>
-          if player was werewolf: &nbsp;&nbsp;α_w ← α_w + (suspicious acts this round)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w ← β_w + (innocent acts this round)<br><br>
-          if player was innocent: &nbsp;&nbsp;&nbsp;α_b ← α_b + (suspicious acts this round)<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b ← β_b + (innocent acts this round)<br><br>
+          if role was W: &nbsp;α_w ← α_w + (S count this round)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_w ← β_w + (¬S count this round)<br><br>
+          if role was I: &nbsp;α_b ← α_b + (S count this round)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;β_b ← β_b + (¬S count this round)<br><br>
           <span class="math-comment">// The prior for the next round is the posterior from this one.</span><br>
-          <span class="math-comment">// This is what makes the model improve over time — more rounds means better priors.</span>
+          <span class="math-comment">// More rounds → larger α+β → narrower Beta → more reliable likelihood ratio.</span>
         </div>
 
         <div class="fun-fact">
@@ -607,9 +608,9 @@
             <span style="color:#7c6ef7;font-family:var(--mono);font-size:0.82em;">purple</span> curve
             is θ_w (suspicious rate as werewolf) and the
             <span style="color:rgba(148,144,168,0.9);font-family:var(--mono);font-size:0.82em;">gray</span>
-            curve is θ_b (suspicious rate as innocent). Wide overlap (Charles) means no
-            observation can move the needle; clear separation (Spencer) means each act carries
-            real information. Add observations and watch P(werewolf) update below.
+            curve is θ_b (suspicious rate in role I). Wide overlap (Charles) means no S
+            can move P(W); clear separation (Spencer) means each S carries real information.
+            Add observations and watch P(W) update below.
           </p>
           <div class="scenario-btns" id="bayes-player-btns" style="margin-bottom:1.25rem;">
             <button class="scenario-btn active" data-aw="8" data-bw="2" data-ab="8" data-bb="2">Charles · always suspicious</button>
@@ -631,9 +632,9 @@
           </div>
           <div id="bayes-stats">
             Round: <span id="b-round">1</span> &nbsp;|&nbsp;
-            Observations: <span id="b-n">0</span> &nbsp;|&nbsp;
-            Suspicious: <span id="b-h">0</span> &nbsp;|&nbsp;
-            P(werewolf): <span id="b-mean">0.200</span>
+            n: <span id="b-n">0</span> &nbsp;|&nbsp;
+            S: <span id="b-h">0</span> &nbsp;|&nbsp;
+            P(W): <span id="b-mean">0.200</span>
           </div>
         </div>
 
