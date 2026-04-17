@@ -652,6 +652,12 @@ h3             { font-size: 0.9rem !important; }
   50%       { opacity: 0; }
 }
 
+/* Blinking emojis */
+.blink {
+  animation: blink 1.1s step-start infinite;
+  display: inline-block;
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 640px) {
   .hero-content { flex-direction: column-reverse; gap: 2rem; }
