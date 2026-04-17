@@ -638,8 +638,10 @@ h3             { font-size: 0.9rem !important; }
   text-shadow: 0 0 6px rgba(124,110,247,1.0), 0 0 20px rgba(124,110,247,0.7), 0 0 40px rgba(124,110,247,0.4);
 }
 
-/* Blinking cursor on page titles */
-.page-header h1::after {
+/* Blinking cursor on page titles and subheaders */
+.page-header h1::after,
+h2::after,
+.section-title::after {
   content: '_';
   animation: blink 1.1s step-start infinite;
   color: var(--accent);
