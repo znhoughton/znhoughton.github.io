@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Research · Zachary Houghton</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=DotGothic16&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
     .research-blurb p {
@@ -223,6 +223,20 @@
       border-radius: 3px;
       white-space: nowrap;
       letter-spacing: 0;
+    }
+
+    /* ── Research-page-specific retro styles ── */
+
+    /* Demo card glow border */
+    .demo-card {
+      border-color: rgba(124,110,247,0.45) !important;
+      box-shadow: 0 0 18px rgba(124,110,247,0.15), inset 0 0 30px rgba(0,0,0,0.2);
+    }
+
+    /* Math block left border glow */
+    .math-block {
+      border-left-color: var(--accent) !important;
+      box-shadow: -3px 0 12px rgba(124,110,247,0.5);
     }
   </style>
 </head>
@@ -728,7 +742,7 @@
           </p>
           <div class="scenario-btns" id="bayes-player-btns" style="margin-bottom:1.25rem;">
             <button class="scenario-btn active" data-aw="8" data-bw="2" data-ab="8" data-bb="2">Charles · always suspicious</button>
-            <button class="scenario-btn" data-aw="7" data-bw="3" data-ab="3" data-bb="7">Alex · sometimes suspicious</button>
+            <button class="scenario-btn" data-aw="7" data-bw="3" data-ab="3" data-bb="7">Wyatt · sometimes suspicious</button>
             <button class="scenario-btn" data-aw="8" data-bw="2" data-ab="2" data-bb="8">Spencer · only suspicious as werewolf</button>
           </div>
           <canvas id="prior-canvas" height="120"></canvas>
