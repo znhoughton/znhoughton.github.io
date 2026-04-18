@@ -650,6 +650,9 @@
             &nbsp;&nbsp;= ∫ P(S | θ_w) · p(θ_w | pr) dθ_w<br><br>
             &nbsp;&nbsp;<span class="math-comment">// P(S | θ_w) = θ_w by definition — θ_w is the probability of S given that rate</span><br>
             &nbsp;&nbsp;= ∫ θ_w · p(θ_w | pr) dθ_w<br><br>
+            &nbsp;&nbsp;<span class="math-comment">// this last step is definitional — E[X] = ∫ x · p(x) dx for any continuous random variable.</span><br>
+            &nbsp;&nbsp;<span class="math-comment">// each possible value of θ_w is weighted by its probability density and summed continuously,</span><br>
+            &nbsp;&nbsp;<span class="math-comment">// the exact continuous analogue of the discrete weighted average Σ xᵢ · P(X = xᵢ)</span><br>
             &nbsp;&nbsp;= E[θ_w]
           </div>
           <p>
