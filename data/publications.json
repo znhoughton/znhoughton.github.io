@@ -1,11 +1,19 @@
 [
   {
+    "title": "Mechanistic Interpretability of ASR models using Sparse Autoencoders",
+    "year": 2026,
+    "venue": "arXiv preprint arXiv:2605.12225",
+    "authors": "Dan Pluth and Zachary Nicholas Houghton and Yu Zhou and Vijay K Gurbani",
+    "url": "https://arxiv.org/abs/2605.12225",
+    "citations": 0
+  },
+  {
     "title": "The role of abstract representations and observed preferences in the ordering of binomials in large language models",
     "year": 2025,
     "venue": "",
     "authors": "Zachary Nicholas Houghton and Kenji Sagae and Emily Morgan",
     "url": "https://aclanthology.org/2025.acl-short.55/",
-    "citations": 1
+    "citations": 2
   },
   {
     "title": "Experimental paradigms on scalar implicature estimation",
@@ -16,19 +24,19 @@
     "citations": 1
   },
   {
-    "title": "A Novel Dataset for Testing Anti-spoofing Models in a Telephony Environment",
-    "year": 2025,
-    "venue": "",
-    "authors": "Zachary Nicholas Houghton and Dan Pluth and Jordan Hosier and Vijay K Gurbani",
-    "url": "https://ieeexplore.ieee.org/abstract/document/11211857/",
-    "citations": 0
-  },
-  {
     "title": "Multi-Word Representations in Minds and Models: Investigating the Storage of Multi-Word Phrases in Humans and Large Language Models",
     "year": 2025,
     "venue": "",
     "authors": "Zachary Nicholas Houghton",
     "url": "https://search.proquest.com/openview/59e91c3252682d11c048247ba152f037/1?pq-origsite=gscholar&cbl=18750&diss=y",
+    "citations": 1
+  },
+  {
+    "title": "A Novel Dataset for Testing Anti-spoofing Models in a Telephony Environment",
+    "year": 2025,
+    "venue": "",
+    "authors": "Zachary Nicholas Houghton and Dan Pluth and Jordan Hosier and Vijay K Gurbani",
+    "url": "https://ieeexplore.ieee.org/abstract/document/11211857/",
     "citations": 0
   },
   {
