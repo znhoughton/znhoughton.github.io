@@ -5,6 +5,14 @@
     "venue": "arXiv preprint arXiv:2605.12225",
     "authors": "Dan Pluth and Zachary Nicholas Houghton and Yu Zhou and Vijay K Gurbani",
     "url": "https://arxiv.org/abs/2605.12225",
+    "citations": 1
+  },
+  {
+    "title": "The Holistic Storage of Verb+ Up Phrases in Text-based and Audio-based Language Models",
+    "year": 2026,
+    "venue": "arXiv preprint arXiv:2606.13993",
+    "authors": "Zachary Nicholas Houghton and Yu Zhou and Dan Pluth and Vijay K Gurbani",
+    "url": "https://arxiv.org/abs/2606.13993",
     "citations": 0
   },
   {
@@ -13,6 +21,14 @@
     "venue": "",
     "authors": "Zachary Nicholas Houghton and Kenji Sagae and Emily Morgan",
     "url": "https://aclanthology.org/2025.acl-short.55/",
+    "citations": 3
+  },
+  {
+    "title": "Multi-Word Representations in Minds and Models: Investigating the Storage of Multi-Word Phrases in Humans and Large Language Models",
+    "year": 2025,
+    "venue": "",
+    "authors": "Zachary Nicholas Houghton",
+    "url": "https://search.proquest.com/openview/59e91c3252682d11c048247ba152f037/1?pq-origsite=gscholar&cbl=18750&diss=y",
     "citations": 2
   },
   {
@@ -24,11 +40,11 @@
     "citations": 1
   },
   {
-    "title": "Multi-Word Representations in Minds and Models: Investigating the Storage of Multi-Word Phrases in Humans and Large Language Models",
+    "title": "The Bolts and Nuts of Language Processing: An Investigation into the Noisy-channel Processing of Binomials",
     "year": 2025,
     "venue": "",
     "authors": "Zachary Nicholas Houghton",
-    "url": "https://search.proquest.com/openview/59e91c3252682d11c048247ba152f037/1?pq-origsite=gscholar&cbl=18750&diss=y",
+    "url": "https://search.proquest.com/openview/48f06dad467d78a128dc477700ab1b34/1?pq-origsite=gscholar&cbl=18750&diss=y",
     "citations": 1
   },
   {
@@ -37,14 +53,6 @@
     "venue": "",
     "authors": "Zachary Nicholas Houghton and Dan Pluth and Jordan Hosier and Vijay K Gurbani",
     "url": "https://ieeexplore.ieee.org/abstract/document/11211857/",
-    "citations": 0
-  },
-  {
-    "title": "The Bolts and Nuts of Language Processing: An Investigation into the Noisy-channel Processing of Binomials",
-    "year": 2025,
-    "venue": "",
-    "authors": "Zachary Nicholas Houghton",
-    "url": "https://search.proquest.com/openview/48f06dad467d78a128dc477700ab1b34/1?pq-origsite=gscholar&cbl=18750&diss=y",
     "citations": 0
   },
   {
@@ -61,7 +69,7 @@
     "venue": "Applied psycholinguistics",
     "authors": "Zachary Houghton and Misaki Kato and Melissa Baese-Berk and Charlotte Vaughn",
     "url": "https://www.cambridge.org/core/journals/applied-psycholinguistics/article/taskdependent-consequences-of-disfluency-in-perception-of-native-and-nonnative-speech/24E2657CBFAEAE3A2BC7A2493983732F",
-    "citations": 8
+    "citations": 10
   },
   {
     "title": "Soundboard-trained dogs produce non-accidental, non-random and non-imitative two-button combinations",
@@ -85,14 +93,6 @@
     "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
     "authors": "Zachary Nicholas Houghton and Emily Morgan",
     "url": "https://escholarship.org/uc/item/5bj443rz",
-    "citations": 1
-  },
-  {
-    "title": "Task Variation in Scalar Implicature Computation",
-    "year": 2023,
-    "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
-    "authors": "Zhuang Qiu and Casey D Felton and Zachary Nicholas Houghton and Masoud Jasbi",
-    "url": "https://escholarship.org/uc/item/9pm7b4bj",
     "citations": 2
   },
   {
@@ -101,7 +101,15 @@
     "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
     "authors": "Zachary Nicholas Houghton and Emily Morgan",
     "url": "https://escholarship.org/uc/item/7kz7w10b",
-    "citations": 1
+    "citations": 2
+  },
+  {
+    "title": "Task Variation in Scalar Implicature Computation",
+    "year": 2023,
+    "venue": "Proceedings of the Annual Meeting of the Cognitive Science Society",
+    "authors": "Zhuang Qiu and Casey D Felton and Zachary Nicholas Houghton and Masoud Jasbi",
+    "url": "https://escholarship.org/uc/item/9pm7b4bj",
+    "citations": 2
   },
   {
     "title": "Perceptual consequences of pauses: Credibility and fluency of native and non-native speech",
