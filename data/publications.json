@@ -1,11 +1,11 @@
 [
   {
-    "title": "Mechanistic Interpretability of ASR models using Sparse Autoencoders",
+    "title": "Mechanistic interpretability of asr models using sparse autoencoders",
     "year": 2026,
     "venue": "arXiv preprint arXiv:2605.12225",
     "authors": "Dan Pluth and Zachary Nicholas Houghton and Yu Zhou and Vijay K Gurbani",
     "url": "https://arxiv.org/abs/2605.12225",
-    "citations": 1
+    "citations": 2
   },
   {
     "title": "The Holistic Storage of Verb+ Up Phrases in Text-based and Audio-based Language Models",
