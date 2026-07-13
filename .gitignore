@@ -20,3 +20,9 @@ scripts/wordpool/*_full.json
 scripts/wordpool/*_check.json
 scripts/wordpool/*_check_output.txt
 scripts/wordpool/filter_output*.txt
+scripts/wordpool/filter_check*.txt
+scripts/wordpool/filter_result*.txt
+scripts/wordpool/final_ipa_check*.txt
+scripts/wordpool/ipa_resolved.txt
+scripts/wordpool/*_etym2.txt
+scripts/wordpool/sample_dump.txt
