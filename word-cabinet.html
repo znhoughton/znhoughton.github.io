@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Cabinet · Zachary Houghton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=DotGothic16&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="retro-cursors">
+
+  <header>
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">ZNH</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="teaching.html">Teaching</a></li>
+        <li><a href="cv.html">CV</a></li>
+        <li><a href="word-cabinet.html" class="active">Word Cabinet</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h1>Word of the Day</h1>
+        <p>Not too dissimilar from telepathy, we humans have the ability to transmit our thoughts directly into each other's brains. Words are the vehicle that enables this incredible superpower.</p>
+      </div>
+
+      <div style="padding-bottom: 4rem;">
+
+        <section class="section" style="border-top: none; padding-top: 0;">
+          <div id="wotd-container"></div>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Feeling Sesquipedalian?</h2>
+          <p class="section-subtitle">Pull a random word from the pool.</p>
+          <button class="btn btn-primary" id="surprise-btn" style="margin-bottom: 1.5rem;">Surprise Me</button>
+          <div id="spotlight-container"></div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>&copy; 2025 Zachary Houghton</span>
+      <span><a href="mailto:znhoughton@gmail.com">znhoughton@gmail.com</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+  </script>
+  <script src="/scripts/easter-eggs.js"></script>
+
+  <script>
+    // Word-of-the-day is deterministic: the array order in words.json IS the
+    // rotation schedule, fixed once at curation time. Everyone sees the same
+    // word on a given UTC day, the full pool cycles before repeating, and
+    // appending new words later only extends the cycle.
+    const WOTD_EPOCH = Date.UTC(2026, 0, 1);
+
+    let WORDS = [];
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function wordCardHtml(word) {
+      const examples = word.examples.map(ex => `<li>${escapeHtml(ex)}</li>`).join('');
+      return `
+        <div class="word-card">
+          <div class="word-card-head">
+            <h3 class="word-card-word">${escapeHtml(word.word)}</h3>
+            <span class="word-card-pos">${escapeHtml(word.pos)}</span>
+          </div>
+          <div class="word-card-pron">
+            <span class="pron-item"><span class="pron-label">IPA</span> ${escapeHtml(word.ipa)}</span>
+          </div>
+          <div class="word-card-section">
+            <h4>Definition</h4>
+            <p>${escapeHtml(word.definition)}</p>
+          </div>
+          <div class="word-card-section">
+            <h4>Etymology</h4>
+            <p>${escapeHtml(word.etymology)}</p>
+          </div>
+          <div class="word-card-section">
+            <h4>Examples</h4>
+            <ol class="example-list">${examples}</ol>
+          </div>
+        </div>
+      `;
+    }
+
+    // Maps a neighbor's similarity (normalized within this word's own
+    // neighbor set) to an alpha on the site's accent hue -- a sequential,
+    // one-hue encoding of magnitude, not a categorical palette. Floor of
+    // 0.4 keeps even the least-similar neighbor legible on the dark card.
+    function similarityAlpha(sim, minSim, maxSim) {
+      if (maxSim === minSim) return 1;
+      const t = (sim - minSim) / (maxSim - minSim);
+      return 0.4 + t * 0.6;
+    }
+
+    const VIZ_SIZE = 280;
+    const VIZ_PAD = 40;
+
+    // Fits this word's own points into the plot, rather than assuming a
+    // fixed +/-1 coordinate range -- the overlap-resolution pass on the
+    // Python side can expand a crowded layout past any fixed bound, and
+    // different words' neighborhoods naturally vary in spread.
+    function makeToPixel(points) {
+      const xs = points.map(p => p[0]);
+      const ys = points.map(p => p[1]);
+      const maxAbs = Math.max(1e-6, ...xs.map(Math.abs), ...ys.map(Math.abs));
+      const half = (VIZ_SIZE - VIZ_PAD * 2) / 2;
+      return (x, y) => ({
+        px: VIZ_SIZE / 2 + (x / maxAbs) * half,
+        py: VIZ_SIZE / 2 - (y / maxAbs) * half,
+      });
+    }
+
+    function neighborVizSvg(word) {
+      if (!word.neighbors || word.neighbors.length === 0) return '';
+
+      const sims = word.neighbors.map(n => n.similarity);
+      const minSim = Math.min(...sims);
+      const maxSim = Math.max(...sims);
+
+      const [tx, ty] = word.embedding_xy;
+      const allPoints = [[tx, ty], ...word.neighbors.map(n => [n.x, n.y])];
+      const toPixel = makeToPixel(allPoints);
+      const target = toPixel(tx, ty);
+
+      const lines = word.neighbors.map(n => {
+        const p = toPixel(n.x, n.y);
+        return `<line x1="${target.px}" y1="${target.py}" x2="${p.px}" y2="${p.py}" class="neighbor-line" />`;
+      }).join('');
+
+      const dots = word.neighbors.map(n => {
+        const p = toPixel(n.x, n.y);
+        const alpha = similarityAlpha(n.similarity, minSim, maxSim);
+        // Emphasis pattern: only core words (featured, full-card treatment)
+        // carry the accent hue; discovery-only words and words with no
+        // entry at all are both de-emphasized gray context, since neither
+        // gets the full-card experience on click.
+        const match = WORDS.find(w => w.word.toLowerCase() === n.word);
+        const isCore = !!match && !match.discovery_only;
+        const dotColor = isCore ? `rgba(124,110,247,${alpha.toFixed(2)})` : `rgba(148,144,168,${(alpha * 0.6).toFixed(2)})`;
+        const pointClass = isCore ? 'neighbor-point in-pool' : 'neighbor-point out-of-pool';
+        const titleSuffix = isCore ? '' : (match ? '' : ' (not yet in the cabinet)');
+        return `
+          <g class="${pointClass}" data-word="${escapeHtml(n.word)}" tabindex="0" role="button">
+            <circle cx="${p.px}" cy="${p.py}" r="16" class="neighbor-hit" />
+            <circle cx="${p.px}" cy="${p.py}" r="5" fill="${dotColor}" />
+            <text x="${p.px}" y="${p.py + 16}" class="neighbor-label" style="opacity:${alpha.toFixed(2)}">${escapeHtml(n.word)}</text>
+            <title>${escapeHtml(n.word)}${titleSuffix} (${n.similarity.toFixed(2)} similarity)</title>
+          </g>
+        `;
+      }).join('');
+
+      return `
+        <div class="word-card-section neighbor-section">
+          <h4>Related Words</h4>
+          <svg viewBox="0 0 ${VIZ_SIZE} ${VIZ_SIZE}" class="neighbor-viz" role="img" aria-label="Words closest in meaning to ${escapeHtml(word.word)}">
+            ${lines}
+            ${dots}
+            <circle cx="${target.px}" cy="${target.py}" r="8" class="neighbor-target-dot" />
+            <text x="${target.px}" y="${target.py - 14}" class="neighbor-target-label">${escapeHtml(word.word)}</text>
+          </svg>
+          <p class="neighbor-note" id="neighbor-note-${escapeHtml(word.id)}"></p>
+        </div>
+      `;
+    }
+
+    function renderWordCard(word, containerEl) {
+      containerEl.innerHTML = wordCardHtml(word) + neighborVizSvg(word);
+
+      containerEl.querySelectorAll('.neighbor-point').forEach(pointEl => {
+        const activate = () => {
+          const neighborWord = pointEl.dataset.word;
+          const match = WORDS.find(w => w.word.toLowerCase() === neighborWord);
+          const note = containerEl.querySelector('.neighbor-note');
+          if (match && !match.discovery_only) {
+            renderWordCard(match, containerEl);
+            containerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else if (match && note) {
+            note.innerHTML = `<strong>${escapeHtml(match.word)}</strong> <span class="neighbor-note-pos">${escapeHtml(match.pos)}</span> &mdash; ${escapeHtml(match.definition)}`;
+          } else if (note) {
+            note.textContent = `"${neighborWord}" isn't in the cabinet yet.`;
+          }
+        };
+        pointEl.addEventListener('click', activate);
+        pointEl.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+        });
+      });
+    }
+
+    // discovery_only words have a full sourced entry (so they're explorable
+    // via the neighbor map) but are excluded from Word of the Day and
+    // Surprise Me -- those two draw only from the curated "eligible" set.
+    // Filtering preserves array order, so the WOTD rotation schedule for
+    // already-elapsed days stays stable as discovery entries get added.
+    function eligibleWords() {
+      return WORDS.filter(w => !w.discovery_only);
+    }
+
+    function getWordOfDay() {
+      const eligible = eligibleWords();
+      const now = new Date();
+      const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+      const daysSince = Math.floor((todayUTC - WOTD_EPOCH) / 86400000);
+      const idx = ((daysSince % eligible.length) + eligible.length) % eligible.length;
+      return eligible[idx];
+    }
+
+    fetch('/data/words.json')
+      .then(res => {
+        if (!res.ok) throw new Error('words.json not found');
+        return res.json();
+      })
+      .then(data => {
+        WORDS = data;
+        renderWordCard(getWordOfDay(), document.getElementById('wotd-container'));
+
+        document.getElementById('surprise-btn').addEventListener('click', () => {
+          const eligible = eligibleWords();
+          const idx = Math.floor(Math.random() * eligible.length);
+          const spotlight = document.getElementById('spotlight-container');
+          renderWordCard(eligible[idx], spotlight);
+          spotlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      })
+      .catch(err => {
+        document.getElementById('wotd-container').innerHTML = `<p style="color: var(--text-secondary);">Couldn't load the word pool yet.</p>`;
+        console.error(err);
+      });
+  </script>
+</body>
+</html>

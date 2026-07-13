@@ -1,0 +1,22 @@
+__pycache__/
+*.pyc
+
+# Word pool curation scratch/intermediate files (reproducible via the scripts)
+scripts/wordpool/drafts/
+scripts/wordpool/*.csv
+scripts/wordpool/candidates*.txt
+scripts/wordpool/big_sample*.txt
+scripts/wordpool/discovery_candidates.txt
+scripts/wordpool/discovery_final_list.txt
+scripts/wordpool/batch*_dump.txt
+scripts/wordpool/batch*_wordlist*.txt
+scripts/wordpool/batch*_zipf.txt
+scripts/wordpool/batch*_part*.json
+scripts/wordpool/batch*_merged.json
+scripts/wordpool/core_batch*_dump.txt
+scripts/wordpool/new_core_batch*.json
+scripts/wordpool/new_entries_*.json
+scripts/wordpool/*_full.json
+scripts/wordpool/*_check.json
+scripts/wordpool/*_check_output.txt
+scripts/wordpool/filter_output*.txt
