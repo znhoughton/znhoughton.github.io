@@ -30,7 +30,7 @@
     <div class="container">
       <div class="page-header">
         <h1>Word of the Day</h1>
-        <p>Not too dissimilar from telepathy, we humans have the ability to transmit our thoughts directly into each other's brains. Words are the vehicle that enables this incredible superpower.</p>
+        <p>Not too dissimilar from telepathy, we humans have the ability to transmit our thoughts directly into each other's brains. Words are the vehicle that enables this.</p>
       </div>
 
       <div style="padding-bottom: 4rem;">
@@ -220,10 +220,26 @@
       return WORDS.filter(w => !w.discovery_only);
     }
 
+    // Rotates at midnight America/New_York (not the visitor's local time),
+    // so every visitor sees the same word change at the same real-world
+    // moment regardless of where they are. Intl.DateTimeFormat resolves
+    // the Eastern calendar date directly, handling EST/EDT automatically.
+    function getEasternDateParts(date) {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).formatToParts(date);
+      const map = {};
+      parts.forEach(p => { map[p.type] = p.value; });
+      return { year: +map.year, month: +map.month, day: +map.day };
+    }
+
     function getWordOfDay() {
       const eligible = eligibleWords();
-      const now = new Date();
-      const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+      const { year, month, day } = getEasternDateParts(new Date());
+      const todayUTC = Date.UTC(year, month - 1, day);
       const daysSince = Math.floor((todayUTC - WOTD_EPOCH) / 86400000);
       const idx = ((daysSince % eligible.length) + eligible.length) % eligible.length;
       return eligible[idx];
