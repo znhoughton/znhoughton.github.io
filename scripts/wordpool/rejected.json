@@ -6,5 +6,13 @@
   {
     "word": "cohere",
     "reason": "Common in educated/formal register despite a low corpus zipf score; most of the target audience already knows it."
+  },
+  {
+    "word": "genial",
+    "reason": "Commonly known by educated adults despite a low corpus zipf score."
+  },
+  {
+    "word": "lingua",
+    "reason": "Not genuinely used standalone in English -- appears almost exclusively inside the fixed phrase 'lingua franca', so real example sentences can't be written naturally."
   }
 ]
