@@ -42,7 +42,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 WORDS_JSON = os.path.join(REPO_ROOT, "data", "words.json")
 
 WORD_RE = re.compile(r"^[a-z]+$")
-TOPN_RAW = 500
+TOPN_RAW = 3000
 MIN_NEIGHBORS = 4
 MAX_NEIGHBORS = 8
 MIN_ZIPF = 1.0
