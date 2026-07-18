@@ -26,3 +26,10 @@ scripts/wordpool/final_ipa_check*.txt
 scripts/wordpool/ipa_resolved.txt
 scripts/wordpool/*_etym2.txt
 scripts/wordpool/sample_dump.txt
+scripts/wordpool/batch*_group*.txt
+scripts/wordpool/batch*_excluded.txt
+scripts/wordpool/batch*_enrich_log.txt
+scripts/wordpool/batch*_usable.txt
+scripts/wordpool/batch*_remaining*.txt
+scripts/wordpool/batch*_g*_zipf.txt
+scripts/wordpool/base_etym_check*.json

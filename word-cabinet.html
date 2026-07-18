@@ -41,9 +41,12 @@
 
         <section class="section">
           <h2 class="section-title">Feeling Sesquipedalian?</h2>
-          <p class="section-subtitle">Pull a random word from the pool.</p>
-          <button class="btn btn-primary" id="surprise-btn" style="margin-bottom: 1.5rem;">Surprise Me</button>
-          <div id="spotlight-container"></div>
+          <p class="section-subtitle">Pull a random word from the pool, or dial up the difficulty.</p>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+            <button class="btn btn-primary" id="surprise-btn">Surprise Me</button>
+            <button class="btn btn-ghost" id="challenge-btn">Give Me a Hard One</button>
+          </div>
+          <div id="explore-container"></div>
         </section>
 
       </div>
@@ -81,27 +84,35 @@
 
     function wordCardHtml(word) {
       const examples = word.examples.map(ex => `<li>${escapeHtml(ex)}</li>`).join('');
+      // rarity_percentile/rarity_tier are backfilled from each word's real
+      // wordfreq zipf score (see scripts/wordpool/backfill_rarity.py) --
+      // "rarer than N% of English words" is an honest corpus-frequency
+      // statistic, deliberately not framed as "N% of people know this,"
+      // which frequency data can't actually support.
+      const rarityBadge = (word.rarity_tier && typeof word.rarity_percentile === 'number')
+        ? `<span class="word-card-rarity" data-tier="${escapeHtml(word.rarity_tier)}" title="Rarer than ${word.rarity_percentile}% of English words">${escapeHtml(word.rarity_tier)}</span>`
+        : '';
       return `
-        <div class="word-card">
-          <div class="word-card-head">
-            <h3 class="word-card-word">${escapeHtml(word.word)}</h3>
-            <span class="word-card-pos">${escapeHtml(word.pos)}</span>
-          </div>
-          <div class="word-card-pron">
-            <span class="pron-item"><span class="pron-label">IPA</span> ${escapeHtml(word.ipa)}</span>
-          </div>
-          <div class="word-card-section">
-            <h4>Definition</h4>
-            <p>${escapeHtml(word.definition)}</p>
-          </div>
-          <div class="word-card-section">
-            <h4>Etymology</h4>
-            <p>${escapeHtml(word.etymology)}</p>
-          </div>
-          <div class="word-card-section">
-            <h4>Examples</h4>
-            <ol class="example-list">${examples}</ol>
-          </div>
+        <div class="word-card-head">
+          <h3 class="word-card-word">${escapeHtml(word.word)}</h3>
+          <span class="word-card-pos">${escapeHtml(word.pos)}</span>
+          ${rarityBadge}
+        </div>
+        <div class="word-card-pron">
+          <span class="pron-item"><span class="pron-label">IPA</span> ${escapeHtml(word.ipa)}</span>
+          ${typeof word.rarity_percentile === 'number' ? `<span class="pron-item"><span class="pron-label">Rarity</span> rarer than ${word.rarity_percentile}% of English words</span>` : ''}
+        </div>
+        <div class="word-card-section">
+          <h4>Definition</h4>
+          <p>${escapeHtml(word.definition)}</p>
+        </div>
+        <div class="word-card-section">
+          <h4>Etymology</h4>
+          <p>${escapeHtml(word.etymology)}</p>
+        </div>
+        <div class="word-card-section">
+          <h4>Examples</h4>
+          <ol class="example-list">${examples}</ol>
         </div>
       `;
     }
@@ -174,7 +185,7 @@
       }).join('');
 
       return `
-        <div class="word-card-section neighbor-section">
+        <div class="related-words-card">
           <h4>Related Words</h4>
           <svg viewBox="0 0 ${VIZ_SIZE} ${VIZ_SIZE}" class="neighbor-viz" role="img" aria-label="Words closest in meaning to ${escapeHtml(word.word)}">
             ${lines}
@@ -187,8 +198,36 @@
       `;
     }
 
+    // For a no-card neighbor click, we want the viewport's bottom edge to
+    // land right at (or just above) the section-divider line below the
+    // current section -- not just "the note is somewhere on screen." That
+    // divider is the next sibling section's top border, or the footer's
+    // top border when the current section is the last thing on the page.
+    function scrollBottomToNextDivider(containerEl) {
+      const section = containerEl.closest('section');
+      const boundaryEl = (section && section.nextElementSibling) || document.querySelector('footer');
+      if (!boundaryEl) return;
+      const lineY = boundaryEl.getBoundingClientRect().top + window.scrollY;
+      const targetScrollY = lineY - window.innerHeight + 12; // 12px so the line stays just above the fold, not clipped by it
+      window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+    }
+
     function renderWordCard(word, containerEl) {
-      containerEl.innerHTML = wordCardHtml(word) + neighborVizSvg(word);
+      // Related Words is its own visually separate card (own background/
+      // border), stacked below the main word card as its own next section
+      // -- same pattern as Wikipedia's "See Also" or Wordnik's word-map,
+      // rather than a sidebar bolted onto the same box. Words with no
+      // neighbor data (see compute_neighbors.py's MIN_NEIGHBORS skip)
+      // just render the single card with nothing below it.
+      const vizHtml = neighborVizSvg(word);
+      containerEl.innerHTML = `
+        <div class="word-display">
+          <div class="word-card">
+            ${wordCardHtml(word)}
+          </div>
+          ${vizHtml}
+        </div>
+      `;
 
       containerEl.querySelectorAll('.neighbor-point').forEach(pointEl => {
         const activate = () => {
@@ -196,12 +235,22 @@
           const match = WORDS.find(w => w.word.toLowerCase() === neighborWord);
           const note = containerEl.querySelector('.neighbor-note');
           if (match && !match.discovery_only) {
+            // Scroll back to the top of the card on navigation: since the
+            // layout is a plain stack now (no sticky sidebar to fight),
+            // without this the new word's title/definition/etymology would
+            // render off-screen above wherever you'd scrolled down to
+            // click the graph, leaving just the (also-new) related-words
+            // graph visible -- the opposite of what clicking should do.
             renderWordCard(match, containerEl);
             containerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
           } else if (match && note) {
+            // No full-card jump here -- this just swaps text into the note
+            // paragraph in place.
             note.innerHTML = `<strong>${escapeHtml(match.word)}</strong> <span class="neighbor-note-pos">${escapeHtml(match.pos)}</span> &mdash; ${escapeHtml(match.definition)}`;
+            scrollBottomToNextDivider(containerEl);
           } else if (note) {
             note.textContent = `"${neighborWord}" isn't in the cabinet yet.`;
+            scrollBottomToNextDivider(containerEl);
           }
         };
         pointEl.addEventListener('click', activate);
@@ -218,6 +267,13 @@
     // already-elapsed days stays stable as discovery entries get added.
     function eligibleWords() {
       return WORDS.filter(w => !w.discovery_only);
+    }
+
+    // The "hard" pool is exactly the core words in the Legendary rarity tier
+    // (zipf <= 1.8, see backfill_rarity.py) -- reusing the same tier field
+    // that drives the badge rather than a separate difficulty flag.
+    function hardWords() {
+      return WORDS.filter(w => !w.discovery_only && w.rarity_tier === 'Legendary');
     }
 
     // Rotates at midnight America/New_York (not the visitor's local time),
@@ -254,12 +310,24 @@
         WORDS = data;
         renderWordCard(getWordOfDay(), document.getElementById('wotd-container'));
 
+        // Surprise Me and the challenge button are the same underlying
+        // action (a random draw from a pool) with a difficulty knob, not
+        // two unrelated features -- they share one display slot, so
+        // picking one replaces whatever's currently shown rather than
+        // stacking a second full card+neighbor-web block on the page.
+        const exploreContainer = document.getElementById('explore-container');
+        function showRandomFrom(pool) {
+          const idx = Math.floor(Math.random() * pool.length);
+          renderWordCard(pool[idx], exploreContainer);
+          exploreContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
         document.getElementById('surprise-btn').addEventListener('click', () => {
-          const eligible = eligibleWords();
-          const idx = Math.floor(Math.random() * eligible.length);
-          const spotlight = document.getElementById('spotlight-container');
-          renderWordCard(eligible[idx], spotlight);
-          spotlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          showRandomFrom(eligibleWords());
+        });
+
+        document.getElementById('challenge-btn').addEventListener('click', () => {
+          showRandomFrom(hardWords());
         });
       })
       .catch(err => {

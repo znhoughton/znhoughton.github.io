@@ -621,6 +621,52 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
   padding: 2rem;
 }
 
+/* Tried a side-by-side sticky layout here first; it made Related Words feel
+   like a mismatched sidebar rather than the "next section after the main
+   card" feel of e.g. Wikipedia's See Also or Wordnik's own word-map. Plain
+   stacking, single column at every width, reads better for something
+   that's a footnote to one word rather than a persistent nav aid. */
+.word-display {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* scrollIntoView() on a neighbor click is called on #wotd-container /
+   #explore-container themselves (the outer div renderWordCard fills via
+   innerHTML), not on the inner .word-display -- scroll-margin has to live
+   on the actual scroll target. The sticky 60px nav header (z-index 100)
+   sits above everything, so without this, the card's top edge scrolls to
+   the literal top of the viewport and ends up tucked underneath the header
+   instead of landing just below it. */
+#wotd-container,
+#explore-container {
+  scroll-margin-top: 76px;
+}
+
+/* Its own card, deliberately -- reads as a distinct companion element after
+   the main word card rather than a section stacked inside it. */
+.related-words-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.related-words-card h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.related-words-card .neighbor-note {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+}
+
 .word-card-head {
   display: flex;
   align-items: baseline;
@@ -649,6 +695,39 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
   font-family: var(--mono);
   font-size: 0.85rem;
   color: var(--text-secondary);
+}
+
+/* Rarity is an ordinal scale (Common -> Legendary), so it's encoded as one
+   hue at increasing intensity rather than four distinct colors -- same
+   sequential-not-categorical principle as the neighbor-viz similarity dots. */
+.word-card-rarity {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--accent-soft);
+  color: var(--text-muted);
+}
+
+.word-card-rarity[data-tier="Uncommon"] {
+  color: var(--accent);
+  border-color: var(--accent-soft);
+  background: var(--accent-soft);
+}
+
+.word-card-rarity[data-tier="Rare"] {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.word-card-rarity[data-tier="Legendary"] {
+  color: var(--bg);
+  border-color: var(--accent);
+  background: var(--accent);
+  font-weight: 600;
 }
 
 .pron-label {
