@@ -17,6 +17,17 @@ common enough that most readers already know them, and words so rare they
 risk being archaic/dialectal noise -- and is carried through to the output
 so it can double as the "how rare is this word" info surfaced on the site.
 
+The min/max band is applied to *effective* zipf (surface form blended with
+its guessed lemma's frequency, see lemma_frequency.py), not raw surface
+zipf. Otherwise a transparent derivation of a common root (e.g.
+"deductively" from "deductive") looks artificially rare by raw token
+frequency and either gets accepted as a candidate for the wrong reason, or
+-- for a word just above max-zipf on the raw scale -- wrongly rejected as
+"too easy" when blending would have pushed it over. The raw zipf is still
+what's written to candidates.csv, since that's the true corpus-frequency
+number for the word itself; only the accept/reject decision uses the
+blended value.
+
 Usage:
     python generate_candidates.py [--min-zipf 1.5] [--max-zipf 2.8]
 """
@@ -24,6 +35,8 @@ import argparse
 import csv
 import json
 import os
+
+from lemma_frequency import effective_zipf
 
 WORDPOOL_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(os.path.dirname(WORDPOOL_DIR))
@@ -73,7 +86,7 @@ def main():
             d = json.loads(line)
             word = d["word"]
             zipf = d["zipf"]
-            if not (args.min_zipf <= zipf <= args.max_zipf):
+            if not (args.min_zipf <= effective_zipf(word, zipf) <= args.max_zipf):
                 continue
             if word in existing or word in rejected:
                 continue
