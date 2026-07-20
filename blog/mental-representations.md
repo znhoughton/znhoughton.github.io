@@ -56,7 +56,7 @@ perception resting on a modest number of highly selective "cardinal cells," each
 something roughly as complex as a word. So the real picture is more interesting than a clean
 binary: highly selective single neurons do exist, but as the minority pattern, not the rule.
 Something similar shows up in my own research, too, where high-frequency linguistic constructions
-seem to carry item-specific representations of their own. The working picture in the field is
+seem to be represented in an item-specific manner. The working picture in the field is thus
 closer to *dense, distributed* representations.
 
 ### A less computer-science-flavored way to say the same thing
