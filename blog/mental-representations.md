@@ -461,11 +461,13 @@ unit per concept, or a pattern spread across a population? Inside a trained neur
 answer now comes with a number attached: far more concepts than dimensions, exactly as many as the
 sparsity of those concepts' co-occurrence will allow.
 
-The same technique extends past text, too. Pluth and colleagues [@pluth2026] applied sparse
-autoencoders to Whisper, a speech-recognition model, and found diverse monosemantic features
-spanning both linguistic and non-linguistic distinctions in its encoder representations, with some
-of those features steerable across languages, superposition and all the capacity it buys showing
-up in an acoustic model exactly the way it does in a language model.
+The same technique extends past text, too. In some recent work with my colleagues at Vail
+Systems [@pluth2026], we applied sparse autoencoders to Whisper, a speech-recognition model, and
+found
+diverse monosemantic features spanning both linguistic and non-linguistic distinctions in its
+encoder representations, with some of those features steerable across languages, superposition and
+all the capacity it buys showing up in an acoustic model exactly the way it does in a language
+model.
 
 None of this is free, though. A representation spread across a large, overlapping population is
 harder to inspect and reason about than a clean symbolic label: you can't point to "the dog
