@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog · Zachary Houghton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=DotGothic16&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="retro-cursors">
+
+  <header>
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">ZNH</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="teaching.html">Teaching</a></li>
+        <li><a href="cv.html">CV</a></li>
+        <li><a href="word-cabinet.html">Word Cabinet</a></li>
+        <li><a href="blog.html" class="active">Blog</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h1>Blog</h1>
+        <p>Extended write-ups and interactive walkthroughs on language, learning, and the models I build to study them.</p>
+      </div>
+
+      <div id="blog-root" style="padding-bottom: 4rem;"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>&copy; 2025 Zachary Houghton</span>
+      <span><a href="mailto:znhoughton@gmail.com">znhoughton@gmail.com</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => links.classList.toggle('open'));
+  </script>
+  <script src="/scripts/easter-eggs.js"></script>
+  <script src="/scripts/marked.min.js"></script>
+  <script src="/scripts/bib.js"></script>
+
+  <script>
+    const root = document.getElementById('blog-root');
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    function formatDate(iso) {
+      const d = new Date(iso + 'T00:00:00');
+      if (isNaN(d)) return iso;
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    // Mirrors scripts/build_blog_index.py's front-matter parser: a leading
+    // ---\n key: value \n--- block, quoted values unwrapped.
+    const FRONT_MATTER_RE = /^---\s*\n([\s\S]*?)\n---\s*\n/;
+    function parseFrontMatter(text) {
+      const m = text.match(FRONT_MATTER_RE);
+      if (!m) return { fields: {}, body: text };
+      const fields = {};
+      m[1].split('\n').forEach(line => {
+        const idx = line.indexOf(':');
+        if (idx === -1) return;
+        const key = line.slice(0, idx).trim();
+        let value = line.slice(idx + 1).trim();
+        if (value.length >= 2 && value[0] === '"' && value[value.length - 1] === '"') {
+          value = value.slice(1, -1);
+        }
+        fields[key] = value;
+      });
+      return { fields, body: text.slice(m[0].length) };
+    }
+
+    // Posts are written in plain Markdown. Two lightweight conventions on
+    // top of that give access to the site's styled boxes without ever
+    // writing raw HTML for ordinary prose:
+    //   - `` `x` `` (inline code) renders as the .im inline-notation pill,
+    //     e.g. `P(W)` -- backticks read naturally as "this is a variable/
+    //     formula", so inline code was free real estate for this.
+    //   - a ```math fenced block renders as the .math-block box; any line
+    //     starting with // inside it is dimmed as a comment/label.
+    //   - a blockquote starting with a bold label, e.g. "> **Research:**
+    //     ..." or "> **Fun fact:** ...", renders as the matching callout
+    //     box (.research-connect for the "Research" label, .fun-fact for
+    //     any other label). A plain blockquote with no bold label renders
+    //     as an ordinary blockquote.
+    //   - [@key] / [@key1; @key2] renders as an APA parenthetical citation,
+    //     e.g. "(Barlow, 1972)"; bare @key renders as narrative, "Barlow
+    //     (1972)". Keys resolve against the single shared blog/references.bib
+    //     (see scripts/bib.js) -- a post's own "References" section is
+    //     generated automatically at the end from only the keys that post
+    //     actually cites, never the full shared bibliography.
+    // Interactive demos (canvas + script) have no Markdown equivalent and
+    // still need to be dropped in as raw HTML -- that's inherent to being
+    // interactive, not a limitation of this pipeline.
+    marked.use({
+      renderer: {
+        code({ text, lang }) {
+          if (lang !== 'math') return false; // fall back to default <pre><code> for real code blocks
+          const lines = text.split('\n').map(line => {
+            const escaped = escapeHtml(line);
+            return /^\s*\/\//.test(line) ? `<span class="math-comment">${escaped}</span>` : escaped;
+          });
+          return `<div class="math-block">${lines.join('<br>')}</div>`;
+        },
+        codespan({ text }) {
+          return `<span class="im">${escapeHtml(text)}</span>`;
+        },
+        blockquote({ tokens }) {
+          const html = this.parser.parse(tokens);
+          const m = html.match(/^<p>\s*<strong>([^<]+?)<\/strong>:?\s*/i);
+          if (!m) return false; // plain blockquote, default styling
+          const label = m[1].replace(/:$/, '').trim();
+          const remainder = html.slice(m[0].length);
+          if (/^research$/i.test(label)) {
+            return `<p class="research-connect"><em>// research</em> ${remainder}`;
+          }
+          return `<div class="fun-fact"><span class="ff-label">// ${escapeHtml(label.toLowerCase())}</span><p>${remainder}</div>`;
+        }
+      }
+    });
+
+    // <script> tags inserted via innerHTML never execute -- replace each
+    // with a freshly created script element (same content) so the demo's
+    // IIFE actually runs against the now-live canvas/button elements.
+    function reexecuteScripts(container) {
+      container.querySelectorAll('script').forEach(oldScript => {
+        const newScript = document.createElement('script');
+        for (const attr of oldScript.attributes) newScript.setAttribute(attr.name, attr.value);
+        newScript.textContent = oldScript.textContent;
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+      });
+    }
+
+    function renderList(posts) {
+      const items = posts.map(p => `
+        <div class="blog-list-item">
+          <h3><a href="blog.html?post=${encodeURIComponent(p.slug)}">${escapeHtml(p.title)}</a></h3>
+          <span class="blog-meta">${formatDate(p.date)}</span>
+          <p class="blog-summary">${escapeHtml(p.summary)}</p>
+        </div>
+      `).join('');
+      root.innerHTML = `<div class="blog-list">${items}</div>`;
+    }
+
+    // Shared across all posts -- references.bib doesn't change per-post, so
+    // fetch and parse it once and reuse the parsed entries.
+    let bibEntriesPromise = null;
+    function loadBibEntries() {
+      if (!bibEntriesPromise) {
+        bibEntriesPromise = fetch('blog/references.bib')
+          .then(res => res.ok ? res.text() : '')
+          .then(text => BibCite.parseBibtex(text))
+          .catch(() => ({}));
+      }
+      return bibEntriesPromise;
+    }
+
+    function renderPost(slug) {
+      Promise.all([
+        fetch(`blog/${slug}.md`).then(res => {
+          if (!res.ok) throw new Error('post not found');
+          return res.text();
+        }),
+        loadBibEntries()
+      ])
+        .then(([text, bibEntries]) => {
+          const { fields, body } = parseFrontMatter(text);
+          // Resolve [@key] / @key citation markup against the shared
+          // bibliography *before* handing the text to marked, and track
+          // exactly which keys this post used so its References section
+          // only ever lists what it actually cites -- never the full
+          // shared bibliography.
+          const { text: resolvedBody, usedKeys } = BibCite.resolveCitations(body, bibEntries);
+          const html = marked.parse(resolvedBody);
+          const referencesHtml = BibCite.renderReferences(usedKeys, bibEntries);
+          const subtitle = fields.summary ? `<p class="section-subtitle">${escapeHtml(fields.summary)}</p>` : '';
+          root.innerHTML = `
+            <a class="blog-back-link" href="blog.html">&larr; All posts</a>
+            <h1>${escapeHtml(fields.title || slug)}</h1>
+            <span class="blog-meta">${formatDate(fields.date || '')}</span>
+            ${subtitle}
+            <div class="blog-post-body" style="margin-top:1.5rem;">${html}${referencesHtml}</div>
+          `;
+          reexecuteScripts(root.querySelector('.blog-post-body'));
+        })
+        .catch(err => {
+          root.innerHTML = `<p style="color: var(--text-secondary);">Couldn't load that post.</p>`;
+          console.error(err);
+        });
+    }
+
+    const slug = new URLSearchParams(location.search).get('post');
+    if (slug) {
+      renderPost(slug);
+    } else {
+      fetch('/data/blog-index.json')
+        .then(res => res.json())
+        .then(renderList)
+        .catch(err => {
+          root.innerHTML = `<p style="color: var(--text-secondary);">Couldn't load the post list.</p>`;
+          console.error(err);
+        });
+    }
+  </script>
+</body>
+</html>
