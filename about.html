@@ -89,7 +89,7 @@
 
   <footer>
     <div class="container footer-inner">
-      <span>© 2025 Zachary Houghton</span>
+      <span>© <span id="copyright-year">2026</span> Zachary Houghton</span>
       <span><a href="mailto:znhoughton@gmail.com">znhoughton@gmail.com</a></span>
     </div>
   </footer>
@@ -98,6 +98,7 @@
     const toggle = document.querySelector('.nav-toggle');
     const links = document.querySelector('.nav-links');
     toggle.addEventListener('click', () => links.classList.toggle('open'));
+    document.getElementById('copyright-year').textContent = new Date().getFullYear();
   </script>
   <script src="/scripts/easter-eggs.js"></script>
 </body>
