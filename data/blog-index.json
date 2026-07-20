@@ -4,5 +4,11 @@
     "slug": "mental-representations",
     "date": "2026-07-19",
     "summary": "Meaning isn't stored in a single place. It's distributed across overlapping patterns of neural activation, shaped by every context a word has appeared in."
+  },
+  {
+    "title": "Bayesian Modeling: A Werewolf Walkthrough",
+    "slug": "bayesian-modeling-werewolf",
+    "date": "2026-06-15",
+    "summary": "An extended, no-statistics-background-required walkthrough of Bayesian updating using the social deduction game Werewolf including behavioral history, Beta priors, and why the same observation means different things for different players."
   }
 ]
