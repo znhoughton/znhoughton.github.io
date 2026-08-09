@@ -8,6 +8,14 @@
     "citations": 2
   },
   {
+    "title": "Exemplars in Disguise: Pure Exemplar Models Mimic Abstraction-First Learning",
+    "year": 2026,
+    "venue": "arXiv preprint arXiv:2608.00821",
+    "authors": "Zachary Nicholas Houghton and Vsevolod Kapatsinski",
+    "url": "https://arxiv.org/abs/2608.00821",
+    "citations": 0
+  },
+  {
     "title": "The Holistic Storage of Verb+ Up Phrases in Text-based and Audio-based Language Models",
     "year": 2026,
     "venue": "arXiv preprint arXiv:2606.13993",
@@ -117,6 +125,14 @@
     "venue": "The Journal of the Acoustical Society of America",
     "authors": "Zachary N Houghton and Misaki Kato and Melissa M Baese-Berk and Charlotte Vaughn",
     "url": "https://pubs.aip.org/asa/jasa/article-abstract/148/4_Supplement/2762/674121",
+    "citations": 0
+  },
+  {
+    "title": "The effects of type and token frequency on generalization",
+    "year": "",
+    "venue": "",
+    "authors": "Zachary Nicholas Houghton and Zara Harmon and Vsevolod Kapatsinski",
+    "url": "https://www.uni-saarland.de/fileadmin/upload/fakultaet-p/amlap/Abstracts/submission_187.pdf",
     "citations": 0
   },
   {
