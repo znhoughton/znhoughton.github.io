@@ -5,7 +5,7 @@
     "venue": "arXiv preprint arXiv:2605.12225",
     "authors": "Dan Pluth and Zachary Nicholas Houghton and Yu Zhou and Vijay K Gurbani",
     "url": "https://arxiv.org/abs/2605.12225",
-    "citations": 3
+    "citations": 4
   },
   {
     "title": "Exemplars in Disguise: Pure Exemplar Models Mimic Abstraction-First Learning",
@@ -85,7 +85,7 @@
     "venue": "Scientific Reports",
     "authors": "Amalia PM Bastos and Zachary N Houghton and Lucas Naranjo and Federico Rossano",
     "url": "https://www.nature.com/articles/s41598-024-79517-6",
-    "citations": 9
+    "citations": 10
   },
   {
     "title": "Are your random effects normal? A simulation study of methods for estimating whether subjects or items come from more than one population by examining the distribution of random effects in mixed-effects logistic regression",
