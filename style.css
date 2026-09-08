@@ -4,20 +4,40 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0d0d0f;
-  --bg-surface: #141417;
-  --bg-card: #1a1a1f;
+  --bg: #08080c;
+  --bg-surface: #101015;
+  --bg-card: #16161d;
   --border: rgba(255,255,255,0.08);
   --border-hover: rgba(255,255,255,0.16);
+
+  /* Primary phosphor. Purple carries identity: links, buttons, active state. */
   --accent: #7c6ef7;
   --accent-soft: rgba(124,110,247,0.12);
+  /* Secondary phosphor. Cyan carries structure: section labels, ordinals,
+     years, card brackets. Splitting these two jobs is what stops the whole
+     page reading as one undifferentiated purple wash. */
+  --accent-2: #4fd9e8;
+  --accent-2-soft: rgba(79,217,232,0.10);
+
   --text-primary: #f0eff5;
-  --text-secondary: #9490a8;
-  --text-muted: #5c5870;
+  --text-secondary: #9d99b0;
+  /* Was #5c5870 (~4.2:1 on --bg, under AA for the small text that uses it:
+     footer, pub venue, cv years). */
+  --text-muted: #817d96;
+
   --font: 'Inter', system-ui, sans-serif;
   --mono: 'JetBrains Mono', monospace;
+  /* Pixel face is now a first-class token used by the real heading rules,
+     not an !important patch bolted on at the bottom of the file. */
+  --display: 'DotGothic16', 'JetBrains Mono', monospace;
+
   --radius: 10px;
   --max-w: 860px;
+
+  /* Glow is a scarce resource. Only --glow-strong is allowed on more than a
+     couple of elements per page; see the "Phosphor" section below. */
+  --glow-strong: 0 0 8px rgba(124,110,247,0.75), 0 0 28px rgba(124,110,247,0.35);
+  --glow-soft: 0 0 6px rgba(79,217,232,0.45);
 }
 
 html { scroll-behavior: smooth; }
@@ -31,6 +51,58 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* ─── CRT surface ───
+   The old retro layer was glow with nothing underneath it: bloom floating on
+   a flat modern background, which reads as a filter rather than a screen.
+   These two fixed overlays supply the actual screen. Both are pointer-events:
+   none and sit above the sticky header (z-index 100) so the whole page looks
+   like it's behind glass rather than having glass pasted into the content. */
+
+/* Scanlines. 3px period, and the dark band is only ~28% opaque -- enough to
+   read as a raster at a glance, light enough that 11px mono text survives. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.28) 0px,
+    rgba(0,0,0,0.28) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* Vignette + phosphor grain. The radial darkens the corners so the 860px
+   column sits in the bright centre of the tube; the SVG turbulence is the
+   grain that keeps large flat areas from looking like plastic. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 75% at 50% 45%, transparent 55%, rgba(0,0,0,0.55) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+  background-blend-mode: normal, overlay;
+  opacity: 0.55;
+}
+
+/* A very slow, very shallow brightness drift. Amplitude is deliberately tiny
+   (2%) -- a CRT breathes, it doesn't strobe. Motion-sensitive users get the
+   static screen instead, which loses nothing structural. */
+@media (prefers-reduced-motion: no-preference) {
+  body::after { animation: crt-breathe 7s ease-in-out infinite; }
+}
+
+@keyframes crt-breathe {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.50; }
 }
 
 a { color: var(--accent); text-decoration: none; }
@@ -156,15 +228,54 @@ main { flex: 1; }
   margin-bottom: 1rem;
 }
 
-h1 {
-  font-size: clamp(2rem, 5vw, 2.75rem);
-  font-weight: 600;
-  line-height: 1.2;
-  margin-bottom: 1.25rem;
+/* ─── Display type scale ───
+   The pixel face is applied here, in the real heading rules, rather than as
+   the trailing !important block that used to *shrink* h1 to 1.8rem and flatten
+   section titles to 1.05rem against a 1rem body. A pixel font only reads as a
+   deliberate choice at size; small it just reads as a rendering fault. So the
+   scale goes the other way now.
+
+   DotGothic16 ships one weight (400). Asking for 600 gets a synthesised bold
+   that smears the pixel grid, so every display rule pins 400 explicitly. */
+h1, h2, h3, h4,
+.section-title,
+.page-header h1 {
+  font-family: var(--display);
+  font-weight: 400;
   color: var(--text-primary);
+  letter-spacing: 0.01em;
+  /* Belt and braces: plenty of component rules further down set
+     font-weight:500 on card/pub/course headings. Rather than chase each one
+     (or reach for !important), this just forbids the browser from faking a
+     bold it doesn't have. */
+  font-synthesis: none;
 }
 
-h1 .muted { color: var(--text-muted); font-weight: 300; }
+/* Ceiling is set by the longest real string in an h1 -- "Zachary Houghton,
+   PhD" -- against the hero text column, which is only ~590px once the 160px
+   photo and 3rem gap are subtracted from the 860px container. 3.4rem put that
+   string right on the edge and it tipped over into a two-line wrap. 2.75rem
+   clears it with room to spare, and is still a long way up from the 1.8rem
+   the old !important block was forcing.
+
+   The floor is 2.1rem rather than 2.4rem so that on a ~375px phone, where the
+   hero stacks and the name does legitimately need two lines, the second line
+   ("Houghton, PhD") still fits its line box instead of overflowing. */
+h1 {
+  font-size: clamp(2.1rem, 6vw, 2.75rem);
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+}
+
+h2, .section-title {
+  font-size: clamp(1.35rem, 3vw, 1.6rem);
+  line-height: 1.3;
+}
+
+h3 { font-size: 1.15rem; line-height: 1.4; }
+h4 { font-size: 1rem;    line-height: 1.45; }
+
+h1 .muted { color: var(--text-muted); font-weight: 400; }
 
 .hero-bio {
   font-size: 1.05rem;
@@ -226,7 +337,10 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  border: 2px solid var(--border-hover);
+  /* Phosphor ring rather than a plain grey stroke, so the one photo on the
+     site sits inside the CRT treatment instead of on top of it. */
+  border: 2px solid rgba(124,110,247,0.45);
+  box-shadow: 0 0 0 4px rgba(124,110,247,0.06), 0 0 22px rgba(124,110,247,0.18);
   overflow: hidden;
   background: var(--bg-card);
 }
@@ -870,9 +984,13 @@ h1 .muted { color: var(--text-muted); font-weight: 300; }
   padding: 4rem 0 2.5rem;
 }
 
+/* (0,1,1) beats the bare h1 in the display scale regardless of source order,
+   so this has to restate the clamp rather than inherit it. Slightly tighter
+   ceiling than the hero: interior pages shouldn't shout as loud as home. */
 .page-header h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
 }
 
 .page-header p {
@@ -902,45 +1020,190 @@ footer {
 
 .footer-inner a:hover { color: var(--text-secondary); }
 
-/* ─── Retro / CRT theme ─── */
+/* ─── Phosphor ───
+   Previously every accent label in the file carried the same triple-layer
+   40px bloom. When the nav logo, hero tag, all three interest numbers, every
+   pub year and every timeline year glow identically, the glow stops encoding
+   anything -- and an 11px mono label under a 40px halo just goes muddy.
 
-/* Pixel font for headings and nav */
-h1, h2, h3, h4, .section-title, .page-header h1, .nav-logo, .nav-links a {
-  font-family: 'DotGothic16', monospace !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.02em;
-}
-h1             { font-size: clamp(1.4rem, 3vw, 1.8rem) !important; }
-h2, .section-title { font-size: 1.05rem !important; }
-h3             { font-size: 0.9rem !important; }
-.nav-logo, .nav-links a { font-size: 13px !important; }
+   Glow is now rationed by tier:
+     strong  -> at most two elements per page (the h1, the wordmark)
+     soft    -> the cyan structural labels, tight enough to stay crisp
+     none    -> everything else, which is most things */
 
-/* Phosphor glow on accent labels */
 .nav-logo,
+.page-header h1,
+.hero h1 {
+  text-shadow: var(--glow-strong);
+}
+
+.hero-tag,
+.interest-num,
+.pub-year,
+.timeline-year,
+.demo-label,
+.ff-label,
+.subsection-label,
+.eq-label {
+  text-shadow: var(--glow-soft);
+}
+
+/* Nav wordmark keeps the pixel face; the links go back to mono so the nav
+   reads as chrome rather than competing with the page title. */
+.nav-logo {
+  font-family: var(--display);
+  font-size: 15px;
+  letter-spacing: 0.08em;
+}
+
+.nav-links a { font-size: 13px; }
+
+/* Terminal-style marker on the current page. Only on .active, so nothing
+   shifts on hover. */
+.nav-links a.active::before {
+  content: '> ';
+  color: var(--accent-2);
+}
+
+/* ─── Structural labels move to the secondary phosphor ───
+   These are the "what kind of thing is this" markers. Giving them cyan while
+   links/buttons keep purple is what breaks up the single-hue wash. */
+.hero-tag,
+.interest-num,
+.pub-year,
+.timeline-year,
 .demo-label,
 .ff-label,
 .subsection-label,
 .eq-label,
-.hero-tag,
-.interest-num,
-.pub-year,
-.timeline-year {
-  text-shadow: 0 0 6px rgba(124,110,247,1.0), 0 0 20px rgba(124,110,247,0.7), 0 0 40px rgba(124,110,247,0.4);
+.about-section h2,
+.cv-section h2,
+.word-card-section h4,
+.related-words-card h4 {
+  color: var(--accent-2);
 }
 
-/* Blinking cursor on page titles and subheaders */
+.timeline-item::before { background: var(--accent-2); }
+
+/* ─── Blinking cursor ───
+   Was on .page-header h1 AND every h2 AND every .section-title, so a single
+   screen could carry four or five independently blinking underscores. It's
+   now one per page, on the title only, and it stops entirely for anyone who
+   has asked the OS for less motion. */
 .page-header h1::after,
-.retro-cursors h2::after,
-.retro-cursors .section-title::after {
+.hero h1::after {
   content: '_';
-  animation: blink 1.1s step-start infinite;
-  color: var(--accent);
-  margin-left: 2px;
+  color: var(--accent-2);
+  margin-left: 3px;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .page-header h1::after,
+  .hero h1::after {
+    animation: blink 1.1s step-start infinite;
+  }
+}
+
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
+
+/* ─── Card differentiation ───
+   Every surface in the old file was the same bg-card + 1px border + 10px
+   radius, so a page below the hero was just a stack of identical rectangles
+   with no reading path. Each family now gets one distinguishing move. */
+
+/* Cards: terminal corner brackets, no full border. */
+.card {
+  position: relative;
+  border-color: transparent;
+  background: var(--bg-card);
+}
+
+.card::before,
+.card::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--accent-2);
+  border-style: solid;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+
+.card::before {
+  top: 0; left: 0;
+  border-width: 1px 0 0 1px;
+  border-top-left-radius: var(--radius);
+}
+
+.card::after {
+  bottom: 0; right: 0;
+  border-width: 0 1px 1px 0;
+  border-bottom-right-radius: var(--radius);
+}
+
+.card:hover::before,
+.card:hover::after { opacity: 1; }
+
+/* Interest items: flat, with a left rule instead of a box. Lets the numbered
+   ordinals carry the structure. */
+.interest-item {
+  background: transparent;
+  border: none;
+  border-left: 2px solid var(--accent-2-soft);
+  border-radius: 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  transition: border-color 0.15s;
+}
+
+.interest-item:hover { border-left-color: var(--accent-2); }
+
+/* Publications: keep the box, add a purple spine so they read as the
+   interactive/linked family rather than the structural one. */
+.pub-item {
+  border-left: 2px solid var(--accent-soft);
+  transition: border-color 0.15s, background 0.15s, border-left-color 0.15s;
+}
+
+.pub-item:hover { border-left-color: var(--accent); }
+
+/* ─── Component headings drop back to mono ───
+   DotGothic16 is a bitmap-derived face built around a 16px grid; under about
+   15px the stems break up and it reads as a rendering artefact rather than a
+   choice. Card/pub/course/CV headings all sit at 0.95-1rem, so they get
+   JetBrains Mono (which has a real 500) and the pixel face stays reserved for
+   type big enough to show its grid. */
+.card h3,
+.interest-item h4,
+.timeline-content h4,
+.pub-body h4,
+.course-left h4,
+.cv-content h4,
+.player-card-math h4,
+.word-card-section h4,
+.related-words-card h4,
+.blog-list-item h3 {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-synthesis: initial;
+  letter-spacing: 0;
+}
+
+/* ─── Blog prose headings ───
+   Markdown-generated headings inherit the display face from the scale above,
+   but at prose sizes a pixel font gets hard to read, so they're bumped and
+   given more air than the old 1.1rem/1rem values. */
+.blog-post-body h1 { font-size: 1.7rem;  line-height: 1.25; margin-top: 2.75rem; }
+.blog-post-body h2 { font-size: 1.35rem; line-height: 1.3;  margin-top: 2.75rem; }
+.blog-post-body h3 { font-size: 1.15rem; line-height: 1.4;  margin-top: 2rem; }
+.blog-post-body h4 { font-size: 1rem;    line-height: 1.45; }
+
+/* Dead rule: .pub-list sets a flex gap while every .pub-item sets its own
+   margin-bottom, so the gap never had any effect. */
+.pub-list { gap: 0; }
 
 
 /* ─── Responsive ─── */

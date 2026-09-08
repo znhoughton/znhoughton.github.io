@@ -31,7 +31,10 @@
       <div class="hero-content">
         <div class="hero-text">
           <p class="hero-tag">Linguist · Cognitive Scientist · Researcher · Data Scientist</p>
-          <h1>Zachary Houghton, <span class="muted" id="ee-phd">PhD</span></h1>
+          <!-- nbsp, not a space: keeps ", PhD" bound to the surname so that if
+               the name ever does wrap (narrow phones), it breaks as
+               "Zachary / Houghton, PhD" rather than stranding "PhD" alone. -->
+          <h1>Zachary Houghton,&nbsp;<span class="muted" id="ee-phd">PhD</span></h1>
           <p class="hero-bio">
             I study the intersection of <span style="color:var(--text-primary)">error-driven learning</span> and <span style="color:var(--text-primary)">linguistic storage</span> — how the way we learn language shapes how we represent it cognitively. My work integrates computational modeling with experimental psycholinguistic methods.
           </p>
