@@ -1,27 +1,26 @@
 ---
 title: "Bayesian Modeling: A Werewolf Walkthrough"
 date: 2026-06-15
-summary: An extended, no-statistics-background-required walkthrough of Bayesian updating using the social deduction game Werewolf including behavioral history, Beta priors, and why the same observation means different things for different players.
+summary: Using Bayesian modeling as an excuse to settle a debate (and in a sense, using a debate to justify a post on Bayesian modeling) featuring the classic deductive reasonin game, *Werewolf*.
 ---
 
-This post exists because of an argument. On a cold, winter night in Chicago (the night before an **I Fight Dragons** concert we were attending), I was with some friends passing the time playing **Werewolf**. The story begins with a friend of mine acting suspiciously; a friend of my sister's said that alone was reason enough
-to vote him out. I pushed back: we already know this particular friend always acts suspicious, werewolf or not,
-so we need to weigh in our prior information (our "Bayesian priors," if you will) before treating
-the current round's behavior as real evidence. That kicked off a genuine debate over whether "he's just like
-that" even counts as a Bayesian prior in any rigorous sense.
+On a cold, winter night in Chicago (the night before an **I Fight Dragons** concert we were attending), I was with my sisters and some friends hiding in a hotel to keep warm. A classic Houghton sibling activity to pass the time is the mafia-esque game, **Werewolf**. The story begins with a friend of mine behaving suspiciously; a friend of my sister's said that alone was reason enough
+to vote him out. In an attempt to push back, I pointed out that this particular friend always acts suspicious, werewolf or not,
+so we need to factor in our prior information (our "Bayesian priors," if you will) before treating
+the current round's behavior as real evidence that he is the werewolf. My sister's friend insisted that this information does not constitute a Bayesian prior in any rigorous sense. In this post, I will address that very question (and in doing so, immortalize the fact that I was, in fact, correct): does someone's prior suspicious behavior constitute as a Bayesian prior for a current round?
 
 It does (in other words, I was right), though the honest answer is more interesting than one might originally expect: it isn't the prior on whether he's the werewolf, it's a prior for the likelihood of his
 behavior, and working out exactly what that means, and why it isn't just a semantic trick, is the
 point of this post. Werewolf turns out to map almost perfectly onto the structure of Bayesian
-inference, which is convenient, since I already love the game. No statistics background required (though a statistics background will certainly make this easier).
+inference, which is convenient, since the game holds a lot of nostalgia for me. No statistics background required... ish (though a statistics background will certainly make this easier).
 
 ### The Setup
 
-Imagine that you're playing Werewolf: 5 players, 1 is secretly the werewolf. You don't know who. During the
+Imagine that you're playing Werewolf (for those unfamiliar, it is a mafia-esque game where one person is a werewolf, and you have to reason from a series of actions and discussions about who is the werewolf): 5 players, 1 is secretly the werewolf. You don't know who. During the
 game you observe someone acting suspiciously. Should that update your belief that they're the
 werewolf? It depends entirely on their *baseline rate of acting suspicious*, and critically on
 whether that rate differs between their werewolf and innocent roles. Compare two players from
-past games (Charles is, more or less, my friend from that game in Chicago):
+past games (Charles is, more or less, my friend from that game in Chicago, and usually behaves suspiciously):
 
 <div class="player-pair">
   <div class="player-card-math">
@@ -48,6 +47,8 @@ past games (Charles is, more or less, my friend from that game in Chicago):
   </div>
 </div>
 
+(For the record, I realize this portayal makes Spencer look like a particularly bad Werewolf player. He is quite good, to the contrary, but I need a scapegoat to make my point. Sorry, Spence).
+
 ### Behavioral History
 
 Before the current round starts, you've been keeping mental tally marks across all previous
@@ -69,7 +70,7 @@ counts as Beta distributions:
 // Spencer: α_w=8, β_w=2, α_i=2, β_i=8 → E[θ_w] = 0.80, E[θ_i] = 0.20. Separated.
 ```
 
-These distributions are fixed for the duration of the current round — you're using what you
+These distributions are fixed for the duration of the current round; you're using what you
 learned before to make inferences now.
 
 ### Updating P(W)
@@ -98,10 +99,9 @@ P(W | S) =          P(W) · α_w/(α_w+β_w)
 ```
 
 How much `P(W)` moves is controlled by the likelihood ratio
-`[α_w/(α_w+β_w)] / [α_i/(α_i+β_i)]` — that is, `P(S|W) / P(S|I)`. For Charles, `0.80 / 0.80 = 1`:
+`[α_w/(α_w+β_w)] / [α_i/(α_i+β_i)]`, or `P(S|W) / P(S|I)`. For Charles, `0.80 / 0.80 = 1`:
 S is equally likely under either role, so it leaves `P(W)` unchanged. For Spencer,
-`0.80 / 0.20 = 4`: each S quadruples the odds he's the werewolf. Same observation, same rule —
-different behavioral history, different inference.
+`0.80 / 0.20 = 4`: each S quadruples the odds he's the werewolf. Same observation, same rule, but a completely different behavioral history and thus a different inference.
 
 Each observation within the current round produces a single updated number — not a distribution,
 just one probability — and that number becomes the new `P(W)` going into the next observation:
@@ -117,9 +117,9 @@ prior = P(W | S₁, S₂)   → observe ¬S₃ → posterior = P(W | S₁, S₂,
 ```
 
 > **Deeper dive — where the likelihoods come from:** Think of `θ_w` as Charles's true suspicious
-> rate as werewolf — a fixed number in [0,1] governing how likely he is to act suspiciously in
+> rate as werewolf: a fixed number in [0,1] governing how likely he is to act suspiciously in
 > any given round as W. Like the true probability of heads on a coin, it exists independently of
-> any particular observation and can never be directly observed — only S or ¬S outcomes in each
+> any particular observation and can never be directly observed. Instead, the only outcomes are S or ¬S in each
 > round. It is the *mechanism* connecting past observations to the current round's likelihood:
 > past rounds inform `θ_w`, and `θ_w` generates S. Without it, there is no path from "Charles was
 > the werewolf in past rounds" to a probability for S.
@@ -137,7 +137,7 @@ prior = P(W | S₁, S₂)   → observe ¬S₃ → posterior = P(W | S₁, S₂,
 >     P(S | W, pr) · P(W | pr) + P(S | ¬W, pr) · P(¬W | pr)
 > ```
 >
-> `P(S | W, pr)` has no direct formula — `θ_w` is the intermediate quantity that connects past
+> `P(S | W, pr)` has no direct formula, but we can estimate it through `θ_w` which acts as an intermediate quantity that connects past
 > rounds to S. We introduce it via the law of total probability and marginalize over it:
 >
 > ```math
@@ -149,14 +149,14 @@ prior = P(W | S₁, S₂)   → observe ¬S₃ → posterior = P(W | S₁, S₂,
 >   // expanding the joint via the chain rule
 >   = ∫ P(S | θ_w, W, pr) · p(θ_w | pr) dθ_w
 >
->   // θ_w is defined as Charles's suspicious rate as werewolf — it already encodes
+>   // θ_w is defined as Charles's suspicious rate as werewolf. It already encodes
 >   // everything W tells us about S, so W and pr drop out of P(S | θ_w)
 >   = ∫ P(S | θ_w) · p(θ_w | pr) dθ_w
 >
->   // P(S | θ_w) = θ_w by definition — θ_w is the probability of S given that rate
+>   // P(S | θ_w) = θ_w by definition: θ_w is the probability of S given that rate
 >   = ∫ θ_w · p(θ_w | pr) dθ_w
 >
->   // this last step is definitional — E[X] = ∫ x · p(x) dx for any continuous random variable.
+>   // this last step is definitional: E[X] = ∫ x · p(x) dx for any continuous random variable.
 >   // each possible value of θ_w is weighted by its probability density and summed continuously,
 >   // the exact continuous analogue of the discrete weighted average Σ xᵢ · P(X = xᵢ)
 >   = E[θ_w]
@@ -166,7 +166,7 @@ prior = P(W | S₁, S₂)   → observe ¬S₃ → posterior = P(W | S₁, S₂,
 > distribution, whose mean is α/(α+β). Here is where that comes from.
 >
 > We build `p(θ_w | pr)` by applying Bayes' rule once per past round where Charles was the
-> werewolf. Before any data, the prior is Beta(1,1) — flat, every rate equally plausible. Each
+> werewolf. Before any data, the prior is Beta(1,1) which is flat indicating that every rate is equally plausible. Each
 > round's likelihood contains only that round's single observation (S or ¬S), and each posterior
 > becomes the prior for the next round:
 >
@@ -211,14 +211,14 @@ prior = P(W | S₁, S₂)   → observe ¬S₃ → posterior = P(W | S₁, S₂,
 > ```
 >
 > Notice there are two separate layers of updating here. `p(θ_w | pr)` is built across past
-> rounds — each round where Charles was the werewolf contributing one Bernoulli observation that
+> rounds: each round where Charles was the werewolf contributes one observation that
 > increments `α_w` or `β_w`. The resulting likelihoods `P(S|W)` and `P(S|I)` are then fixed for
-> the current round. Meanwhile, `P(W | pr) = 1/5` is updated within the current round — each new
+> the current round. Meanwhile, `P(W | pr) = 1/5` is updated within the current round. Each new
 > observation moves it and the posterior becomes the prior for the next observation. Prior and
 > likelihood are mathematical roles, not labels for new vs. old data.
 
 > **Fun fact — neural networks as Bayesian reasoners:** The Bayesian framework may be more than a
-> metaphor for cognition. Recent work by Kapatsinski (2026) demonstrates that GPT-2 performs
+> metaphor for cognition. Recent work by Vsevolod Kapatsinski (2026) demonstrates that GPT-2 performs
 > *adaptive partial pooling*: rare contexts borrow more information from similar contexts, while
 > frequent contexts rely on their own specific evidence. This is mathematically equivalent to
 > Bayesian hierarchical regression. A neural network trained purely on next-word prediction
@@ -277,8 +277,7 @@ It's a prior *on the parameter that defines the likelihood itself*. `P(S|W) = θ
 of θ_w, so before you can even compute that likelihood, you need a belief about θ_w, and
 supplying that belief is exactly the job Beta(α_w, β_w) is doing. It just happens that
 this particular prior isn't a blank guess: it's the posterior from a separate, earlier Bayesian
-problem (his behavioral history across every past round), reused here as a fixed, already-settled
-input. 
+problem (his behavioral history across every past round).
 
 <script>
 (function(){
