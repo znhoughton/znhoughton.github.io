@@ -149,12 +149,36 @@
       });
     }
 
+    // Summaries are Markdown too -- a post title in *italics*, say -- but only
+    // inline markup belongs in a one-line teaser. Escape first so the source is
+    // still treated as plain text, then let marked handle just the emphasis.
+    function renderSummary(str) {
+      return marked.parseInline(escapeHtml(str));
+    }
+
+    // data/blog-index.json is only a manifest of which slugs are published;
+    // every displayed field comes from the post's own front matter, so the
+    // listing and the post page can't drift out of sync. A post whose file
+    // fails to load is dropped rather than listed as a dead link.
+    function loadPostMeta(slug) {
+      return fetch(`blog/${slug}.md`)
+        .then(res => res.ok ? res.text() : Promise.reject())
+        .then(text => ({ slug, ...parseFrontMatter(text).fields }))
+        .catch(() => null);
+    }
+
+    function loadList(slugs) {
+      return Promise.all(slugs.map(loadPostMeta)).then(posts => posts
+        .filter(Boolean)
+        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || ''))));
+    }
+
     function renderList(posts) {
       const items = posts.map(p => `
         <div class="blog-list-item">
-          <h3><a href="blog.html?post=${encodeURIComponent(p.slug)}">${escapeHtml(p.title)}</a></h3>
-          <span class="blog-meta">${formatDate(p.date)}</span>
-          <p class="blog-summary">${escapeHtml(p.summary)}</p>
+          <h3><a href="blog.html?post=${encodeURIComponent(p.slug)}">${escapeHtml(p.title || p.slug)}</a></h3>
+          <span class="blog-meta">${formatDate(p.date || '')}</span>
+          <p class="blog-summary">${renderSummary(p.summary || '')}</p>
         </div>
       `).join('');
       root.innerHTML = `<div class="blog-list">${items}</div>`;
@@ -191,7 +215,7 @@
           const { text: resolvedBody, usedKeys } = BibCite.resolveCitations(body, bibEntries);
           const html = marked.parse(resolvedBody);
           const referencesHtml = BibCite.renderReferences(usedKeys, bibEntries);
-          const subtitle = fields.summary ? `<p class="section-subtitle">${escapeHtml(fields.summary)}</p>` : '';
+          const subtitle = fields.summary ? `<p class="section-subtitle">${renderSummary(fields.summary)}</p>` : '';
           root.innerHTML = `
             <a class="blog-back-link" href="blog.html">&larr; All posts</a>
             <h1>${escapeHtml(fields.title || slug)}</h1>
@@ -213,6 +237,7 @@
     } else {
       fetch('/data/blog-index.json')
         .then(res => res.json())
+        .then(loadList)
         .then(renderList)
         .catch(err => {
           root.innerHTML = `<p style="color: var(--text-secondary);">Couldn't load the post list.</p>`;

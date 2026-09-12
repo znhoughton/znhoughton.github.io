@@ -7,10 +7,14 @@ Scans blog/*.md for a leading front-matter block:
     summary: One or two sentence teaser.
     ---
 
-and writes data/blog-index.json as a list of {title, slug, date, summary}
-sorted by date descending. The slug is the filename stem, and blog.html
-fetches blog/<slug>.md directly and renders whatever follows the closing
-front-matter delimiter -- this script only builds the listing metadata.
+and writes data/blog-index.json as a list of published slugs, ordered by
+date descending for readability. The slug is the filename stem.
+
+The index is deliberately *only* a manifest of what is published: blog.html
+fetches each blog/<slug>.md and reads title, date and summary out of its front
+matter for the listing, exactly as it does when rendering the post itself. That
+way editing a post's front matter updates both views at once and this script
+only has to be re-run when a post is added, removed, or un-drafted.
 
 Drafts are kept out of the listing by git-ignoring them: any blog/*.md that
 git reports as ignored is skipped, since an entry for a file that never gets
@@ -84,18 +88,14 @@ def main():
         with open(path, "r", encoding="utf-8") as f:
             text = f.read()
         fields = parse_front_matter(text)
-        posts.append({
-            "title": fields.get("title", slug),
-            "slug": slug,
-            "date": fields.get("date", ""),
-            "summary": fields.get("summary", ""),
-        })
+        posts.append((fields.get("date", ""), slug))
 
-    posts.sort(key=lambda p: p["date"], reverse=True)
+    posts.sort(reverse=True)
+    slugs = [slug for _, slug in posts]
 
     os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
     with open(OUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(posts, f, indent=2, ensure_ascii=False)
+        json.dump(slugs, f, indent=2, ensure_ascii=False)
 
     print(f"Wrote {len(posts)} posts to data/blog-index.json")
 
