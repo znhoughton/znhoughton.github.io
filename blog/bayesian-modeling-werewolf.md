@@ -75,7 +75,7 @@ learned before to make inferences now.
 
 ### Updating P(W)
 
-A new round begins. `P(W) = 1/5` — one werewolf among five players. Each observation updates it
+A new round begins. `P(W) = 1/5` because there is one werewolf among five players. Each observation updates it
 via Bayes' rule, and the result becomes the new `P(W)` going into the next observation. The
 likelihoods come directly from the behavioral history:
 
