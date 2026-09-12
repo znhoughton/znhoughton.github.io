@@ -1,7 +1,7 @@
 ---
 title: "Bayesian Modeling: A Werewolf Walkthrough"
 date: 2026-06-15
-summary: Using Bayesian modeling as an excuse to settle a debate (and in a sense, using a debate to justify a post on Bayesian modeling) featuring the classic deductive reasonin game, *Werewolf*.
+summary: Using Bayesian modeling as an excuse to settle a debate (and in a sense, using a debate to justify a post on Bayesian modeling) featuring the classic deductive reasoning game, *Werewolf*.
 ---
 
 On a cold, winter night in Chicago (the night before an **I Fight Dragons** concert we were attending), I was with my sisters and some friends hiding in a hotel to keep warm. A classic Houghton sibling activity to pass the time is the mafia-esque game, **Werewolf**. The story begins with a friend of mine behaving suspiciously; a friend of my sister's said that alone was reason enough

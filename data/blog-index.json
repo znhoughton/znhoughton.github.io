@@ -9,6 +9,6 @@
     "title": "Bayesian Modeling: A Werewolf Walkthrough",
     "slug": "bayesian-modeling-werewolf",
     "date": "2026-06-15",
-    "summary": "An extended, no-statistics-background-required walkthrough of Bayesian updating using the social deduction game Werewolf including behavioral history, Beta priors, and why the same observation means different things for different players."
+    "summary": "Using Bayesian modeling as an excuse to settle a debate (and in a sense, using a debate to justify a post on Bayesian modeling) featuring the classic deductive reasoning game, *Werewolf*."
   }
 ]

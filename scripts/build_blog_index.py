@@ -12,6 +12,10 @@ sorted by date descending. The slug is the filename stem, and blog.html
 fetches blog/<slug>.md directly and renders whatever follows the closing
 front-matter delimiter -- this script only builds the listing metadata.
 
+Drafts are kept out of the listing by git-ignoring them: any blog/*.md that
+git reports as ignored is skipped, since an entry for a file that never gets
+pushed would render a listing item whose link 404s.
+
 Usage:
     python scripts/build_blog_index.py
 """
@@ -19,6 +23,7 @@ import glob
 import json
 import os
 import re
+import subprocess
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLOG_DIR = os.path.join(REPO_ROOT, "blog")
@@ -43,9 +48,38 @@ def parse_front_matter(text):
     return fields
 
 
+def ignored_paths(paths):
+    """Subset of `paths` that git ignores (empty if git isn't usable here)."""
+    if not paths:
+        return set()
+    try:
+        proc = subprocess.run(
+            ["git", "check-ignore", "-z", "--stdin"],
+            input="\0".join(paths),
+            capture_output=True,
+            text=True,
+            cwd=REPO_ROOT,
+        )
+    except OSError:
+        return set()
+    # exit 0 = some matched, 1 = none matched; anything else means git failed
+    # (not a repo, no git), in which case fall back to including everything.
+    # -z also stops git from quoting paths it would otherwise escape.
+    if proc.returncode not in (0, 1):
+        return set()
+    return {p for p in proc.stdout.split("\0") if p}
+
+
 def main():
+    paths = sorted(glob.glob(os.path.join(BLOG_DIR, "*.md")))
+    rel = {p: os.path.relpath(p, REPO_ROOT).replace(os.sep, "/") for p in paths}
+    skip = ignored_paths(sorted(rel.values()))
+
     posts = []
-    for path in glob.glob(os.path.join(BLOG_DIR, "*.md")):
+    for path in paths:
+        if rel[path] in skip:
+            print(f"Skipping git-ignored draft: {os.path.basename(path)}")
+            continue
         slug = os.path.splitext(os.path.basename(path))[0]
         with open(path, "r", encoding="utf-8") as f:
             text = f.read()

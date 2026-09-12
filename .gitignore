@@ -33,3 +33,10 @@ scripts/wordpool/batch*_usable.txt
 scripts/wordpool/batch*_remaining*.txt
 scripts/wordpool/batch*_g*_zipf.txt
 scripts/wordpool/base_etym_check*.json
+
+# Blog posts still in draft -- excluded from data/blog-index.json by
+# build_blog_index.py, which skips any git-ignored file in blog/.
+blog/error-driven-learning.md
+blog/mixed-effects-regression.md
+blog/noisy-channel-preference-extremity.md
+blog/storage-vs-computation-binomials.md
