@@ -18,7 +18,7 @@ the full history of how it entered the neuroscience literature is traced in @gro
 perfectly coherent hypothesis, it's also one we have good reason to reject as the general story,
 for a few converging reasons.
 
-First, a scaling argument: a person can
+There's a natural argument against this from a perspective of scale: a person can
 recognize an effectively unbounded number of concepts, and an even larger number of *combinations*
 of concepts (not just *dog*, but *your neighbor's three-legged dog barking at the mail truck last
 Tuesday*). A theory that needs one dedicated cell per concept runs out of cells long before it runs
@@ -26,25 +26,25 @@ out of concepts to represent. A distributed representation doesn't have this pro
 combinatorial reason: a population of N units, each of which can be more-or-less active rather
 than strictly on or off, can in principle distinguish far more than N patterns, because the
 *pattern of relative activation across the whole population* is doing the encoding, not any single
-unit's on/off state. Compare it to color vision: the human eye has only three types of cone cell,
+unit individually. Compare it to color vision: the human eye has only three types of cone cell,
 each broadly tuned to a range of wavelengths with heavy overlap, and yet the specific *ratio* of
 activation across those three types lets you distinguish millions of colors. No single cone is
 "the crimson cone"; crimson is a pattern across all three.
 
-Second, the behavioral evidence doesn't look like what you'd expect from a clean, symbolic
+A second argument comes from behavioral evidence that seems unlikely to arise from a clean, symbolic
 one-entry-per-word system. If retrieving a word meant flipping on one dedicated unit, you'd expect
-retrieval to be all-or-nothing: either the entry is accessible or it isn't. Instead, the
-overwhelmingly common experience is the *tip-of-the-tongue* state: you can't produce the word, but
+retrieval to be all-or-nothing: either the entry is accessible or it isn't. Instead, an
+overwhelmingly common experience, the *tip-of-the-tongue* state, seems to suggest some amount of gradient activation: you can't produce the word, but
 you can often say how many syllables it has, what it sounds like, or a near-miss that's clearly
 "in the neighborhood," which is exactly what partial activation of a distributed pattern would
-predict and hard to explain if the word were a single indivisible symbol you either have or don't.
+predict. This is rather hard to explain if the word were a single indivisible symbol you either have or don't.
 Similarly, brain damage or degenerative disease essentially never knocks out one specific word
 while leaving every semantically related word untouched, the way deleting one row from a database
 would; the deficits that do occur tend to be graded and to cluster across related concepts, not
 surgically isolated to individual words.
 
 None of this means grandmother cells are a myth. Rodrigo Quiroga and colleagues [@quiroga2005],
-recording directly from single neurons in the human medial temporal lobe (in epilepsy patients undergoing
+recording directly from single neurons in the brain (in epilepsy patients undergoing
 electrode monitoring for surgery), found a single neuron that fired when patients were shown
 photographs of the actor Jennifer Aniston, but not when they were shown photographs of other
 people, the so-called "Jennifer Aniston neuron" (other neurons in the same study responded just as
@@ -64,10 +64,8 @@ closer to *dense, distributed* representations.
 Part of why this took so long to sort out is that the dominant metaphor for the mind, for most of
 the twentieth century, was a very specific kind of computer: a serial, symbol-manipulating one that
 reads a symbol, applies a rule, and writes the next symbol, one step at a time. That's a good
-description of a CPU executing a program. It's a much worse description of a brain. When David
-Rumelhart, Jay McClelland, and the Parallel Distributed Processing (PDP) research group made this
-case in their landmark books [@rumelhart1986], their alternative was a system built from many
-simple units, all active *at once*, individually meaningless on their own. In their system, a concept is the
+description of a CPU executing a program. It's a much worse description of a brain. Credit for beginning to steer the field away from this is probably best given to the work done by David Rumelhart and Jay McClelland who, in their landmark books [@rumelhart1986], argued for a system built from many
+simple units. This is, as far as I'm aware, where connectionism really emerged from in the field. In connectionist models, a concept is the
 specific pattern of activity spread across the whole population of neurons rather than a symbol sitting in a
 single memory slot. That shift, from one symbol in one place to a pattern spread across many
 places, is the idea this post is about, and among the ideas cognitive science was arguing about in
@@ -128,13 +126,13 @@ list of necessary and sufficient features (a *bird* is a thing with feathers, th
 that flies, and so on) and then hit the same problem over and over: real categories are full of
 exceptions that a strict feature list can't absorb. A dog that's lost a leg in an accident is
 obviously still a dog. A penguin doesn't fly, and is still obviously a bird. A person born without
-an arm is still, just as obviously, a person. A rigid feature list has no graceful way to handle
+an arm is still, just as obviously, a person (indeed, it would be extraordinarily problematic if we started claiming those who diverge from the population are no longer human). A rigid feature list has no graceful way to handle
 any of this: every exception either breaks the definition or has to be bolted on as an ad hoc
 patch. A population of neurons voting on a graded, high-dimensional pattern has no such problem:
 the three-legged dog just lands a little further from the *dog* prototype than a four-legged one,
 not outside some hard boundary. This is essentially the same insight behind Eleanor Rosch's work
 on prototype theory [@rosch1975], the idea that real categories are organized around a graded
-notion of typicality rather than a checklist of defining features (though many other competing theories, such as various exemplar theories, are also compatible with distributed representations).
+notion of typicality rather than a checklist of defining features (though many other competing theories, such as various exemplar theories, are also compatible with distributed representations). Joan Bybee, similarly, has a line of work showing similar phenomena with phonetic representations.
 
 There's a second advantage that's easy to miss: this is exactly the computational move that makes
 modern word embeddings work, including the GloVe vectors driving the demo above. The
@@ -265,11 +263,7 @@ enters afterward, as a multiplier.
   </p>
 </div>
 
-> **Deeper dive: the linear algebra behind "far more than *d*"**. Two facts do all the work
-> here: exact orthogonality caps out hard at *d* vectors, and relaxing it to "almost orthogonal"
-> breaks that cap completely. Worth slowing down on both, since the whole argument lives in the
-> gap between them.
->
+
 > **What orthogonality actually means.** In plain English, two directions are orthogonal if they
 > share nothing: moving along one tells you absolutely nothing about your position along the
 > other. Geometrically, the two directions are perpendicular. Mathematically, the dot product
@@ -286,130 +280,8 @@ enters afterward, as a multiplier.
 > you're working in coordinates rather than words. That's why "orthogonal" and "dot product equals
 > zero" get treated as the same statement from here on: one is the picture, the other is the test
 > for it.
->
-> **Why orthogonality caps out at exactly *d*, and not one more.** Suppose you have *k* nonzero,
-> pairwise orthogonal directions `v_1, ..., v_k` in a *d*-dimensional space. The claim is `k ≤ d`,
-> and the proof works by asking a single question: can any *nontrivial* combination of these
-> directions, one that doesn't just use all-zero weights, add up to the zero vector? If it could,
-> you could rearrange that equation to write one direction as a combination of the rest, meaning it
-> wasn't contributing anything the others didn't already cover. Ruling that out for every direction
-> at once is exactly what shows each one is doing genuinely separate work, which is the property a
-> *d*-dimensional space can only support up to *d* times over (that's what "*d*-dimensional" means).
-> So the proof starts by writing down a combination that equals the zero vector, the exact scenario
-> that needs ruling out, and shows orthogonality forces every weight in it to be zero.
->
-> ```math
-> // suppose v_1, ..., v_k are nonzero and pairwise orthogonal: vᵢ · vⱼ = 0 for i ≠ j
-> // does SOME nontrivial combination of them reach the zero vector?
-> c_1 v_1 + c_2 v_2 + ... + c_k v_k = 0
-> ```
->
-> That's one equation, but *k* unknowns, the coefficients `c_1, ..., c_k`, all tangled together in
-> a single sum. To make progress we need a way to pull just one coefficient back out on its own,
-> and that's exactly what dotting both sides with one particular `v_j` does: because the set is
-> orthogonal, `vᵢ · vⱼ = 0` for every term where `i ≠ j`, so taking the dot product with `v_j`
-> kills every term in the sum except the one that actually involves `v_j`. This move only works
-> *because* the set is orthogonal: for a non-orthogonal set the cross terms wouldn't vanish, and
-> you'd still be stuck with all *k* unknowns knotted into one equation.
->
-> ```math
-> // dot both sides with v_j -- orthogonality kills every term except the j-th
-> (c_1 v_1 + c_2 v_2 + ... + c_k v_k) · v_j = 0 · v_j
-> c_j (v_j · v_j) = 0
-> ```
->
-> One more small fact closes it out: `v_j · v_j` is a vector dotted with *itself*, which is the
-> same `‖u‖ ‖v‖ cos θ` formula with `θ = 0`, so `cos θ = 1` and `v_j · v_j = ‖v_j‖²`, just the
-> squared length of `v_j`. Since `v_j` was assumed nonzero, `‖v_j‖²` is a strictly positive number,
-> and the only way `c_j` times a positive number can equal zero is if `c_j` itself is zero:
->
-> ```math
-> c_j ‖v_j‖² = 0     and     ‖v_j‖² > 0     =>     c_j = 0
-> ```
->
-> Nothing about that argument singled out any particular `j`; the same reasoning applies no matter
-> which vector we dotted with, so it holds for every coefficient at once:
-> `c_1 = c_2 = ... = c_k = 0`. The only combination that reaches zero is the all-zero one, so none
-> of `v_1, ..., v_k` can be rebuilt out of a combination of the rest, each one is doing genuinely
-> separate work. And a *d*-dimensional space doesn't have room for more than *d* directions doing
-> separate work like that: `k ≤ d`. (We'll come back to exactly this ceiling in a later post about
-> sparse autoencoders, since prying apart superposed features is fundamentally about working
-> around it.)
->
-> **From "exactly zero" to "almost zero."** Now relax the requirement: instead of demanding
-> `vᵢ · vⱼ = 0`, allow `|vᵢ · vⱼ| ≤ ε` for some small tolerance `ε`, directions that sit close to
-> 90° rather than exactly on it. In plain terms, "exactly perpendicular" is one single angle out of
-> an entire continuum of possible angles: an extremely narrow target. "Within ε of perpendicular"
-> is a far more generous target, and in high dimensions that generosity turns out to be enormous.
-> That gap, zero tolerance versus a little tolerance, is where the whole exponential blowup comes
-> from.
->
-> Rather than try to build such a large set of almost-orthogonal directions by hand, ask a
-> different question: if you just pick directions *at random*, how likely are they to already be
-> almost orthogonal? This is the **probabilistic method** as a proof strategy: instead of
-> constructing an object directly, show that a random guess succeeds with high enough probability,
-> which proves a successful object must exist somewhere, even without ever writing one down.
->
-> ```math
-> // two random unit vectors in d dimensions -- how close to orthogonal are they, typically?
-> u, v ~ random unit vectors in R^d, drawn independently
-> u · v = Σᵢ uᵢvᵢ              E[uᵢ · vᵢ] = 0 for each i
-> ```
->
-> Each term `uᵢvᵢ` in that sum is a small random number, positive or negative with roughly equal
-> chance, since `u` and `v` are independent random directions with no reason to line up on any
-> particular coordinate. Across *d* coordinates, the positive and negative contributions tend to
-> cancel rather than pile up in one direction, the same reason the running imbalance in a long
-> sequence of coin flips shrinks *relative to the number of flips* the longer you keep flipping.
-> More coordinates to sum over means more opportunity for cancellation, so the total concentrates
-> more tightly around zero as *d* grows:
->
-> ```math
-> SD(u · v) ≈ 1 / √d
-> ```
->
-> **Packing many at once.** That already says a *single random pair* is close to orthogonal for
-> large *d*, essentially for free. But storing many concepts needs a whole *set* of *N* directions
-> that are all pairwise almost orthogonal *at once*, not just one lucky pair, so the real question
-> is how large *N* can get before some pair among them breaks the ε tolerance.
->
-> ```math
-> // draw N random unit vectors -- there are ~N²/2 pairs that could break the tolerance
-> // each single pair's failure probability shrinks exponentially in d (concentration of
-> // measure on the sphere -- exact constants vary by derivation):
-> P(one pair exceeds ε)               ≲ exp(−d·ε² / 2)
->
-> // "union bound": the chance that AT LEAST ONE of many events happens is at most the
-> // sum of their individual chances -- a crude bound, but always valid and easy to use,
-> // which matters here because computing the exact joint probability directly is hard
-> P(some pair among all N exceeds ε)  ≲ N² · exp(−d·ε² / 2)
-> ```
->
-> Solve for how large `N` can be while keeping that total risk below 1:
->
-> ```math
-> N² · exp(−d·ε² / 2) < 1
-> N² < exp(d·ε² / 2)
-> N  < exp(d·ε² / 4)
-> ```
->
-> Here's why that comes out exponential rather than linear: the per-pair failure probability
-> shrinks *exponentially* in *d*, so it can absorb a number of pairs that itself grows
-> exponentially in *d* before the total risk climbs back up to 1, and because the number of pairs
-> grows like `N²`, letting the pair count grow exponentially means `N` itself grows like the square
-> root of that exponential, which is still exponential (just with a smaller rate in the exponent).
-> That's the whole mechanism in one line: concentration of measure makes near-orthogonality
-> overwhelmingly likely once there are enough dimensions to spread the residual overlap thin
-> across, and thin-enough overlap can be shared by exponentially many directions at once.
->
-> Because the total failure probability came out below 1, failure can't be happening on *every*
-> random draw, so on at least some fraction of draws, all `N` vectors land within `ε` of mutually
-> orthogonal. A satisfying configuration must therefore exist, even though nothing here ever
-> constructed one by hand. That's the gap the superposition hypothesis exploits: swap exact
-> orthogonality for approximate, and the ceiling on how many concepts fit in *d* dimensions jumps
-> from *d* to exponential in *d*.
 
-Whether or not you followed the algebra above, the headline claim is simple: relaxing exact
+Whether or not you followed the linear algebra above, the headline claim is simple: relaxing exact
 orthogonality to a small tolerance ε should let you pack in far more than *d* directions, and the
 demo below lets you watch that happen rather than take it on faith. At each dimension *d*, it
 starts from *d* exactly-orthogonal directions (the hard cap this section opened with, drawn as the
