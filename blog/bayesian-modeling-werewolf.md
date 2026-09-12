@@ -186,7 +186,7 @@ prior = P(W | S₁, S₂)   → observe ¬S₃ → posterior = P(W | S₁, S₂,
 > ```
 >
 > No matter how many rounds accumulate, each suspicious observation adds 1 to the exponent on
-> `θ_w` and each non-suspicious observation adds 1 to the exponent on `(1−θ_w)` — regardless of
+> `θ_w` and each non-suspicious observation adds 1 to the exponent on `(1−θ_w)` regardless of
 > order. So the sequential updates always produce:
 >
 > ```math
