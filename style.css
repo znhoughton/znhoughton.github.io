@@ -538,6 +538,29 @@ h1 .muted { color: var(--text-muted); font-weight: 400; }
   margin-bottom: 0.5rem;
 }
 
+/* Status flag next to a title: only shown when something is not simply
+   published (preprint, in press, under review). */
+.pub-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.pub-badge-in-press,
+.pub-badge-accepted {
+  color: var(--accent);
+  border-color: var(--accent-soft);
+}
+
 .pub-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
 .pub-link {

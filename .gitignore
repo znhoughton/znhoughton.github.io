@@ -40,3 +40,6 @@ blog/error-driven-learning.md
 blog/mixed-effects-regression.md
 blog/noisy-channel-preference-extremity.md
 blog/storage-vs-computation-binomials.md
+
+# Venue lookups cached between runs of fetch_publications.py
+scripts/.venue_cache.json

@@ -148,26 +148,43 @@
         const html = years.map(year => {
           const items = byYear[year].map(pub => {
             const authors = pub.authors ? formatAuthors(pub.authors) : '';
-            const venue = pub.venue || '';
             const url = pub.url || '';
-    
-            const linkHtml = url
-              ? `<a href="${escHtml(url)}" target="_blank" class="pub-link">Link</a>`
-              : `<a href="https://scholar.google.com/citations?user=39mxHGIAAAAJ&hl=en" target="_blank" class="pub-link">Google Scholar</a>`;
-    
-            const citations = pub.citations || 0;
-            const citeBadge = citations > 0
-              ? `<span class="pub-link">${citations} citation${citations !== 1 ? 's' : ''}</span>`
+
+            // Venue line: the journal or conference, falling back to the
+            // preprint server while a paper is still unpublished.
+            const venue = pub.venue || (pub.arxiv_id ? 'arXiv preprint' : '');
+
+            // Only flag things that are *not* simply published.
+            const status = (pub.status || '').toLowerCase();
+            const badge = (status && status !== 'published')
+              ? `<span class="pub-badge pub-badge-${escHtml(status.replace(/\s+/g, '-'))}">${escHtml(status)}</span>`
               : '';
-    
+
+            const links = [];
+            if (url) {
+              links.push(`<a href="${escHtml(url)}" target="_blank" class="pub-link">Link</a>`);
+            } else {
+              links.push(`<a href="https://scholar.google.com/citations?user=39mxHGIAAAAJ&hl=en" target="_blank" class="pub-link">Google Scholar</a>`);
+            }
+            // Keep the preprint reachable once the published version takes over
+            // the main link.
+            if (pub.arxiv_url && pub.arxiv_url !== url) {
+              links.push(`<a href="${escHtml(pub.arxiv_url)}" target="_blank" class="pub-link">arXiv</a>`);
+            }
+
+            const citations = pub.citations || 0;
+            if (citations > 0) {
+              links.push(`<span class="pub-link">${citations} citation${citations !== 1 ? 's' : ''}</span>`);
+            }
+
             return `
               <div class="pub-item">
                 <div class="pub-year">${escHtml(String(year))}</div>
                 <div class="pub-body">
-                  <h4>${escHtml(pub.title || 'Untitled')}</h4>
+                  <h4>${escHtml(pub.title || 'Untitled')}${badge}</h4>
                   ${authors ? `<p class="authors">${authors}</p>` : ''}
                   ${venue ? `<p class="venue">${escHtml(venue)}</p>` : ''}
-                  <div class="pub-links">${linkHtml}${citeBadge}</div>
+                  <div class="pub-links">${links.join('')}</div>
                 </div>
               </div>`;
           }).join('');

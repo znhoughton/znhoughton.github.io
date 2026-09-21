@@ -1,0 +1,42 @@
+{
+  "_readme": [
+    "Hand-maintained corrections for data/publications.json. This file always",
+    "wins over Google Scholar and over the Semantic Scholar / OpenAlex lookups,",
+    "so it is where you record anything the databases have not caught up with:",
+    "a paper that is accepted but not yet indexed, a venue name you want worded",
+    "differently, a thesis, a link you would rather point somewhere else.",
+    "",
+    "'entries' is keyed by arXiv ID (preferred, stable) or by the paper title",
+    "(matched loosely: case and punctuation are ignored). Any field you list",
+    "replaces the generated one. Useful fields: venue, venue_kind",
+    "(journal | conference | thesis | book | other), status (published |",
+    "in press | preprint), url, doi. Keys starting with _ are ignored, so you",
+    "can leave yourself notes.",
+    "",
+    "'venue_aliases' shortens long official venue names for display. The first",
+    "alias whose text appears in the venue wins, so list the specific ones first.",
+    "Delete an entry once the databases report the paper correctly on their own."
+  ],
+
+  "_example_entry": {
+    "2608.00821": {
+      "venue": "Journal of Memory and Language",
+      "venue_kind": "journal",
+      "status": "in press",
+      "_note": "accepted 2026-09; remove once the DOI is live and OpenAlex has it"
+    }
+  },
+
+  "entries": {},
+
+  "venue_aliases": {
+    "North American Chapter of the Association for Computational Linguistics": "Proceedings of NAACL",
+    "European Chapter of the Association for Computational Linguistics": "Proceedings of EACL",
+    "Annual Meeting of the Association for Computational Linguistics": "Proceedings of ACL",
+    "Empirical Methods in Natural Language Processing": "Proceedings of EMNLP",
+    "Conference on Computational Natural Language Learning": "Proceedings of CoNLL",
+    "Annual Meeting of the Cognitive Science Society": "Proceedings of CogSci",
+    "Experiments in Linguistic Meaning": "Experiments in Linguistic Meaning (ELM)",
+    "Applied psycholinguistics": "Applied Psycholinguistics"
+  }
+}
