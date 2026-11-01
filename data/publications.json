@@ -42,6 +42,19 @@
     "arxiv_url": "https://arxiv.org/abs/2605.12225"
   },
   {
+    "title": "Reading Acquisition Order out of BabyLM Representations: Child-Scale Training Produces Developmentally Aligned Semantic Spaces",
+    "year": 2026,
+    "authors": "Chenyi Ding and Zachary Nicholas Houghton and Masoud Jasbi",
+    "url": "https://aclanthology.org/2026.babylm-main.20/",
+    "citations": 0,
+    "venue": "Proceedings of the Second BabyLM Workshop",
+    "venue_kind": "conference",
+    "status": "published",
+    "doi": null,
+    "arxiv_id": null,
+    "venue_source": "scholar"
+  },
+  {
     "title": "Systems and methods for audio recognition with feature extraction and steering in audio embeddings",
     "year": 2026,
     "authors": "Daniel Pluth and Zachary Nicholas Houghton and Yu Zhou and Vijay K Gurbani",
