@@ -46,6 +46,7 @@
             <div class="pub-year">Jul 2025</div>
             <div class="pub-body">
               <h4>The Role of Abstract Representations and Observed Preferences in the Ordering of Binomials in Large Language Models</h4>
+              <p class="authors"><strong>Houghton, Z. N.</strong>, Sagae, K., &amp; Morgan, E.</p>
               <p class="venue">Association for Computational Linguistics (ACL) — Poster</p>
             </div>
           </div>
@@ -54,6 +55,7 @@
             <div class="pub-year">Mar 2025</div>
             <div class="pub-body">
               <h4>The effects of frequency and predictability on the representation of multi-word phrases in English</h4>
+              <p class="authors"><strong>Houghton, Z. N.</strong>, &amp; Morgan, E.</p>
               <p class="venue">Human Sentence Processing (HSP) — Poster</p>
             </div>
           </div>
@@ -62,6 +64,7 @@
             <div class="pub-year">Jul 2024</div>
             <div class="pub-body">
               <h4>Frequency-dependent regularization arises from a noisy-channel processing model</h4>
+              <p class="authors"><strong>Houghton, Z. N.</strong>, &amp; Morgan, E.</p>
               <p class="venue">Cognitive Science Society (CogSci) — Poster</p>
             </div>
           </div>
@@ -70,6 +73,7 @@
             <div class="pub-year">Jan 2024</div>
             <div class="pub-body">
               <h4>Recognizability of <em>up</em> in multi-word phrases in English</h4>
+              <p class="authors"><strong>Houghton, Z. N.</strong>, Lee, J., Felton, C., Zellou, G., &amp; Morgan, E.</p>
               <p class="venue">California Meeting on Psycholinguistics (CAMP) — Poster</p>
             </div>
           </div>
@@ -78,6 +82,7 @@
             <div class="pub-year">Jul 2023</div>
             <div class="pub-body">
               <h4>Effects of predictability on the storage of linguistic units</h4>
+              <p class="authors"><strong>Houghton, Z. N.</strong>, &amp; Morgan, E.</p>
               <p class="venue">Cognitive Science Society (CogSci) — <strong>Accepted Talk</strong></p>
             </div>
           </div>
@@ -86,6 +91,7 @@
             <div class="pub-year">Mar 2022</div>
             <div class="pub-body">
               <h4>Effects of predictability on the processing and storage of linguistic units</h4>
+              <p class="authors"><strong>Houghton, Z. N.</strong>, &amp; Morgan, E.</p>
               <p class="venue">Human Sentence Processing (HSP) — Poster</p>
             </div>
           </div>
@@ -94,6 +100,7 @@
             <div class="pub-year">Dec 2020</div>
             <div class="pub-body">
               <h4>Perceptual consequences of pauses</h4>
+              <p class="authors"><strong>Houghton, Z. N.</strong>, Kato, M., Baese-Berk, M. M., &amp; Vaughn, C.</p>
               <p class="venue">Acoustical Society of America — Poster</p>
             </div>
           </div>
@@ -147,7 +154,11 @@
     
         const html = years.map(year => {
           const items = byYear[year].map(pub => {
-            const authors = pub.authors ? formatAuthors(pub.authors) : '';
+            // An empty array is truthy, so test for content rather than presence.
+            const hasAuthors = Array.isArray(pub.authors)
+              ? pub.authors.length > 0
+              : Boolean((pub.authors || '').trim());
+            const authors = hasAuthors ? formatAuthors(pub.authors) : '';
             const url = pub.url || '';
 
             // Venue line: the journal or conference, falling back to the
@@ -207,11 +218,16 @@
           </p>`;
       });
     
-    function formatAuthors(authorStr) {
-      return escHtml(authorStr).replace(
-        /(Houghton,?\s*Z\.?\s*N\.?)/gi,
-        '<strong>$1</strong>'
-      );
+    // The site owner's name, bolded in the author line wherever it turns up.
+    // Written tolerantly on purpose: the generator emits "Houghton, Z. N.", but
+    // a hand-written override in publication_overrides.json may say
+    // "Houghton, Z." or "Zachary Houghton", and all of them should bold.
+    const SELF_AUTHOR = /Houghton,\s*Z(?:achary)?\.?(?:\s*N(?:icholas)?\.?)?|Z(?:achary)?\.?(?:\s*N(?:icholas)?\.?)?\s+Houghton/gi;
+
+    function formatAuthors(authors) {
+      // Author order is whatever the data says; it is never re-sorted here.
+      const text = Array.isArray(authors) ? authors.join(', ') : String(authors);
+      return escHtml(text).replace(SELF_AUTHOR, match => `<strong>${match}</strong>`);
     }
     
     function escHtml(str) {

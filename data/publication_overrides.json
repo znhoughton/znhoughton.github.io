@@ -10,14 +10,21 @@
     "(matched loosely: case and punctuation are ignored). Any field you list",
     "replaces the generated one. Useful fields: venue, venue_kind",
     "(journal | conference | thesis | book | other), status (published |",
-    "in press | preprint), url, doi. Keys starting with _ are ignored, so you",
-    "can leave yourself notes.",
+    "in press | preprint), url, doi, authors. Keys starting with _ are ignored,",
+    "so you can leave yourself notes.",
+    "",
+    "'authors' is the one field the databases sometimes cannot supply at all",
+    "(patents, very new preprints). Write it the way the page should show it,",
+    "surname first: \"Houghton, Z. N., & Morgan, E.\" The page bolds Houghton",
+    "wherever it appears in the string, so the author order is preserved as",
+    "written.",
     "",
     "'venue_aliases' shortens long official venue names for display. The first",
     "alias whose text appears in the venue wins, so list the specific ones first.",
-    "Delete an entry once the databases report the paper correctly on their own."
+    "Delete an entry once the databases report the paper correctly on their own.",
+    "",
+    "'url' is also accepted, for the entries Scholar gives no link to at all: without one the page falls back to a generic Google Scholar search link, so an eScholarship or patent permalink is worth setting."
   ],
-
   "_example_entry": {
     "2608.00821": {
       "venue": "Journal of Memory and Language",
@@ -26,9 +33,46 @@
       "_note": "accepted 2026-09; remove once the DOI is live and OpenAlex has it"
     }
   },
-
-  "entries": {},
-
+  "entries": {
+    "Systems and methods for audio recognition with feature extraction and steering in audio embeddings": {
+      "authors": "Pluth, D., Houghton, Z. N., Zhou, Y., & Gurbani, V. K.",
+      "venue": "U.S. Patent Application US20260196211A1, Vail Systems, Inc.",
+      "venue_kind": "other",
+      "status": "published",
+      "url": "https://patents.google.com/patent/US20260196211A1/en",
+      "_note": "inventor order per the Google Patents record, published 2026-07-09"
+    },
+    "Multi-Word Representations in Minds and Models: Investigating the Storage of Multi-Word Phrases in Humans and Large Language Models": {
+      "authors": "Houghton, Z. N.",
+      "venue_kind": "thesis",
+      "url": "https://escholarship.org/uc/item/0rx6d0tf",
+      "_note": "UC Davis Electronic Theses and Dissertations, 2025-09-21. Venue follows APA 7's bracketed form for a dissertation.",
+      "venue": "Doctoral dissertation, University of California, Davis",
+      "status": "published"
+    },
+    "The Bolts and Nuts of Language Processing: An Investigation into the Noisy-channel Processing of Binomials": {
+      "authors": "Houghton, Z. N.",
+      "venue_kind": "thesis",
+      "url": "https://escholarship.org/uc/item/7rm372fc",
+      "_note": "UC Davis Electronic Theses and Dissertations, 2025-09-21. MA in Psychology; APA 7 does not name the degree's field, so the field is left out. Reword here if you want it shown.",
+      "venue": "Master's thesis, University of California, Davis",
+      "status": "published"
+    },
+    "Frequency-dependent preference extremity arises from a noisy-channel processing model": {
+      "authors": "Houghton, Z. N., & Morgan, E.",
+      "url": "https://escholarship.org/uc/item/5bj443rz",
+      "_note": "CogSci 46(0), 2024"
+    },
+    "Does Predictability Drive the Holistic Storage of Compound Nouns?": {
+      "authors": "Houghton, Z. N., & Morgan, E.",
+      "url": "https://escholarship.org/uc/item/7kz7w10b",
+      "_note": "CogSci 45(45), 2023"
+    },
+    "The effects of frequency and predictability on the representation of multi-word phrases in English": {
+      "authors": "Houghton, Z. N., & Morgan, E.",
+      "_note": "HSP 2025 poster 3.5; Scholar carries no year for it, so the page filters it out. It is already listed under Conference Presentations. Add \"year\": \"2025\" to surface it here too."
+    }
+  },
   "venue_aliases": {
     "North American Chapter of the Association for Computational Linguistics": "Proceedings of NAACL",
     "European Chapter of the Association for Computational Linguistics": "Proceedings of EACL",

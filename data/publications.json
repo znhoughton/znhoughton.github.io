@@ -2,7 +2,7 @@
   {
     "title": "Everyone Was Right: Lexical Representations in Language Models Are Both Abstract and Holistic",
     "year": "2026",
-    "authors": "",
+    "authors": "Houghton, Z. N., Zhou, Y., Pluth, D., Gurbani, V. K., & Kapatsinski, V.",
     "url": "https://arxiv.org/abs/2610.17538",
     "citations": 0,
     "venue": "",
@@ -16,7 +16,7 @@
   {
     "title": "Exemplars in Disguise: Pure Exemplar Models Mimic Abstraction-First Learning",
     "year": "2026",
-    "authors": "",
+    "authors": "Houghton, Z. N., & Kapatsinski, V.",
     "url": "https://arxiv.org/abs/2608.00821",
     "citations": 1,
     "venue": "",
@@ -30,7 +30,7 @@
   {
     "title": "Mechanistic interpretability of asr models using sparse autoencoders",
     "year": "2026",
-    "authors": "",
+    "authors": "Pluth, D., Houghton, Z. N., Zhou, Y., & Gurbani, V. K.",
     "url": "https://arxiv.org/abs/2605.12225",
     "citations": 6,
     "venue": "",
@@ -44,7 +44,7 @@
   {
     "title": "Reading Acquisition Order out of BabyLM Representations: Child-Scale Training Produces Developmentally Aligned Semantic Spaces",
     "year": "2026",
-    "authors": "",
+    "authors": "Ding, C., Houghton, Z. N., & Jasbi, M.",
     "url": "https://doi.org/10.18653/2026.babylm-main.20",
     "citations": 0,
     "venue": "Proceedings of the Second BabyLM Workshop",
@@ -58,20 +58,20 @@
   {
     "title": "Systems and methods for audio recognition with feature extraction and steering in audio embeddings",
     "year": "2026",
-    "authors": "",
-    "url": "",
+    "authors": "Pluth, D., Houghton, Z. N., Zhou, Y., & Gurbani, V. K.",
+    "url": "https://patents.google.com/patent/US20260196211A1/en",
     "citations": 0,
-    "venue": "",
+    "venue": "U.S. Patent Application US20260196211A1, Vail Systems, Inc.",
     "venue_kind": "other",
-    "status": null,
+    "status": "published",
     "doi": null,
     "arxiv_id": null,
-    "venue_source": null
+    "venue_source": "override"
   },
   {
     "title": "The Holistic Storage of Verb+ Up Phrases in Text-based and Audio-based Language Models",
     "year": "2026",
-    "authors": "",
+    "authors": "Houghton, Z. N., Zhou, Y., Pluth, D., Hosier, J., & Gurbani, V. K.",
     "url": "https://arxiv.org/abs/2606.13993",
     "citations": 2,
     "venue": "",
@@ -85,7 +85,7 @@
   {
     "title": "A Novel Dataset for Testing Anti-spoofing Models in a Telephony Environment",
     "year": "2025",
-    "authors": "",
+    "authors": "Houghton, Z. N., Pluth, D., Hosier, J., & Gurbani, V. K.",
     "url": "https://doi.org/10.1109/rtc66985.2025.11211857",
     "citations": 0,
     "venue": "2025 IEEE International Conference and Expo on Real Time Communications at IIT (RTC)",
@@ -99,7 +99,7 @@
   {
     "title": "Experimental paradigms on scalar implicature estimation",
     "year": "2025",
-    "authors": "",
+    "authors": "Qiu, Z., Felton, C., Houghton, Z. N., & Jasbi, M.",
     "url": "https://doi.org/10.3765/elm.3.5807",
     "citations": 1,
     "venue": "Experiments in Linguistic Meaning (ELM)",
@@ -113,33 +113,33 @@
   {
     "title": "Multi-Word Representations in Minds and Models: Investigating the Storage of Multi-Word Phrases in Humans and Large Language Models",
     "year": "2025",
-    "authors": "",
-    "url": "",
+    "authors": "Houghton, Z. N.",
+    "url": "https://escholarship.org/uc/item/0rx6d0tf",
     "citations": 4,
-    "venue": "",
-    "venue_kind": "other",
-    "status": null,
+    "venue": "Doctoral dissertation, University of California, Davis",
+    "venue_kind": "thesis",
+    "status": "published",
     "doi": null,
     "arxiv_id": null,
-    "venue_source": null
+    "venue_source": "override"
   },
   {
     "title": "The Bolts and Nuts of Language Processing: An Investigation into the Noisy-channel Processing of Binomials",
     "year": "2025",
-    "authors": "",
-    "url": "",
+    "authors": "Houghton, Z. N.",
+    "url": "https://escholarship.org/uc/item/7rm372fc",
     "citations": 1,
-    "venue": "",
-    "venue_kind": "other",
-    "status": null,
+    "venue": "Master's thesis, University of California, Davis",
+    "venue_kind": "thesis",
+    "status": "published",
     "doi": null,
     "arxiv_id": null,
-    "venue_source": null
+    "venue_source": "override"
   },
   {
     "title": "The role of abstract representations and observed preferences in the ordering of binomials in large language models",
     "year": "2025",
-    "authors": "",
+    "authors": "Houghton, Z. N., Sagae, K., & Morgan, E.",
     "url": "https://doi.org/10.18653/v1/2025.acl-short.55",
     "citations": 6,
     "venue": "Proceedings of ACL",
@@ -151,35 +151,36 @@
     "doi_url": "https://doi.org/10.18653/v1/2025.acl-short.55"
   },
   {
-    "title": "Are your random effects normal? A simulation study of methods for estimating whether subjects or items come from more than one population by examining the distribution of …",
+    "title": "Are your random effects normal? A simulation study of methods for estimating whether subjects or items come from more than one population by examining the distribution of random effects in mixed-effects logistic regression",
     "year": "2024",
-    "authors": "",
-    "url": "",
+    "authors": "Houghton, Z. N., & Kapatsinski, V.",
+    "url": "https://doi.org/10.3758/s13428-023-02287-y",
     "citations": 3,
-    "venue": "",
-    "venue_kind": "other",
-    "status": null,
-    "doi": null,
+    "venue": "Behavior Research Methods",
+    "venue_kind": "journal",
+    "status": "published",
+    "doi": "10.3758/s13428-023-02287-y",
     "arxiv_id": null,
-    "venue_source": null
+    "venue_source": "crossref",
+    "doi_url": "https://doi.org/10.3758/s13428-023-02287-y"
   },
   {
     "title": "Frequency-dependent preference extremity arises from a noisy-channel processing model",
     "year": "2024",
-    "authors": "",
-    "url": "",
+    "authors": "Houghton, Z. N., & Morgan, E.",
+    "url": "https://escholarship.org/uc/item/5bj443rz",
     "citations": 2,
     "venue": "Proceedings of CogSci",
     "venue_kind": "conference",
     "status": "published",
     "doi": null,
     "arxiv_id": null,
-    "venue_source": "scholar"
+    "venue_source": "override"
   },
   {
     "title": "How do soundboard-trained dogs respond to human button presses? An investigation into word comprehension",
     "year": "2024",
-    "authors": "",
+    "authors": "Bastos, A. P. M., Evenson, A., Wood, P. M., Houghton, Z. N., Naranjo, L., Smith, G. E., Cairo-Evans, A., Korpos, L., Terwilliger, J., Raghunath, S., Paul, C., Hou, H., et al.",
     "url": "https://doi.org/10.1371/journal.pone.0307189",
     "citations": 14,
     "venue": "PLOS ONE",
@@ -193,7 +194,7 @@
   {
     "title": "Soundboard-trained dogs produce non-accidental, non-random and non-imitative two-button combinations",
     "year": "2024",
-    "authors": "",
+    "authors": "Bastos, A. P. M., Houghton, Z. N., Naranjo, L., & Rossano, F.",
     "url": "https://doi.org/10.1038/s41598-024-79517-6",
     "citations": 12,
     "venue": "Scientific Reports",
@@ -207,7 +208,7 @@
   {
     "title": "Task-dependent consequences of disfluency in perception of native and non-native speech",
     "year": "2024",
-    "authors": "",
+    "authors": "Houghton, Z. N., Kato, M., Baese-Berk, M., & Vaughn, C.",
     "url": "https://doi.org/10.1017/s0142716423000486",
     "citations": 11,
     "venue": "Applied Psycholinguistics",
@@ -221,20 +222,20 @@
   {
     "title": "Does Predictability Drive the Holistic Storage of Compound Nouns?",
     "year": "2023",
-    "authors": "",
-    "url": "",
+    "authors": "Houghton, Z. N., & Morgan, E.",
+    "url": "https://escholarship.org/uc/item/7kz7w10b",
     "citations": 3,
     "venue": "Proceedings of CogSci",
     "venue_kind": "conference",
     "status": "published",
     "doi": null,
     "arxiv_id": null,
-    "venue_source": "scholar"
+    "venue_source": "override"
   },
   {
     "title": "Task Variation in Scalar Implicature Computation",
     "year": "2023",
-    "authors": "",
+    "authors": "Qiu, Z., Felton, C. D., Houghton, Z. N., & Jasbi, M.",
     "url": "",
     "citations": 2,
     "venue": "Proceedings of CogSci",
@@ -247,7 +248,7 @@
   {
     "title": "Perceptual consequences of pauses: Credibility and fluency of native and non-native speech",
     "year": "2020",
-    "authors": "",
+    "authors": "Houghton, Z. N., Kato, M., Baese-Berk, M. M., & Vaughn, C.",
     "url": "https://doi.org/10.1121/1.5147683",
     "citations": 0,
     "venue": "The Journal of the Acoustical Society of America",
@@ -261,7 +262,7 @@
   {
     "title": "The effects of frequency and predictability on the representation of multi-word phrases in English",
     "year": "",
-    "authors": "",
+    "authors": "Houghton, Z. N., & Morgan, E.",
     "url": "",
     "citations": 0,
     "venue": "",
@@ -269,12 +270,12 @@
     "status": null,
     "doi": null,
     "arxiv_id": null,
-    "venue_source": null
+    "venue_source": "override"
   },
   {
     "title": "The effects of type and token frequency on generalization",
     "year": "",
-    "authors": "",
+    "authors": "Houghton, Z. N., Harmon, Z., & Kapatsinski, V. M.",
     "url": "",
     "citations": 0,
     "venue": "",

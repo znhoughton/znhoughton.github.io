@@ -29,6 +29,8 @@ import urllib.request
 USER_AGENT = "znhoughton.github.io publication updater (+https://znhoughton.github.io)"
 REQUEST_PAUSE = 1.0  # be polite; these APIs are free and unauthenticated here
 THROTTLE_BACKOFF = 5.0  # extra wait before retrying a 429
+# The unauthenticated S2 search endpoint is throttled hardest of the three.
+S2_SEARCH_RETRIES = 4
 
 ARXIV_DOI_PREFIX = "10.48550"
 
@@ -105,7 +107,12 @@ def _mailto():
 
 
 def _get_json(url, timeout=25, retries=1):
-    """GET JSON, backing off once on a 429. Returns None on any failure."""
+    """GET JSON, backing off on a 429. Returns None on any failure.
+
+    Worth insisting on the retries: a throttled lookup and a genuinely
+    unknown paper both come back empty, and treating the first as the second
+    silently drops an author list that the source actually had.
+    """
     request = urllib.request.Request(
         url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"}
     )
@@ -116,9 +123,10 @@ def _get_json(url, timeout=25, retries=1):
         except urllib.error.HTTPError as err:
             if err.code == 404:
                 return None
-            # Semantic Scholar throttles unauthenticated callers aggressively.
+            # Semantic Scholar throttles unauthenticated callers aggressively,
+            # so back off further on each attempt rather than at a fixed pace.
             if err.code == 429 and attempt < retries:
-                time.sleep(THROTTLE_BACKOFF)
+                time.sleep(THROTTLE_BACKOFF * (attempt + 1))
                 continue
             print(f"    ! HTTP {err.code} from {url}")
             return None
@@ -130,9 +138,185 @@ def _get_json(url, timeout=25, retries=1):
     return None
 
 
+# -- author names ------------------------------------------------------------
+
+# Tokens that belong to the surname rather than the given names.
+NAME_PARTICLES = {
+    "van", "von", "de", "del", "della", "der", "den", "da", "dos", "du",
+    "la", "le", "bin", "ibn", "al", "ter", "ten", "af", "zu", "st",
+}
+
+NAME_SUFFIXES = {"jr", "sr", "ii", "iii", "iv", "phd", "md"}
+
+SELF_SURNAME = "houghton"
+
+# The sources disagree about how much of the site owner's name they carry
+# ("Zachary Houghton", "Z Houghton", "Zachary Nicholas Houghton"), which would
+# show up as the same person spelled three ways down the page. One spelling wins.
+SELF_NAME = "Houghton, Z. N."
+
+_SELF_RE = re.compile(r"^houghton,\s*z", re.I)
+
+
+def _is_self(formatted_name):
+    return bool(_SELF_RE.match(formatted_name.strip()))
+
+
+def _initials(given):
+    """'Zachary Nathan' -> 'Z. N.'; 'Jean-Pierre' -> 'J.-P.'"""
+    out = []
+    for part in re.split(r"[\s.]+", given or ""):
+        if not part:
+            continue
+        if "-" in part:
+            out.append("-".join(seg[0].upper() + "." for seg in part.split("-") if seg))
+        else:
+            out.append(part[0].upper() + ".")
+    return " ".join(out)
+
+
+def format_author_name(name=None, given=None, family=None):
+    """Normalize any shape of author name to 'Surname, F. M.'.
+
+    Handles the three forms the sources hand us: Crossref's structured
+    given/family pair, a full 'Zachary Nathan Houghton' display string, and an
+    already-inverted 'Houghton, Z. N.' string.
+    """
+    if family:
+        surname, givens = family.strip(), (given or "").strip()
+    else:
+        raw = re.sub(r"\s+", " ", (name or "").strip())
+        if not raw:
+            return ""
+        if "," in raw:
+            surname, _, givens = raw.partition(",")
+        else:
+            tokens = raw.split(" ")
+            suffix = ""
+            while len(tokens) > 1 and tokens[-1].strip(".,").lower() in NAME_SUFFIXES:
+                suffix = tokens.pop().strip(".,")
+            if len(tokens) == 1:
+                return tokens[0]
+            # Walk left over particles so 'van der Berg' stays with the surname.
+            start = len(tokens) - 1
+            while start - 1 >= 1 and tokens[start - 1].strip(".").lower() in NAME_PARTICLES:
+                start -= 1
+            surname = " ".join(tokens[start:])
+            givens = " ".join(tokens[:start])
+            if suffix:
+                surname = f"{surname} {suffix}"
+
+    surname = surname.strip().strip(",")
+    initials = _initials(givens)
+    if not surname:
+        return initials
+    return f"{surname}, {initials}" if initials else surname
+
+
+def parse_author_string(text):
+    """Split an author string into individual names.
+
+    Scholar joins names with ' and '; BibTeX does too. Plain comma-separated
+    strings are left alone, because a comma is also the inversion marker and
+    splitting on it would tear 'Houghton, Z. N.' in half.
+    """
+    text = (text or "").strip()
+    if not text:
+        return []
+    parts = re.split(r"\s+and\s+|\s*;\s*", text)
+    return [part.strip() for part in parts if part.strip()]
+
+
+def format_author_list(authors, max_names=12):
+    """Render a list of names as the display string the page shows.
+
+    `authors` items may be strings or {'given', 'family'} dicts. Long author
+    lists are truncated, but never before Houghton: on a personal site the
+    one name that must survive is the site owner's.
+    """
+    formatted = []
+    for author in authors or []:
+        if isinstance(author, dict):
+            name = format_author_name(
+                given=author.get("given"), family=author.get("family"),
+                name=author.get("name"),
+            )
+        else:
+            name = format_author_name(name=author)
+        if name:
+            formatted.append(SELF_NAME if _is_self(name) else name)
+
+    if not formatted:
+        return ""
+
+    if len(formatted) > max_names:
+        self_index = next(
+            (i for i, name in enumerate(formatted) if _is_self(name)),
+            -1,
+        )
+        keep = max(max_names, self_index + 1)
+        if keep < len(formatted):
+            return ", ".join(formatted[:keep]) + ", et al."
+
+    if len(formatted) == 1:
+        return formatted[0]
+    return ", ".join(formatted[:-1]) + ", & " + formatted[-1]
+
+
+# -- matching titles across sources ------------------------------------------
+
+# Scholar truncates a long title and marks the cut with an ellipsis, so the
+# stored title can be a prefix of the real one. Those need a prefix match, and
+# they are worth repairing outright when a source hands back the full string.
+TRUNCATION_MARKERS = ("…", "...")
+
+
+def is_truncated_title(title):
+    return (title or "").rstrip().endswith(TRUNCATION_MARKERS)
+
+
+def _title_stem(title):
+    """Normalized title with any trailing ellipsis removed."""
+    text = (title or "").rstrip()
+    for marker in TRUNCATION_MARKERS:
+        if text.endswith(marker):
+            text = text[: -len(marker)]
+            break
+    return normalize_title(text)
+
+
+def titles_match(stored, candidate):
+    """True when `candidate` is the same work as `stored`.
+
+    Exact after normalization, or -- for a Scholar-truncated title -- the
+    candidate starts with everything we do have. Callers pair a prefix match
+    with has_self_author() so a merely similar title cannot pull in the wrong
+    author list.
+    """
+    stem = _title_stem(stored)
+    other = normalize_title(candidate)
+    if not stem or not other:
+        return False
+    if stem == other:
+        return True
+    return is_truncated_title(stored) and other.startswith(stem)
+
+
+def has_self_author(names):
+    """True when the site owner appears in an author list."""
+    for author in names or []:
+        if isinstance(author, dict):
+            text = author.get("family") or author.get("name") or ""
+        else:
+            text = author or ""
+        if SELF_SURNAME in text.lower():
+            return True
+    return False
+
+
 # -- Semantic Scholar --------------------------------------------------------
 
-S2_FIELDS = "title,year,venue,publicationVenue,externalIds,journal,publicationTypes,url"
+S2_FIELDS = ("title,year,venue,publicationVenue,externalIds,journal,publicationTypes,url,authors")
 
 
 def from_semantic_scholar(arxiv_id=None, doi=None):
@@ -198,7 +382,7 @@ def from_crossref(title=None, doi=None):
 
     if item is None and title:
         params = {"query.bibliographic": title, "rows": 5,
-                  "select": "title,container-title,type,DOI,issued"}
+                  "select": "title,container-title,type,DOI,issued,author"}
         mailto = _mailto()
         if mailto:
             params["mailto"] = mailto
@@ -319,6 +503,192 @@ def from_openalex(title=None, doi=None):
         "year": work.get("publication_year"),
         "venue_source": "openalex",
     }
+
+
+# -- authors -----------------------------------------------------------------
+#
+# Separate from the venue lookups above, which bail out on anything that still
+# looks like a preprint. An author list is worth having either way, so these
+# take whatever record they find.
+
+def _authors_from_semantic_scholar(arxiv_id=None, doi=None, title=None):
+    data = None
+    if arxiv_id or doi:
+        key = ("arXiv:" + arxiv_id) if arxiv_id else ("DOI:" + doi)
+        data = _get_json(
+            "https://api.semanticscholar.org/graph/v1/paper/"
+            + urllib.parse.quote(key, safe="")
+            + "?fields=authors"
+        )
+    names = [author.get("name", "") for author in ((data or {}).get("authors") or [])]
+    if names:
+        return names
+
+    # No identifier, or S2 has no record under it: search by title instead.
+    match = _s2_search_by_title(title, "title,authors")
+    names = [author.get("name", "") for author in ((match or {}).get("authors") or [])]
+    if names and (not is_truncated_title(title) or has_self_author(names)):
+        return names
+    return []
+
+
+def _s2_search_by_title(title, fields):
+    """Semantic Scholar title search. Covers the proceedings and theses that
+    never get a DOI, which is most of what Crossref misses."""
+    if not title:
+        return None
+    query = re.sub(r"[^A-Za-z0-9 ]+", " ", title).strip()
+    data = _get_json(
+        "https://api.semanticscholar.org/graph/v1/paper/search?"
+        + urllib.parse.urlencode({"query": query, "limit": 5, "fields": fields}),
+        retries=S2_SEARCH_RETRIES,
+    )
+    for candidate in (data or {}).get("data") or []:
+        if titles_match(title, candidate.get("title")):
+            return candidate
+    return None
+
+
+def _crossref_authors(item):
+    names = []
+    for author in (item or {}).get("author") or []:
+        if author.get("family") or author.get("given"):
+            names.append({"given": author.get("given"), "family": author.get("family")})
+        elif author.get("name"):
+            names.append({"name": author["name"]})
+    return names
+
+
+def _authors_from_crossref(title=None, doi=None):
+    if doi:
+        data = _get_json("https://api.crossref.org/works/" + urllib.parse.quote(doi, safe="/"))
+        names = _crossref_authors((data or {}).get("message"))
+        if names:
+            return names
+
+    if not title:
+        return []
+
+    params = {"query.bibliographic": title, "rows": 5, "select": "title,author,DOI"}
+    mailto = _mailto()
+    if mailto:
+        params["mailto"] = mailto
+    data = _get_json("https://api.crossref.org/works?" + urllib.parse.urlencode(params))
+    for candidate in (((data or {}).get("message") or {}).get("items") or []):
+        names = candidate.get("title") or [""]
+        if not titles_match(title, names[0]):
+            continue
+        authors = _crossref_authors(candidate)
+        if authors and (not is_truncated_title(title) or has_self_author(authors)):
+            return authors
+    return []
+
+
+def _openalex_authors(work):
+    names = []
+    for authorship in (work or {}).get("authorships") or []:
+        author = authorship.get("author") or {}
+        name = author.get("display_name") or authorship.get("raw_author_name") or ""
+        if name:
+            names.append(name)
+    return names
+
+
+def _authors_from_openalex(title=None, doi=None):
+    if doi:
+        work = _get_json(
+            "https://api.openalex.org/works/doi:"
+            + urllib.parse.quote(doi, safe="")
+            + "?"
+            + _openalex_query({})
+        )
+        names = _openalex_authors(work)
+        if names:
+            return names
+
+    if not title:
+        return []
+
+    query = re.sub(r"[^A-Za-z0-9 ]+", " ", title).strip()
+    data = _get_json(
+        "https://api.openalex.org/works?"
+        + _openalex_query({"filter": "title.search:" + query, "per-page": 5})
+    )
+    for candidate in (data or {}).get("results", []):
+        if not titles_match(title, candidate.get("display_name")):
+            continue
+        names = _openalex_authors(candidate)
+        if names and (not is_truncated_title(title) or has_self_author(names)):
+            return names
+    return []
+
+
+def resolve_authors(title, arxiv_id=None, doi=None):
+    """Author list for a work as a display string, or '' if nothing is found."""
+    lookups = (
+        lambda: _authors_from_crossref(title=title, doi=doi),
+        lambda: _authors_from_semantic_scholar(arxiv_id=arxiv_id, doi=doi, title=title),
+        lambda: _authors_from_openalex(title=title, doi=doi),
+    )
+    for lookup in lookups:
+        try:
+            names = lookup()
+        except Exception as err:
+            print(f"    ! author lookup error: {err}")
+            names = []
+        if names:
+            return format_author_list(names)
+    return ""
+
+
+def resolve_full_title(title, arxiv_id=None, doi=None):
+    """Recover a Scholar-truncated title, or '' if no source has the full one.
+
+    Only ever called for a title that ends in an ellipsis. The replacement must
+    start with the part we already have, so a near-miss cannot rename a paper.
+    """
+    if not is_truncated_title(title):
+        return ""
+
+    candidates = []
+
+    if arxiv_id or doi:
+        key = ("arXiv:" + arxiv_id) if arxiv_id else ("DOI:" + doi)
+        data = _get_json(
+            "https://api.semanticscholar.org/graph/v1/paper/"
+            + urllib.parse.quote(key, safe="")
+            + "?fields=title"
+        )
+        candidates.append((data or {}).get("title"))
+
+    match = _s2_search_by_title(title, "title,authors")
+    if match:
+        candidates.append(match.get("title"))
+
+    query = re.sub(r"[^A-Za-z0-9 ]+", " ", title).strip()
+    data = _get_json(
+        "https://api.openalex.org/works?"
+        + _openalex_query({"filter": "title.search:" + query, "per-page": 5})
+    )
+    for work in (data or {}).get("results", []):
+        candidates.append(work.get("display_name"))
+
+    params = {"query.bibliographic": title, "rows": 5, "select": "title"}
+    mailto = _mailto()
+    if mailto:
+        params["mailto"] = mailto
+    data = _get_json("https://api.crossref.org/works?" + urllib.parse.urlencode(params))
+    for item in (((data or {}).get("message") or {}).get("items") or []):
+        for name in item.get("title") or []:
+            candidates.append(name)
+
+    for candidate in candidates:
+        candidate = re.sub(r"\s+", " ", (candidate or "").strip())
+        if not candidate or is_truncated_title(candidate):
+            continue
+        if titles_match(title, candidate) and len(candidate) > len(title.rstrip()):
+            return candidate
+    return ""
 
 
 # -- public entry point ------------------------------------------------------

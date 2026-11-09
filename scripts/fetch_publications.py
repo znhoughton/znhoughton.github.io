@@ -1,6 +1,9 @@
 """Rebuild data/publications.json from Google Scholar.
 
-Scholar supplies the list, the author strings and the citation counts. It is
+Scholar supplies the list, the author strings and the citation counts, but it
+hands over an empty author string often enough that every entry left without
+one gets a second lookup through venue_resolver (Crossref, then Semantic
+Scholar, then OpenAlex) and is normalized to "Surname, F. M." form. It is
 unreliable about *where* something was published: preprints stay at
 "arXiv preprint arXiv:XXXX.XXXXX" long after the paper is out, and conference
 papers and theses often arrive with no venue at all. So every entry whose
@@ -15,6 +18,12 @@ Usage, from the repo root:
     python scripts/fetch_publications.py --from-existing --dry-run
                                                       # re-resolve venues only,
                                                       # no Scholar request at all
+    python scripts/fetch_publications.py --from-existing --no-resolve
+                                                      # fill in missing authors
+                                                      # and nothing else
+    python scripts/fetch_publications.py --from-existing --no-resolve \
+            --authors-from-scholar                    # ... and ask Scholar for
+                                                      # the ones no open API has
 """
 
 import argparse
@@ -30,6 +39,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_PATH = os.path.join(ROOT, "data", "publications.json")
 OVERRIDES_PATH = os.path.join(ROOT, "data", "publication_overrides.json")
 CACHE_PATH = os.path.join(ROOT, "scripts", ".venue_cache.json")
+AUTHOR_CACHE_PATH = os.path.join(ROOT, "scripts", ".author_cache.json")
 
 # Scholar files the venue under different keys depending on the item type.
 VENUE_KEYS = ("journal", "conference", "booktitle", "venue", "publisher", "school")
@@ -76,7 +86,7 @@ def base_record(pub):
     record = {
         "title": bib.get("title", ""),
         "year": bib.get("pub_year", ""),
-        "authors": bib.get("author", ""),
+        "authors": vr.format_author_list(vr.parse_author_string(bib.get("author", ""))),
         "url": url,
         "citations": pub.get("num_citations", 0),
         "venue": "" if vr.looks_unpublished(venue) else venue,
@@ -191,6 +201,125 @@ def resolve_venues(records, cache, use_network=True):
     return resolved_count
 
 
+def repair_titles(records, cache, use_network=True):
+    """Replace Scholar's ellipsis-truncated titles with the full ones.
+
+    Runs before the venue and author passes, since both match on the title.
+    """
+    repaired_count = 0
+    for record in records:
+        title = record.get("title") or ""
+        if not vr.is_truncated_title(title):
+            continue
+
+        cache_key = "title:" + (record.get("doi") or record.get("arxiv_id")
+                                or vr.normalize_title(title))
+        cached = cache.get(cache_key)
+        if cached:
+            record["title"] = cached
+            continue
+        if not use_network:
+            continue
+
+        print(f"  title: {title[:70]}")
+        full = vr.resolve_full_title(
+            title, arxiv_id=record.get("arxiv_id"), doi=record.get("doi"),
+        )
+        if full:
+            record["title"] = full
+            cache[cache_key] = full
+            repaired_count += 1
+            print(f"    -> {full}")
+        else:
+            print("    -> no source has the untruncated title")
+    return repaired_count
+
+
+def resolve_authors(records, cache, use_network=True):
+    """Fill in the author list for any record that does not have one.
+
+    Scholar's author strings are the first source (base_record normalizes
+    them), but they arrive empty often enough -- a blocked request, a
+    publication Scholar never filled in -- that the open APIs are asked for
+    anything still missing.
+    """
+    resolved_count = 0
+    for record in records:
+        if (record.get("authors") or "").strip():
+            continue
+
+        cache_key = (record.get("doi") or record.get("arxiv_id")
+                     or vr.normalize_title(record.get("title")))
+
+        cached = cache.get(cache_key)
+        if cached:
+            record["authors"] = cached
+            continue
+        if not use_network:
+            continue
+
+        print(f"  authors: {record.get('title', '')[:70]}")
+        authors = vr.resolve_authors(
+            title=record.get("title"),
+            arxiv_id=record.get("arxiv_id"),
+            doi=record.get("doi"),
+        )
+        if authors:
+            record["authors"] = authors
+            cache[cache_key] = authors
+            resolved_count += 1
+            print(f"    -> {authors}")
+        else:
+            print("    -> no author list found in any source")
+    return resolved_count
+
+
+def fill_authors_from_scholar(records):
+    """Last resort for the entries no open database indexes.
+
+    Theses, CogSci proceedings and a patent are missing from Crossref, S2 and
+    OpenAlex alike, but they are all on the author's own Scholar profile. Only
+    the author string is taken: venues, citation counts and everything else
+    stay exactly as they are, so this is safe to run over a finished file.
+    """
+    missing = [r for r in records if not (r.get("authors") or "").strip()]
+    if not missing:
+        return 0
+
+    from scholarly import scholarly
+
+    print(f"Asking Google Scholar for {len(missing)} missing author list(s)")
+    profile = scholarly.search_author_id(SCHOLAR_ID)
+    scholarly.fill(profile, sections=["publications"])
+
+    filled = 0
+    for pub in profile.get("publications", []):
+        title = (pub.get("bib") or {}).get("title", "")
+        record = next(
+            (r for r in missing
+             if not (r.get("authors") or "").strip()
+             and vr.titles_match(r.get("title"), title)),
+            None,
+        )
+        if record is None:
+            continue
+
+        try:
+            scholarly.fill(pub)
+        except Exception as err:
+            print(f"  ! could not fill '{title[:50]}': {err}")
+            continue
+
+        names = vr.parse_author_string((pub.get("bib") or {}).get("author", ""))
+        authors = vr.format_author_list(names)
+        if authors:
+            record["authors"] = authors
+            filled += 1
+            print(f"  {title[:65]}")
+            print(f"    -> {authors}")
+    return filled
+
+
 def carry_forward(records, previous):
     """Keep venue info an earlier run established if this run came back empty.
 
@@ -210,6 +339,9 @@ def carry_forward(records, previous):
                     record[field] = old[field]
         if not record.get("arxiv_id") and old.get("arxiv_id"):
             record["arxiv_id"] = old["arxiv_id"]
+        # An author list already on the site is never replaced by a blank.
+        if not (record.get("authors") or "").strip() and old.get("authors"):
+            record["authors"] = old["authors"]
 
 
 def finalize(record):
@@ -249,11 +381,19 @@ def main():
     parser.add_argument("--from-existing", action="store_true",
                         help="skip Google Scholar and re-resolve the current JSON")
     parser.add_argument("--no-resolve", action="store_true",
-                        help="skip the Semantic Scholar / OpenAlex lookups")
+                        help="skip the venue lookups")
+    parser.add_argument("--no-authors", action="store_true",
+                        help="skip the author-list lookups")
+    parser.add_argument("--no-titles", action="store_true",
+                        help="skip repairing titles Scholar truncated")
+    parser.add_argument("--authors-from-scholar", action="store_true",
+                        help="for entries the open APIs cannot name, take the "
+                             "author list from the Scholar profile")
     args = parser.parse_args()
 
     overrides = load_json(OVERRIDES_PATH, {})
     cache = load_json(CACHE_PATH, {})
+    author_cache = load_json(AUTHOR_CACHE_PATH, {})
     previous = load_json(OUT_PATH, [])
 
     if args.from_existing:
@@ -273,9 +413,22 @@ def main():
               f"but {len(previous)} were there before. Nothing changed.")
         return 1
 
+    if not args.no_titles:
+        repaired = repair_titles(records, cache, use_network=True)
+        print(f"Repaired {repaired} truncated title(s)")
+
     if not args.no_resolve:
         resolved = resolve_venues(records, cache, use_network=True)
         print(f"Resolved {resolved} venue(s) via Semantic Scholar / OpenAlex")
+
+    if not args.no_authors:
+        named = resolve_authors(records, author_cache, use_network=True)
+        print(f"Resolved {named} author list(s) via Crossref / "
+              f"Semantic Scholar / OpenAlex")
+
+    if args.authors_from_scholar:
+        from_scholar = fill_authors_from_scholar(records)
+        print(f"Filled {from_scholar} author list(s) from the Scholar profile")
 
     carry_forward(records, previous)
     for record in records:
@@ -284,6 +437,22 @@ def main():
         finalize(record)
 
     sort_records(records)
+
+    truncated = [r["title"] for r in records if vr.is_truncated_title(r.get("title"))]
+    if truncated:
+        print(f"\n{len(truncated)} title(s) are still truncated. "
+              f"Add a \"title\" field in data/publication_overrides.json "
+              f"to set the full one:")
+        for title in truncated:
+            print(f"  - {title}")
+
+    unnamed = [r["title"] for r in records if not (r.get("authors") or "").strip()]
+    if unnamed:
+        print(f"\n{len(unnamed)} publication(s) still have no author list. "
+              f"Add an \"authors\" field in data/publication_overrides.json "
+              f"to set one by hand:")
+        for title in unnamed:
+            print(f"  - {title}")
 
     missing = [r["title"] for r in records if not r.get("venue")]
     if missing:
@@ -298,10 +467,12 @@ def main():
             badge = "" if record.get("status") == "published" else f"  [{record.get('status')}]"
             print(f"{record.get('year') or '????'}  {record.get('venue') or '(no venue)'}{badge}")
             print(f"        {record.get('title')}")
+            print(f"        {record.get('authors') or '(no authors)'}")
         return 0
 
     save_json(OUT_PATH, records)
     save_json(CACHE_PATH, cache)
+    save_json(AUTHOR_CACHE_PATH, author_cache)
     print(f"\nDone. Wrote {len(records)} publications to {OUT_PATH}")
     return 0
 
